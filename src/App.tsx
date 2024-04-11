@@ -1,12 +1,11 @@
 import React from "react";
 import "./App.css";
+import ReceiptAdminPage from "./pages/ReceiptAdmin";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Autobank</p>
-      </header>
+    <div>
+      <ReceiptAdminPage />
     </div>
   );
 }
