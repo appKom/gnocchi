@@ -1,4 +1,7 @@
 import topwave from "./topwave.svg"
+import Navbar from "./universal/Navbar"
 export default function Topbar() {
-    return (<img src={topwave} alt="" />)
+    return (<div className="bg-[#282c34]"><Navbar/>
+    <img src={topwave} alt=""/>
+    </div>)
 }
