@@ -1,4 +1,4 @@
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Checkbox, Label, TextInput, Textarea } from "flowbite-react";
 
 const ReceiptRegular = () => {
   const username: String = "Ola Nordmann";
@@ -81,7 +81,43 @@ const ReceiptRegular = () => {
           </label>
         </div>
       </div>
-      <h2 className="text-lg md:text-2xl mt-4 mb-3">Kvitteringsinformasjon</h2>
+      <h2 className="text-lg md:text-2xl mt-4 mb-3">Beskrivelse</h2>
+        <Label
+          htmlFor="receiptForm1"
+          value="Forklar hvem dere er og hva pengene skal brukes til"
+          className="text-white"
+        />
+        <Textarea
+          id="receiptForm1"
+          placeholder="Ola Nordmann"
+          required
+          rows={4}
+          className="w-2/3 self-center"
+        />
+      <Label
+        htmlFor="receiptForm2"
+        value="hvordan går midlene Onlinere til gode?"
+        className="text-white mt-4"
+      />
+      <Textarea
+        id="ReceiptForm2"
+        placeholder="Ola Nordmann"
+        required
+        rows={4}
+        className="w-2/3"
+      />
+      <Label
+        htmlFor="receiptForm3"
+        value="Aktivitetsplan"
+        className="text-white mt-4"
+      />
+      <Textarea
+        id="ReceiptForm3"
+        placeholder="Ola Nordmann"
+        required
+        rows={4}
+        className="w-2/3"
+      />
     </div>
   );
 };
