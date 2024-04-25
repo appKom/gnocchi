@@ -1,7 +1,13 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { SetStateAction, useState } from "react";
 
 const ReceiptRegular = () => {
     const username: String = "Ola Nordmann";
+    const [komite, setKomite] = useState("");
+    const handleSelectChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setKomite(event.target.value);
+
+    };
 
     return (
         <div className="flex flex-col items-center justify-center h-full m-4 md:m-12">
@@ -82,23 +88,41 @@ const ReceiptRegular = () => {
                     <div className="flex flex-col">
                         <form>
                         <label htmlFor="ansvarlig1" className="block text-sm font-medium text-white dark:text-white w-72">Select your country</label>
-                            <select id="ansvarlig1" className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <select id="ansvarlig1" value={komite} onChange={handleSelectChange} className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
-                                <option>Appkom</option>
-                                <option>Velkom</option>
-                                <option>Backlog</option>
-                                <option>Prokom</option>
-                                <option>Arrkom</option>
-                                <option>Bankkom</option>
-                                <option>Bedkom</option>
-                                <option>FeminIT</option>
-                                <option>OIL</option>
-                                <option>Fagkom</option>
-                                <option>Trikom</option>
-                                <option>Annet</option>
+                                <option value ="Appkom">Appkom</option>
+                                <option value ="Velkom">Velkom</option>
+                                <option value = "Backlog">Backlog</option>
+                                <option value="Prokom">Prokom</option>
+                                <option value="Arrkom">Arrkom</option>
+                                <option value = "Bankkom">Bankkom</option>
+                                <option value ="Bedkom">Bedkom</option>
+                                <option value = "FeminIT">FeminIT</option>
+                                <option value = "OIL">OIL</option>
+                                <option value = "Fagkom">Fagkom</option>
+                                <option value="Trikom">Trikom</option>
+                                <option value="Annet">Annet</option>
                             </select>
                         </form>
                     </div>
+
+                </div>
+                <div className="w-3/5 text-justify mt-6">
+                    <h1 className="text-base text-center">Vedlegg/kvittering</h1>
+                    <p className="text-base mt-4">Last opp et tydelig bilde/scan av kvitteringen. Husk at kvitteringen må være gyldig for at den skal godkjennes.</p>
+                    <p className="text-base">Er du usikker på om kvitteringen er gyldig? se her</p>
+                </div>
+                <div>
+                    <form className="max-w-lg mx-auto">
+                        <label className="text-white block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="kvittering">Vedlegg</label>
+                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="kvittering" type="file"/>
+                    </form>
+                </div>
+                <div>
+                <form className="max-w-sm mx-auto">
+  <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your message</label>
+  <textarea id="message" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
+</form>
                 </div>
         </div>
     );
