@@ -2,11 +2,55 @@ import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { SetStateAction, useState } from "react";
 
 const ReceiptRegular = () => {
-    const [komite, setKomite] = useState("");
+    const [komite, setKomite] = useState("")
+    const [kontonummer, setKontonummer] = useState(0) ;
+    const [belop, setBelop] = useState(0);
+    const [anledning, setAnledning] = useState("");
+    const [navn, setNavn] = useState("");
+    const [email, setEmail] = useState("");
+    const [kort, setKort] = useState("Eget");
+    const [samtykke, setSamtykke] = useState(false);
+    const [kommentar, setKommentar] = useState("");
 
-    const handleSelectChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+    const handleSelectKomite = (event: { target: { value: SetStateAction<string>; }; }) => {
         setKomite(event.target.value);
     };
+
+    const handleSelectKontonummer = (event: { target: { value: string; }; }) => {
+        const value = parseInt(event.target.value);
+        setKontonummer(value);
+    }
+
+    const handleSelectBelop = (event: { target: { value: string; }; }) => {
+        const value = parseInt(event.target.value);
+        setBelop(value);
+    }
+
+    const handleSelectAnledning = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setAnledning(event.target.value);
+    }
+
+    const handleSelectNavn = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setNavn(event.target.value);
+    }
+
+    const handleSelectEmail = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setEmail(event.target.value);
+    }
+
+    const handleSelectKort = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setKort(event.target.value);
+    }
+    const handleSelectSamtykke = (event: { target: { checked: boolean | ((prevState: boolean) => boolean); }; })=>{
+        setSamtykke(event.target.checked);
+    }
+
+    const handleSelectKommentar = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setKommentar(event.target.value);
+    }
+    
+
+
 
     return (
         <div className="flex flex-col items-center justify-center m-4 md:m-12">
@@ -29,17 +73,17 @@ const ReceiptRegular = () => {
                 <div className="flex flex-col md:flex-row">
                     <div className="flex flex-col md:mr-8 mb-4">
                         <Label htmlFor="name1" value="Navn" className="text-white"/>
-                        <TextInput id="name1" type="text" placeholder="Ola Nordmann" required className="w-full md:w-72"/>
+                        <TextInput value={navn} onChange={handleSelectNavn} id="name1" type="text" placeholder="Ola Nordmann" required className="w-full md:w-72"/>
                     </div>
                     <div className="flex flex-col">
                         <Label htmlFor="email1" value="E-post" className="text-white"/>
-                        <TextInput id="email1" type="email" placeholder="ola@nordmann.no" required className="w-full md:w-72"/>
+                        <TextInput value={email} onChange={handleSelectEmail} id="email1" type="email" placeholder="ola@nordmann.no" required className="w-full md:w-72"/>
                     </div>
                 </div>
                 <div className="flex items-center mt-4 mb-4">
-    <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-    <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-white dark:text-gray-300 sm:w-48 md:w-auto">Jeg samtykker til Online Bankom sine Terms and conditions</label>
-</div>
+                    <input  checked={samtykke} onChange={handleSelectSamtykke}id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                    <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-white dark:text-gray-300 sm:w-48 md:w-auto">Jeg samtykker til Online Bankom sine Terms and conditions</label>
+                </div>
 
             </div>
             <div className="flex flex-col items-center justify-center mt-6 md:mt-10">
@@ -47,13 +91,13 @@ const ReceiptRegular = () => {
                 <p className="text-base text-center">Kort brukt til kjøpet</p>
                 <div className="flex flex-col md:flex-row mt-4">
                     <div className="flex items-center mb-4 md:mb-0 md:mr-8">
-                        <input id="kort-1" type="radio" name="kort" value="Eget" className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" checked/>
+                        <input value="Eget" checked={kort === "Eget"} onChange={handleSelectKort}id="kort-1" type="radio" name="kort" className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
                         <label htmlFor="kort-1" className="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 text-white">
                             Eget kort
                         </label>
                     </div>
                     <div className="flex items-center">
-                        <input id="kort-2" type="radio" name="kort" value="Online" className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"/>
+                        <input value="Online" checked={kort === "Online"} onChange={handleSelectKort}id="kort-2" type="radio" name="kort" className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"/>
                         <label htmlFor="kort-2" className="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-30 text-white">
                             Onlines Bankkort
                         </label>
@@ -62,21 +106,22 @@ const ReceiptRegular = () => {
                 <div className="flex flex-col md:flex-row items-center justify-center mt-4">
                     <div className="flex flex-col md:mr-8">
                         <Label htmlFor="kontonummer1" value="Kontonummer" className="text-white"/>
-                        <TextInput id="kontonummer1" type="number" placeholder="2345 xx xxxx" required className="w-full md:w-72"/> 
+                        <TextInput onChange={handleSelectKontonummer} id="kontonummer1" type="number" placeholder="2345 xx xxxx" required className="w-full md:w-72"/>
+
                     </div>
                     <div className="flex flex-col">
                         <Label htmlFor="beløp1" value="Beløp" className="text-white"/>
-                        <TextInput id="beløp1" type="number" placeholder="100" required className="w-full md:w-72"/> 
+                        <TextInput onChange={handleSelectBelop}id="beløp1" type="number" placeholder="100" required className="w-full md:w-72"/> 
                     </div>
                 </div>
                 <div className="flex flex-col md:flex-row items-center justify-center mt-4">
                     <div className="flex flex-col md:mr-8">
                         <Label htmlFor="anledning1" value="Anledning" className="text-white"/>
-                        <TextInput id="anledning1" type="text" placeholder="Arbeidskveld" required className="w-full md:w-72"/> 
+                        <TextInput value={anledning} onChange={handleSelectAnledning} id="anledning1" type="text" placeholder="Arbeidskveld" required className="w-full md:w-72"/> 
                     </div>
                     <div className="flex flex-col">
                         <Label htmlFor="ansvarlig1" value="Ansvarlig" className="text-white"/>
-                        <select id="ansvarlig1" value={komite} onChange={handleSelectChange} className="w-full md:w-72 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="ansvarlig1" value={komite} onChange={handleSelectKomite} className="w-full md:w-72 bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value ="Appkom">Appkom</option>
                             <option value ="Velkom">Velkom</option>
                             <option value = "Backlog">Backlog</option>
@@ -105,8 +150,8 @@ const ReceiptRegular = () => {
                 </div>
                 <div className="w-full md:w-3/5 mt-6">
                     <form>
-                        <label htmlFor="message" className="block mb-2 text-sm font-medium text-white dark:text-white">Your message</label>
-                        <textarea id="message" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
+                        <label htmlFor="message" className="block mb-2 text-sm font-medium text-white dark:text-white">Kommentarer(i)</label>
+                        <textarea value={kommentar} onChange={handleSelectKommentar} id="message" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Leave a comment..."></textarea>
                     </form>
                 </div>
                 <div className="mt-10">
