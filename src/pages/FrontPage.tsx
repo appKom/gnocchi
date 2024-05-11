@@ -1,9 +1,9 @@
 import FrontInfo from "../components/FrontInfo"
 import Topbar from "../components/TopBar"
-
-export default function frontPage() {
-    return (<body>
+import Bottombar from "../components/BottomBar"
+export default function frontPage(){
+    return (<body className="flex">
     <Topbar/>
-    <FrontInfo/>
+    <Bottombar/>
     </body>)
 }
