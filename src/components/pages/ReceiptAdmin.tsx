@@ -1,125 +1,39 @@
-import { Button, Checkbox, Label, TextInput, Textarea } from "flowbite-react";
+import { Button, Checkbox, Label, TextInput, Textarea, Dropdown } from "flowbite-react";
 
-const ReceiptRegular = () => {
-  const username: String = "Ola Nordmann";
-
-  return (
-    <div className="flex flex-col items-center justify-center h-full m-4 md:m-12">
-      <div
-        id="Header"
-        className="flex flex-col md:flex-row w-full items-center justify-center text-center md:text-left"
-      >
-        <h1 className="text-3xl md:text-7xl mr-0 md:mr-40 mb-4 md:mb-0">
-          Kvitteringskjema
-        </h1>
-        <img
-          src="/resources/reciept_page/Mann.png"
-          alt="Mann"
-          className="w-24 md:w-32"
-        />
-      </div>
-
-      <div
-        id="UnderHeader"
-        className="flex flex-col md:flex-row items-center justify-center mt-6 md:mt-10 text-center md:text-left"
-      >
-        <div className="mb-4 md:mb-0 md:mr-10">
-          <h2 className="text-xl md:text-4xl font-thin">
-            Har du en onlinebruker?
-          </h2>
-          <h3 className="text-sm md:text-lg font-extralight text-center">
-            La oss hente kontaktinfoen din for deg!
-          </h3>
-        </div>
-        <Button className="bg-white text-black">
-          <img
-            src="resources/logo/online-logo-blue.png"
-            className="h-5 mr-2"
-            alt="Logo"
-          ></img>
-          Hent kontaktinformasjon
-        </Button>
-      </div>
-
-      <div
-        id="Content"
-        className="flex flex-col md:flex-col w-full items-center justify-center mt-6 md:mt-10 text-center md:text-left"
-      >
-        <h2 className="text-lg md:text-2xl mb-3">Kontaktinformasjon</h2>
-        <div className="flex flex-row">
-          <div className="flex flex-col mr-20">
-            <Label htmlFor="name1" value="Navn" className="text-white" />
+const ReceiptAdmin = () => {
+  return (<div className = "flex flex-col items-center justify-center h-full m-4 md:m-12">
+            <div className="flex flex-row gap-96">
+          <div className="flex flex-col mr-20 justify-start">
+            <Label htmlFor="search" value="Search" className="text-white" />
             <TextInput
-              id="name1"
-              type="text"
-              placeholder="Ola Nordmann"
-              required
+              id="search"
+              type="search"
+              placeholder="Søk..."
+              
             />
           </div>
-          <div className="flex flex-col">
-            <Label htmlFor="email1" value="E-post" className="text-white" />
-            <TextInput
-              id="email1"
-              type="email"
-              placeholder="ola@nordmann.no"
-              required
-            />
+
+          <div className="flex flex-col mt-5 ">
+            <Dropdown dismissOnClick={false} label="Filetrer" color="light" >
+              <Dropdown.Item >Appkom</Dropdown.Item>
+              <Dropdown.Item>Arrkom</Dropdown.Item>
+              <Dropdown.Item>Backlog</Dropdown.Item>
+              <Dropdown.Item>Bankkom</Dropdown.Item>
+              <Dropdown.Item>Bedkom</Dropdown.Item>
+              <Dropdown.Item>Debug</Dropdown.Item>
+              <Dropdown.Item>Dotkom</Dropdown.Item>
+              <Dropdown.Item>Fagkom</Dropdown.Item>
+              <Dropdown.Item>FeminIT</Dropdown.Item>
+              <Dropdown.Item>Fondstyret</Dropdown.Item>
+              <Dropdown.Item>HS</Dropdown.Item>
+              <Dropdown.Item>Prokom</Dropdown.Item>
+              <Dropdown.Item>Trikom</Dropdown.Item>
+              <Dropdown.Item>Velkom</Dropdown.Item>
+              <Dropdown.Item>OIL</Dropdown.Item>
+            </Dropdown>
           </div>
         </div>
-        <div className="flex items-center mt-4 mb-4">
-          <input
-            id="default-checkbox"
-            type="checkbox"
-            value=""
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label
-            htmlFor="default-checkbox"
-            className="ms-2 text-sm font-medium text-white dark:text-gray-300"
-          >
-            Jeg samtykker til Online Bankom sine Terms and conditions
-          </label>
-        </div>
-      </div>
-      <h2 className="text-lg md:text-2xl mt-4 mb-3">Beskrivelse</h2>
-        <Label
-          htmlFor="receiptForm1"
-          value="Forklar hvem dere er og hva pengene skal brukes til"
-          className="text-white"
-        />
-        <Textarea
-          id="receiptForm1"
-          placeholder="Ola Nordmann"
-          required
-          rows={4}
-          className="w-2/3 self-center"
-        />
-      <Label
-        htmlFor="receiptForm2"
-        value="hvordan går midlene Onlinere til gode?"
-        className="text-white mt-4"
-      />
-      <Textarea
-        id="ReceiptForm2"
-        placeholder="Ola Nordmann"
-        required
-        rows={4}
-        className="w-2/3"
-      />
-      <Label
-        htmlFor="receiptForm3"
-        value="Aktivitetsplan"
-        className="text-white mt-4"
-      />
-      <Textarea
-        id="ReceiptForm3"
-        placeholder="Ola Nordmann"
-        required
-        rows={4}
-        className="w-2/3"
-      />
-    </div>
-  );
-};
+  </div> );
+}
 
-export default ReceiptRegular;
+export default ReceiptAdmin;
