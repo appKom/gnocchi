@@ -27,7 +27,7 @@ const Authcallback = () => {
     }, [isAuthenticated, user]);
 
     return <div>
-        <Navbar authenticated={false} />
+        <Navbar />
         Vennligst vent...
     </div>;
 }

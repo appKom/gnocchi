@@ -11,9 +11,7 @@ import {
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
-type NavbarProps = {
-  authenticated: boolean;
-}
+
 
 type User = {
   name?: string;
@@ -66,7 +64,7 @@ const NavDropdown = (props: NavdropdownProps) => {
   );
 }
 
-const Navbar = (props: NavbarProps) => {
+const Navbar = () => {
 
 
   const [showNavDropdown, setShowNavDropdown] = useState<Boolean>(false);

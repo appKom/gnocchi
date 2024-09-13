@@ -20,7 +20,7 @@ function App() {
       { isAuthenticated ? 
     
       <Route path="/" element={<Home />}  /> : 
-      <Route path="/" element={<Navbar authenticated={false} />} />
+      <Route path="/" element={<Navbar />} />
       }
       <Route path="/authentication/callback" element={<Authcallback />} />
       </Routes>
