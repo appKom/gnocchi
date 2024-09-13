@@ -13,8 +13,6 @@ const Button = (props: Props) => {
   let colorClasses = "";
   let sizeClasses = "";
 
-  
-
   if (props.size === "small") {
     sizeClasses = "px-5 py-2.5 text-sm";
   } else {
