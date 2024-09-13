@@ -23,8 +23,6 @@ const Authcallback = () => {
     }
 
     useEffect(() => {
-     
-        
         storeUser();
     }, [isAuthenticated, user]);
 
