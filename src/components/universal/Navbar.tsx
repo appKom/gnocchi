@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { useAuth0 } from "@auth0/auth0-react";
 
-const Navbar = () => {
+type NavbarProps = {
+  authenticated: boolean;
+}
 
-  const username: String = "Ola Nordmann";
+const Navbar = (props: NavbarProps) => {
+
+
   const [showDropdownLogout, setShowDropdownLogout] = useState<Boolean>(false);
   const [showNavDropdown, setShowNavDropdown] = useState<Boolean>(false);
+
+  const username = sessionStorage.getItem("onlineauth0user") !== null ? JSON.parse(sessionStorage.getItem("onlineauth0user") as string).name : null;
 
   const toggleLogoutDropdown = () => {
     setShowDropdownLogout(!showDropdownLogout);
@@ -17,13 +24,18 @@ const Navbar = () => {
     setShowNavDropdown(!showNavDropdown);
   }
 
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+
 
   return (
     <div className="bg-[#2e6e53] flex">
       <div className="flex items-center w-full justify-self-start">
         <img src="resources/logo/online-logo-white.png" className="h-12 m-3 w-auto cursor-pointer hidden dark:block"></img>
         <p className="text-[25px] font-semibold text-white">Autobank</p>
+        { props.authenticated ? 
         <div className="flex justify-self-end absolute right-[20px] gap-10 items-center">
+         
           <div className='flex justify-self-end md:static right-[20px] gap-10 items-center'>
             {/*
                 Dropdown needs to look better
@@ -39,7 +51,7 @@ const Navbar = () => {
           <div>
             <button onClick={() => { if (username !== null) { toggleLogoutDropdown() } }} className="flex rounded-[15px] items-center justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20">
               <img src="resources/logo/online-logo-blue.png" className="h-5 mr-2"></img>
-              {username === null ? <a href="/login">Logg inn</a> : <p>{username}</p>}
+                 <p>{username}</p>
 
             </button>
             {/* ? ????? 
@@ -49,7 +61,17 @@ const Navbar = () => {
               }
               */}
           </div>
-        </div>
+   
+        </div>  
+         : 
+         <div className="flex justify-self-end absolute right-[20px] gap-10 items-center">
+          <button onClick={() =>loginWithRedirect()} className="flex rounded-[15px] items-center justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20">
+              <img src="resources/logo/online-logo-blue.png" className="h-5 mr-2"></img>
+                  <a>Logg inn</a>
+
+            </button>
+          </div>
+         }
       </div>
     </div>
   );
