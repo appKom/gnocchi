@@ -27,7 +27,6 @@ type NavdropdownProps = {
   logout: () => void;
   login: () => void;
   isAuthenticated: boolean;
-
 }
 
 const NavDropdown = (props: NavdropdownProps) => {
