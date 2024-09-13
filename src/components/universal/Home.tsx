@@ -6,8 +6,7 @@ const Home = () => {
 
     return (
         <div>
-            <Navbar authenticated={true} />
-            erg
+            <Navbar authenticated />
         </div>
     );
 }
