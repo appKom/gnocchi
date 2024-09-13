@@ -12,8 +12,8 @@ const Authcallback = () => {
         try {
             if (isAuthenticated && user) {
                 const token = await getAccessTokenSilently();
-                sessionStorage.setItem("onlineauth0token", token);
-                sessionStorage.setItem("onlineauth0user", JSON.stringify(user));
+                localStorage.setItem("onlineauth0token", token);
+                localStorage.setItem("onlineauth0user", JSON.stringify(user));
                 window.location.href = "/";
             }
         }
