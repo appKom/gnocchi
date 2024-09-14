@@ -2,7 +2,14 @@ import { useEffect } from "react";
 import Navbar from "../universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 
+interface checkUserResponse {
+    success: boolean;
+    isadmin: boolean;
+}
+
 const Authcallback = () => {
+
+    const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
 
     const auth = useAuth0();
     const { isAuthenticated, user, getAccessTokenSilently } = auth;
@@ -11,10 +18,28 @@ const Authcallback = () => {
 
         try {
             if (isAuthenticated && user) {
-                const token = await getAccessTokenSilently();
-                localStorage.setItem("onlineauth0token", token);
+                const res: Response = await fetch(`${BACKEND_URI}/api/auth/check`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${await getAccessTokenSilently()}`
+                    }
+                });
+
+                /* Temporary solution */
+                if (!res.ok) {
+                    throw new Error("Failed to fetch user");
+                } 
+                const data: checkUserResponse = await res.json();
+                if (!data.success) {
+                    throw new Error("Failed to fetch user");
+                }
+                /* ----- */
+
+                localStorage.setItem("onlineauth0login", JSON.stringify(data));
                 localStorage.setItem("onlineauth0user", JSON.stringify(user));
                 window.location.href = "/";
+
             }
         }
         catch (e) {
