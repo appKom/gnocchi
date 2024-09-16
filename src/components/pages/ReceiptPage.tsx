@@ -4,16 +4,34 @@ import { useState } from "react";
 
 import { fetchCommittees } from "../../api/baseAPI";
 import { useAuth0 } from "@auth0/auth0-react";
-import FileUpload from "../FileUpload";
+import FileUpload from "../form/FileUpload";
+import { fileToBase64 } from "../../utils/fileutils";
+
+import { submitReceipt } from "../../api/formsAPI";
 
 interface Committee {
     id: number;
     name: string;
 }
 
+interface Receipt {
+    amount: number;
+    committee_id: number;
+    name: string;
+    description: string;
+    id: 0;
+}
+
+interface ReceiptRequestBody {
+    receipt: Receipt;
+    attachments: string[];
+}
+
+
 const ReceiptPage = () => {
 
     const [usedOnlineCard, setUsedOnlineCard] = useState(false);
+    const [disableSubmit, setDisableSubmit] = useState(false);
 
     const auth = useAuth0();
     const { getAccessTokenSilently } = auth;
@@ -23,6 +41,44 @@ const ReceiptPage = () => {
         queryFn: () => fetchCommittees(getAccessTokenSilently),
     });
 
+    const onFileChange = async (files: File[]) => {
+        attachments = [...files];
+        console.log(attachments)
+    }
+
+    const [formdata, setFormdata]: [Receipt, any] = useState({ 
+        amount: 0,
+        committee_id: 0,
+        name: "",
+        description: "",
+        id: 0
+    });
+
+    const submitform = async () => {
+        console.log(attachments)
+        setDisableSubmit(true);
+        const body: ReceiptRequestBody = {
+            receipt: formdata,
+            attachments: await Promise.all([...attachments].map(async (file) => await fileToBase64(file)))
+        }
+        const res: Response = await submitReceipt(getAccessTokenSilently, body);
+        
+        if (res.ok) {
+            alert("Kvittering sendt inn!");
+            // TODO: Fix with popup success message in home something
+            window.location.href = "/?receiptsubmitted=true";
+
+
+        } else {
+            // TODO: Popup error message
+            alert("Noe gikk galt, prøv igjen senere");
+        }
+
+        
+        setDisableSubmit(false);
+    }
+    
+    let attachments: File[] = [];
 
     return (
         <div className="min-h-screen pb-[200px]">
@@ -67,17 +123,29 @@ const ReceiptPage = () => {
                         </div>
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Beløp</p>
-                            <input placeholder={"530"} className="text-black p-3 rounded w-full"></input>
+                            <input placeholder={"530"} className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, amount: parseInt(e.target.value) });        
+                                }
+                            }></input>
                         </div>
                     </div>
                     <div className="flex justify-center gap-10 mt-[10px]">
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Anledning</p>
-                            <input placeholder={"Arbeidskveld"} className="text-black p-3 rounded w-full"></input>
+                            <input placeholder={"Arbeidskveld"} className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, name: e.target.value });
+                                }
+                            }></input>
                         </div>
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Ansvarlig enhet</p>
-                            <select className="text-black p-3 rounded w-full" >
+                            <select className="text-black p-3 rounded w-full"  onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, committee_id: parseInt(e.target.value) });
+                                }
+                            } >
                                 {
                                     data && data.length ? data.map((committee: any) => {
                                         return <option key={committee.id} value={committee.id}>{committee.name}</option>
@@ -126,14 +194,18 @@ const ReceiptPage = () => {
                 </div>
                 <div className="flex-col ">
                     <p className="text-white w-full text-left text-l mb-[5px]" >Vedlegg</p>
-                    <FileUpload />
+                    <FileUpload onFileChange={onFileChange} />
                 </div>
                 <div className="flex-col mt-[20px]">
                     <p className="text-white w-full text-left text-l mb-[5px]" >Kommentarer</p>
-                    <textarea name="" id="" className="w-full border-2 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center h-[120px] bg-white" ></textarea>
+                    <textarea name="" id="" className="w-full border-2 border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center h-[120px] bg-white" onChange={
+                        (e) => {
+                            setFormdata({ ...formdata, description: e.target.value });
+                        }
+                    }></textarea>
                 </div>
                 <div>
-                    <button className="p-3 bg-white rounded mt-[30px] hover:bg-gray-200">Send skjema</button>
+                    <button disabled={disableSubmit} className="p-3 bg-white rounded mt-[30px] hover:bg-gray-200" onClick={submitform}>Send skjema</button>
                 </div>
 
             </div>

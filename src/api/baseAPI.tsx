@@ -1,5 +1,3 @@
-import { QueryFunctionContext } from "@tanstack/react-query";
-
 export const fetchCommittees = async (getAccessTokenSilently: Function) => {
     const accesstoken = await getAccessTokenSilently();
   return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/committee/all',
