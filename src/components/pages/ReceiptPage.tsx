@@ -19,6 +19,8 @@ interface Receipt {
     committee_id: number;
     name: string;
     description: string;
+    account_number?: string;
+    card_details?: string;
     id: 0;
 }
 
@@ -161,21 +163,37 @@ const ReceiptPage = () => {
                     <div className="flex justify-center gap-10">
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Kortinformasjon</p>
-                            <input placeholder={"Kortnummer/Hvilken komite korter tilhører"} className="text-black p-3 rounded w-full"></input>
+                            <input placeholder={"Kortnummer/Hvilken komite korter tilhører"} className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, card_details: e.target.value });
+                                }
+                            }></input>
                         </div>
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Beløp</p>
-                            <input placeholder={"530"} className="text-black p-3 rounded w-full"></input>
+                            <input placeholder={"530"} className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, amount: parseInt(e.target.value) });
+                                }
+                            }></input>
                         </div>
                     </div>
                     <div className="flex justify-center gap-10 mt-[10px]">
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Anledning</p>
-                            <input placeholder={"Arbeidskveld"} className="text-black p-3 rounded w-full"></input>
+                            <input placeholder={"Arbeidskveld"} className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, name: e.target.value });
+                                }
+                            }></input>
                         </div>
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Ansvarlig enhet</p>
-                            <select className="text-black p-3 rounded w-full" >
+                            <select className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, committee_id: parseInt(e.target.value) });
+                                }
+                            } >
                                 {
                                     data && data.length ? data.map((committee: any) => {
                                         return <option key={committee.id} value={committee.id}>{committee.name}</option>
