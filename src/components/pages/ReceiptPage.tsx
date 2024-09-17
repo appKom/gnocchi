@@ -19,14 +19,28 @@ interface Receipt {
     committee_id: number;
     name: string;
     description: string;
-    account_number?: string;
-    card_details?: string;
     id: 0;
 }
 
+interface FormData {
+    amount: number;
+    committee_id: number;
+    name: string;
+    description: string;
+    card_number?: string;
+    account_number?: string;
+    id: 0;
+}
+
+interface PaymentInformation {
+    usedOnlinecard: boolean;
+    accountnumber?: string;
+    carddetails?: string;
+}
 interface ReceiptRequestBody {
     receipt: Receipt;
     attachments: string[];
+    receiptPaymentInformation?: PaymentInformation;
 }
 
 
@@ -48,20 +62,35 @@ const ReceiptPage = () => {
         console.log(attachments)
     }
 
-    const [formdata, setFormdata]: [Receipt, any] = useState({ 
+    const [formdata, setFormdata]: [FormData, any] = useState({ 
         amount: 0,
         committee_id: 0,
         name: "",
         description: "",
-        id: 0
+        id: 0,
+        card_number: "",
+        account_number: ""
     });
 
     const submitform = async () => {
         console.log(attachments)
         setDisableSubmit(true);
+        const paymentInfo: PaymentInformation = {
+            usedOnlinecard: usedOnlineCard,
+            accountnumber: (usedOnlineCard) ? "" : formdata.account_number,
+            carddetails: (usedOnlineCard) ? formdata.card_number : ""
+        }
+        const receipt: Receipt = {
+            amount: formdata.amount,
+            committee_id: formdata.committee_id,
+            name: formdata.name,
+            description: formdata.description,
+            id: 0
+        }
         const body: ReceiptRequestBody = {
             receipt: formdata,
-            attachments: await Promise.all([...attachments].map(async (file) => await fileToBase64(file)))
+            attachments: await Promise.all([...attachments].map(async (file) => await fileToBase64(file))),
+            receiptPaymentInformation: paymentInfo
         }
         const res: Response = await submitReceipt(getAccessTokenSilently, body);
         
@@ -121,7 +150,11 @@ const ReceiptPage = () => {
                     <div className="flex justify-center gap-10">
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Kontonummer</p>
-                            <input placeholder={"2345 XX XXXX"} className="text-black p-3 rounded w-full"></input>
+                            <input placeholder={"2345 XX XXXX"} className="text-black p-3 rounded w-full" onChange={
+                                (e) => {
+                                    setFormdata({ ...formdata, account_number: e.target.value });
+                                }
+                            }></input>
                         </div>
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Beløp</p>
@@ -165,7 +198,7 @@ const ReceiptPage = () => {
                             <p className="text-left tracking-wide">Kortinformasjon</p>
                             <input placeholder={"Kortnummer/Hvilken komite korter tilhører"} className="text-black p-3 rounded w-full" onChange={
                                 (e) => {
-                                    setFormdata({ ...formdata, card_details: e.target.value });
+                                    setFormdata({ ...formdata, card_number: e.target.value });
                                 }
                             }></input>
                         </div>
