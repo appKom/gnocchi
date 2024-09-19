@@ -5,9 +5,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/universal/Home";
 import Authcallback from "./components/authentication/Authcallback";
-import LoginPage from "./components/pages/LoginPage";
+import LoginPage from "./pages/LoginPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import ReceiptPage from "./components/pages/ReceiptPage";
+import ReceiptPage from "./pages/ReceiptPage";
 
 
 

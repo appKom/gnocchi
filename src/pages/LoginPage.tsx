@@ -1,4 +1,4 @@
-import Navbar from "../universal/Navbar";
+import Navbar from "../components/universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginPage = () => {

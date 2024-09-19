@@ -1,13 +1,13 @@
-import Navbar from "../universal/Navbar";
+import Navbar from "../components/universal/Navbar";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { fetchCommittees } from "../../api/baseAPI";
+import { fetchCommittees } from "../api/baseAPI";
 import { useAuth0 } from "@auth0/auth0-react";
-import FileUpload from "../form/FileUpload";
-import { fileToBase64 } from "../../utils/fileutils";
+import FileUpload from "../components/form/FileUpload";
+import { fileToBase64 } from "../utils/fileutils";
 
-import { submitReceipt } from "../../api/formsAPI";
+import { submitReceipt } from "../api/formsAPI";
 
 interface Committee {
     id: number;
@@ -49,6 +49,8 @@ const ReceiptPage = () => {
     const [usedOnlineCard, setUsedOnlineCard] = useState(false);
     const [disableSubmit, setDisableSubmit] = useState(false);
 
+    const [attachments, setAttachments] = useState<File[]>([]);
+
     const auth = useAuth0();
     const { getAccessTokenSilently } = auth;
 
@@ -58,7 +60,7 @@ const ReceiptPage = () => {
     });
 
     const onFileChange = async (files: File[]) => {
-        attachments = [...files];
+        setAttachments([...files]);
         console.log(attachments)
     }
 
@@ -109,7 +111,7 @@ const ReceiptPage = () => {
         setDisableSubmit(false);
     }
     
-    let attachments: File[] = [];
+ 
 
     return (
         <div className="min-h-screen pb-[200px]">
