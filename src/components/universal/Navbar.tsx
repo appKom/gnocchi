@@ -34,7 +34,7 @@ const NavDropdown = (props: NavdropdownProps) => {
         <div>
           <div className=''>
             <button className="hover:bg-gray-200 flex items-center w-full justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20">
-              <img src="resources/logo/online-logo-blue.png" className="h-5 mr-2"></img>
+              <img src={`${import.meta.env.BASE_URL}/resources/logo/online-logo-blue.png`} className="h-5 mr-2"></img>
               <p>{props.user?.given_name}</p>
             </button>
           </div>
@@ -82,7 +82,7 @@ const Navbar = () => {
     <div className="bg-[#2e6e53] flex">
       <div className="flex items-center justify-between p-3 w-full">
         <div className='flex items-center'>
-          <img src="resources/logo/online-logo-white.png" className="h-12 w-auto cursor-pointer hidden dark:block"></img>
+          <img src={`${import.meta.env.BASE_URL}resources/logo/online-logo-white.png`} className="h-12 w-auto cursor-pointer hidden dark:block"></img>
           <p className="text-[25px] ml-3 font-semibold text-white">Autobank</p>
         </div>
 
@@ -126,7 +126,7 @@ const Navbar = () => {
             </div>
             <div>
               <button className="flex rounded-[15px] items-center justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20">
-                <img src="resources/logo/online-logo-blue.png" className="h-5 mr-2"></img>
+                <img src={`${import.meta.env.BASE_URL}resources/logo/online-logo-blue.png`} className="h-5 mr-2"></img>
                 <p>{user?.name}</p>
               </button>
             </div>

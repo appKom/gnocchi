@@ -19,7 +19,9 @@ function App() {
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
+      
       <div className="App bg-[#2e6e53]">
+      <Navbar />
         {isAuthenticated ?
           <Routes>
             <Route path="/" element={<Home />} /> :

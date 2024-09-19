@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Navbar from "../universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
+import Spinner from "../universal/Spinner";
 
 interface checkUserResponse {
     success: boolean;
@@ -52,8 +53,10 @@ const Authcallback = () => {
     }, [isAuthenticated, user]);
 
     return <div>
-        <Navbar />
-        Vennligst vent...
+        <div className="mt-[100px] font-bold text-xl text-white">
+            <Spinner size={4} color="green" />
+            <p className="mt-[20px] text-green">Vennligst vent</p>
+        </div>
     </div>;
 }
 

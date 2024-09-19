@@ -115,7 +115,7 @@ const ReceiptPage = () => {
 
     return (
         <div className="min-h-screen pb-[200px]">
-            <Navbar />
+         
             <div className="max-w-2xl ml-auto mr-auto">
                 <div className="flex justify-center gap-[50px] mt-[60px]">
                     <h1 className="text-5xl text-white text-center self-center mb-auto mt-auto font-thin">Kvitteringsskjema</h1>

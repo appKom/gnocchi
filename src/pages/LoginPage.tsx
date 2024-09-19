@@ -8,8 +8,9 @@ const LoginPage = () => {
 
     return (
         <div>
-            <Navbar />
-            Vennligst <span className="cursor-pointer text-blue-600" onClick={() => loginWithRedirect()}>logg inn</span>
+            <h2 className="mt-[100px] font-bold text-xl text-white">
+            Vennligst <span className="cursor-pointer text-blue-200 underline" onClick={() => loginWithRedirect()}>logg inn</span>
+            </h2>
         </div>
     );
 };
