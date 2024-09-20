@@ -1,7 +1,7 @@
 import topwave from "./topwave.svg"
 import Navbar from "./universal/Navbar"
 export default function Topbar() {
-    return (<div className="bg-[#282c34] w-screen fixed">
+    return (<div className="bg-transparent w-screen fixed z-10">
         <Navbar/>
     <img src={topwave} alt=""/>
     </div>)
