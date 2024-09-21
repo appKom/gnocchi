@@ -8,6 +8,9 @@ import Authcallback from "./components/authentication/Authcallback";
 import LoginPage from "./pages/LoginPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import ReceiptPage from "./pages/ReceiptPage";
+import AdminMainPage from "./pages/admin/AdminMainPage";
+import AdminReceiptPage from "./pages/admin/AdminReceiptPage";
+import AdminEconomicRequestPage from "./pages/admin/AdminEconomicRequestPage";
 
 
 
@@ -15,6 +18,10 @@ function App() {
 
   const { isAuthenticated } = useAuth0();
   const queryClient = new QueryClient()
+
+  const isAdmin = (): Boolean => {
+    return localStorage.getItem('onlineauth0login') != null ? JSON.parse(localStorage.getItem('onlineauth0login')!).isadmin : false;
+  }
 
   return (
     <Router>
@@ -33,6 +40,13 @@ function App() {
             <Route path="/*" element={<LoginPage />} />
             <Route path="/authentication/callback" element={<Authcallback />} />
           </Routes>
+        }
+        {isAuthenticated && isAdmin() &&
+        <Routes>
+          <Route path="/admin/" element={<AdminMainPage />} />
+          <Route path="/admin/kvittering" element={<AdminReceiptPage />} />
+          <Route path="/admin/soknad" element={<AdminEconomicRequestPage />} />
+        </Routes>
         }
       </div>
       </QueryClientProvider>
