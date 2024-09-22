@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #282c34;
 }
 
 .App-logo {
@@ -54,7 +55,6 @@
 .money-money {
   animation: money-shake 5s linear infinite;
   transform-origin: bottom right;
-  width: 50%;
 }
 
 .flipped {
