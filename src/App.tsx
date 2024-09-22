@@ -32,13 +32,13 @@ function App() {
       <Navbar />
         {isAuthenticated ?
           <Routes>
-            <Route path="/" element={<Home />} /> :
+            <Route path="/" element={<FrontPage />} /> :
             <Route path="/authentication/callback" element={<Authcallback />} />
             <Route path="/kvittering" element={<ReceiptPage />} />
           </Routes>
           :
           <Routes>
-            <Route path="/*" element={<LoginPage />} />
+            <Route path="/*" element={<FrontPage />} />
             <Route path="/authentication/callback" element={<Authcallback />} />
           </Routes>
         }
