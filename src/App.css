@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #282c34;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -60,4 +60,8 @@
 .flipped {
   animation-delay: 2.5s;
   transform: scaleX(-1);
+}
+
+.body {
+  background-color: #2e6e53;
 }
