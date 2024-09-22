@@ -33,9 +33,9 @@ interface FormData {
 }
 
 interface PaymentInformation {
-    usedOnlinecard: boolean;
+    usedOnlineCard: boolean;
     accountnumber?: string;
-    carddetails?: string;
+    cardnumber?: string;
 }
 interface ReceiptRequestBody {
     receipt: Receipt;
@@ -78,9 +78,9 @@ const ReceiptPage = () => {
         console.log(attachments)
         setDisableSubmit(true);
         const paymentInfo: PaymentInformation = {
-            usedOnlinecard: usedOnlineCard,
+            usedOnlineCard: usedOnlineCard,
             accountnumber: (usedOnlineCard) ? "" : formdata.account_number,
-            carddetails: (usedOnlineCard) ? formdata.card_number : ""
+            cardnumber: (usedOnlineCard) ? formdata.card_number : ""
         }
         const receipt: Receipt = {
             amount: formdata.amount,

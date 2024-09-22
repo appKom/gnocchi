@@ -11,6 +11,7 @@ import ReceiptPage from "./pages/ReceiptPage";
 import AdminMainPage from "./pages/admin/AdminMainPage";
 import AdminReceiptPage from "./pages/admin/AdminReceiptPage";
 import AdminEconomicRequestPage from "./pages/admin/AdminEconomicRequestPage";
+import { Fragment } from "react";
 
 
 
@@ -20,35 +21,35 @@ function App() {
   const queryClient = new QueryClient()
 
   const isAdmin = (): Boolean => {
-    return localStorage.getItem('onlineauth0login') != null ? JSON.parse(localStorage.getItem('onlineauth0login')!).isadmin : false;
+    return localStorage.getItem('autobankauth0login') != null ? JSON.parse(localStorage.getItem('autobankauth0login')!).isadmin : false;
   }
 
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
-      
-      <div className="App bg-[#2e6e53]">
-      <Navbar />
-        {isAuthenticated ?
-          <Routes>
-            <Route path="/" element={<Home />} /> :
-            <Route path="/authentication/callback" element={<Authcallback />} />
-            <Route path="/kvittering" element={<ReceiptPage />} />
-          </Routes>
-          :
-          <Routes>
-            <Route path="/*" element={<LoginPage />} />
-            <Route path="/authentication/callback" element={<Authcallback />} />
-          </Routes>
-        }
-        {isAuthenticated && isAdmin() &&
-        <Routes>
-          <Route path="/admin/" element={<AdminMainPage />} />
-          <Route path="/admin/kvittering" element={<AdminReceiptPage />} />
-          <Route path="/admin/soknad" element={<AdminEconomicRequestPage />} />
-        </Routes>
-        }
-      </div>
+
+        <div className="App bg-[#2e6e53]">
+          <Navbar />
+          {isAuthenticated ?
+            <Routes>
+              <Route path="/" element={<Home />} /> :
+              <Route path="/authentication/callback" element={<Authcallback />} />
+              <Route path="/kvittering" element={<ReceiptPage />} />
+              {isAuthenticated && isAdmin() &&
+                <Fragment>
+                  <Route path="/admin/" element={<AdminMainPage />} />
+                  <Route path="/admin/kvittering" element={<AdminReceiptPage />} />
+                  <Route path="/admin/soknad" element={<AdminEconomicRequestPage />} />
+                </Fragment>
+              }
+            </Routes>
+            :
+            <Routes>
+              <Route path="/*" element={<LoginPage />} />
+              <Route path="/authentication/callback" element={<Authcallback />} />
+            </Routes>
+          }
+        </div>
       </QueryClientProvider>
     </Router>
   );
