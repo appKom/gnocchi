@@ -41,7 +41,7 @@ const Footer = () => {
 
             <hr className="mx-auto w-11/12"/>
             <div className="flex justify-center">
-                <a href="#" className="inline-block pt-10 text-l hover:text-[#282c34] w-auto">FAQ</a>
+                <a href="/faq" className="inline-block pt-10 text-l hover:text-[#282c34] w-auto">FAQ</a>
             </div>
             <div className="flex justify-center gap-8 pt-10 mb-10">
                 {
