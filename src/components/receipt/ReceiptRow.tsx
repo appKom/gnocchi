@@ -13,7 +13,7 @@ import { IoIosMail, IoIosCloseCircle, IoMdCheckmark } from "react-icons/io";
 
 const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
     return (
-        <tr className="h-[100px] shadow-black border-violet-500 mb-5 ml-0">
+        <tr onClick={() => window.location.href=`/admin/kvittering/${receipt.receiptId}`} className="h-[100px] shadow-black border-violet-500 mb-5 ml-0">
             <td className="bg-green-200 flex items-center justify-center h-[100px] rounded-tl rounded-bl ">
               
                 <div className="relative group">

@@ -12,6 +12,7 @@ import AdminMainPage from "./pages/admin/AdminMainPage";
 import AdminReceiptPage from "./pages/admin/AdminReceiptPage";
 import AdminEconomicRequestPage from "./pages/admin/AdminEconomicRequestPage";
 import { Fragment } from "react";
+import AdminReviewReceiptPage from "./pages/admin/AdminReviewReceiptPage";
 
 
 
@@ -40,6 +41,7 @@ function App() {
                   <Route path="/admin/" element={<AdminMainPage />} />
                   <Route path="/admin/kvittering" element={<AdminReceiptPage />} />
                   <Route path="/admin/soknad" element={<AdminEconomicRequestPage />} />
+                  <Route path="/admin/kvittering/:receiptid" element={<AdminReviewReceiptPage />} />
                 </Fragment>
               }
             </Routes>

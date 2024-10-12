@@ -76,6 +76,10 @@ const Navbar = () => {
 
   const { isAuthenticated, loginWithRedirect, user, logout } = useAuth0();
 
+  const isAdmin = (): Boolean => {
+    return localStorage.getItem('onlineauth0login') != null ? JSON.parse(localStorage.getItem('onlineauth0login')!).isadmin : false;
+  }
+
 
 
   return (
@@ -106,8 +110,15 @@ const Navbar = () => {
         {isAuthenticated ?
           <div className="hidden lg:flex flex justify-self-end absolute right-[20px] gap-10 items-center">
             <div className='flex justify-self-end md:static right-[20px] gap-10 items-center'>
-
-
+          {isAdmin() &&
+            <Button
+                title="Admin"
+                color="white"
+                size="small"
+               
+                href='/admin'
+              />
+          }
               <div className={(showNavDropdown ? "" : "hidden") + " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"}>
 
                 <a className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer" href="/kvittering">Kvittering</a>
