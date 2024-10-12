@@ -24,9 +24,16 @@ export interface CompleteReceipt {
   attachmentCount: number;
   latestReviewStatus: string;
   latestReviewCreatedAt: string;
+  latestReviewComment: string;
   paymentAccountNumber: string;
   cardCardNumber: string;
   attachments: string[];
+}
+
+export interface ReceiptReview {
+  receiptId: number;
+  status: string;
+  comment: string;
 }
 
 
@@ -62,5 +69,27 @@ export const fetchCompleteReceipt = async (getAccessTokenSilently: Function, rec
   } else {
     console.log("fff")
     throw new Error('Failed to fetch receipt');
+  }
+}
+
+export const postReceiptReview = async (getAccessTokenSilently: Function, receiptreview: ReceiptReview): Promise<void> => {
+  const accesstoken = await getAccessTokenSilently();
+  const res = await fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/review',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ` + accesstoken,
+      },
+      body: JSON.stringify(receiptreview)
+    }
+  )
+
+  if (res.status == 200) {
+    console.log("AAA")
+    return;
+  } else {
+    console.log("BBB")
+    throw new Error('Failed to post receipt review');
   }
 }
