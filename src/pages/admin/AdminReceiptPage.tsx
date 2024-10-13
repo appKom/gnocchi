@@ -66,7 +66,7 @@ const AdminReceiptPage = () => {
         <input
           name="search"
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search..."
+          placeholder="Søk på anledning..."
         ></input>
         <Dropdown label={selectedCommittee ? selectedCommittee : "Velg Komité"}>
           {committeeData &&
