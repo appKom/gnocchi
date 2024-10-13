@@ -183,6 +183,7 @@ const ReceiptPage = () => {
                                     setFormdata({ ...formdata, committee_id: parseInt(e.target.value) });
                                 }
                             } >
+                                <option value="None">Ingen</option>
                                 {
                                     data && data.length ? data.map((committee: any) => {
                                         return <option key={committee.id} value={committee.id}>{committee.name}</option>
@@ -224,11 +225,13 @@ const ReceiptPage = () => {
                         </div>
                         <div className="flex-col w-[20rem]">
                             <p className="text-left tracking-wide">Ansvarlig enhet</p>
+                       
                             <select className="text-black p-3 rounded w-full" onChange={
                                 (e) => {
                                     setFormdata({ ...formdata, committee_id: parseInt(e.target.value) });
                                 }
                             } >
+                                     <option value="None">Ingen</option>
                                 {
                                     data && data.length ? data.map((committee: any) => {
                                         return <option key={committee.id} value={committee.id}>{committee.name}</option>

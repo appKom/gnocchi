@@ -67,160 +67,137 @@ const AdminReviewReceiptPage = () => {
           <Spinner size={4} color="green" />
           <p className="mt-[20px] text-green">Vennligst vent</p>
         </div>}
-        <div className="grid gap-6 md:grid-cols-2">
-          {data && (
-            <>
-
-              <div className="bg-white bg-opacity-10 rounded-lg shadow-lg p-6 backdrop-blur-sm">
-                <h2 className="text-xl font-semibold mb-4 text-white">Detaljer</h2>
-                <div className="flex items-center justify-center mb-2">
-                  <p className="mr-2 text-white font-semibold">Kvittering-ID:</p>
-                  <p>{data.receiptId}</p>
-                </div>
-                <div className="flex items-center justify-center mb-2">
-                  <p className="mr-2 text-white font-semibold">Beløp:</p>
-                  <p className="flex items-center">
-                    <CurrencyEuroIcon className="h-4 w-4 mr-1 text-white" />
-                    {data.amount.toFixed(2)}
-                  </p>
-                </div>
-                <div className='mb-2'>
-                  <p className="text-white font-semibold">Anledning:</p>
-                  <p>{data.receiptName}</p>
-                </div>
-                <div className='mb-2'>
-                  <p className="text-white font-semibold">Beskrivelse:</p>
-                  <p>{data.receiptDescription}</p>
-                </div>
-                <div className="flex items-center justify-center">
-                  <p className="mr-2 text-white font-semibold">Sendt inn:</p>
-                  <p className="flex items-center">
-                    <CalendarIcon className="h-4 w-4 mr-1 text-white" />
-                    {formatDate(data.receiptCreatedAt)}
-                  </p>
-                </div>
-
+        {data && (
+          <div className="mt-[20px] space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Kvittering ID</p>
+                <input value={data.receiptId} readOnly className="bg-white bg-opacity-10 text-white p-3 rounded w-full" />
               </div>
-
-              <div className="bg-white bg-opacity-10 rounded-lg shadow-lg p-6 backdrop-blur-sm flex-col items-center">
-                <h2 className="text-xl font-semibold mb-4 text-white">Bruker og komité</h2>
-                <p className="mr-2 text-white font-semibold">Bruker:</p>
-                <p className="flex items-center justify-center mb-2">
-                  <UserIcon className="h-4 w-4 mr-1 text-white" />
-                  {data.userFullname}
-                </p>
-                <p className="text-white font-semibold">Komité:</p>
-                <p>{data.committeeName}</p>
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Beløp</p>
+                <input value={`kr ${data.amount.toFixed(2)}`} readOnly className="bg-white bg-opacity-10 text-white p-3 rounded w-full" />
               </div>
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Anledning</p>
+                <input value={data.receiptName} readOnly className="bg-white bg-opacity-10 text-white p-3 rounded w-full" />
+              </div>
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Komité</p>
+                <input value={data.committeeName} readOnly className="bg-white bg-opacity-10 text-white p-3 rounded w-full" />
+              </div>
+            </div>
 
-              <div className="bg-white bg-opacity-10 rounded-lg shadow-lg p-6 backdrop-blur-sm">
-                <h2 className="text-xl font-semibold mb-4 text-white">Betaling</h2>
-                <dl className="grid grid-cols-1 gap-3 text-sm">
-                  <div>
-                    <p className="text-white font-semibold">Type:</p>
-                    <p>{data.paymentOrCard == "Payment" ? "Onlinekort" : "Utlegg"}</p>
-                  </div>
-                  {data.paymentOrCard === "Card" ? (
-                    <div className="flex items-center">
-                      <p className=" mr-2 text-white font-semibold">Kortnummer:</p>
-                      <p className="flex items-center">
-                        <CreditCardIcon className="h-4 w-4 mr-1 text-white" />
-                        {data.cardCardNumber}
-                      </p>
+            <div className="flex-col w-full">
+              <p className="text-left tracking-wide">Beskrivelse</p>
+              <textarea value={data.receiptDescription} readOnly className="bg-white bg-opacity-10 text-white p-3 rounded w-full h-[120px]" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Sendt inn</p>
+                <div className="flex items-center bg-white bg-opacity-10 text-white p-3 rounded w-full">
+                  <CalendarIcon className="h-5 w-5 mr-2" />
+                  <span>{formatDate(data.receiptCreatedAt)}</span>
+                </div>
+              </div>
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Bruker</p>
+                <div className="flex items-center bg-white bg-opacity-10 text-white p-3 rounded w-full">
+                  <UserIcon className="h-5 w-5 mr-2" />
+                  <span>{data.userFullname}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Type</p>
+                <div className="flex-col text-left bg-white bg-opacity-10 text-white p-3 rounded w-full">
+                  <p className='font-bold mr-auto'>{data.paymentOrCard == 'Card' ? "Onlinekort" : "Utlegg"}</p>
+                  {data.paymentOrCard === 'Card' ? (
+
+
+                    <p><span className='font-semibold'>Kortnummer:</span> {data.cardCardNumber}</p>
+
+                  ) : (
+
+                    <p><span className='font-semibold'>Kontonummer:</span>  {data.paymentAccountNumber}</p>
+
+                  )}
+                </div>
+              </div>
+              <div className="flex-col w-full">
+                <p className="text-left tracking-wide">Status</p>
+                <div className="flex items-center bg-white bg-opacity-10 text-white p-3 rounded w-full">
+                  {data.latestReviewStatus ? (
+                    <div className='flex-col text-left'>
+                    <span className={`px-2 py-1 rounded-full text-xs mb-2 font-semibold ${data.latestReviewStatus === "APPROVED" ? "bg-green-500 text-green-900" : "bg-red-500 text-red-900"
+                      }`}>
+                      {data.latestReviewStatus == "APPROVED" ? "Godkjent" : "Ikke godkjent"}
+                    </span>
+                    <p className="ml-2 my-2"><span className='font-bold'>Dato: </span>{formatDate(data.latestReviewCreatedAt)}</p>
+                    <p className="ml-2"><span className='font-bold'>Kommentar: </span>{data.latestReviewComment}</p>
                     </div>
                   ) : (
-                    <div>
-                      <p className=" text-white font-semibold">Kontonummer:</p>
-                      <p>{data.paymentAccountNumber}</p>
-                    </div>
+                    <span className="text-gray-500">Ikke reviewed</span>
                   )}
-                </dl>
-              </div>
-
-              <div className="bg-white bg-opacity-10 rounded-lg shadow-lg p-6 backdrop-blur-sm">
-                <h2 className="text-xl font-semibold mb-4 text-white">Status</h2>
-                <div className="flex items-center justify-center mb-2">
-                  <p className=" mr-2 text-white font-semibold">Status:</p>
-                  <p>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${data.latestReviewStatus === "Pending"
-                      ? "bg-yellow-200 text-yellow-800"
-                      : "bg-green-200 text-green-800"
-                      }`}>
-                      {data.latestReviewStatus || "Not Reviewed"}
-                    </span>
-                  </p>
                 </div>
-                {data.latestReviewCreatedAt ?
-                  <>
-                    <div className="flex items-center justify-center">
-                      <p className=" mr-2 text-white font-semibold">Sist oppdatert:</p>
-                      <p className="flex items-center">
-                        <ClockIcon className="h-4 w-4 mr-1 text-white" />
-                        {formatDate(data.latestReviewCreatedAt)}
-                      </p>
-
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <p className="text-white font-semibold mr-2">Kommentar: </p>
-                      <p>{data.latestReviewComment}</p>
-                    </div>
-                  </>
-                  :
-                  <form onSubmit={handleReviewSubmit} className="space-y-4">
-                    <div>
-                      <label htmlFor="status" className="block text-sm font-medium text-green-100">Status</label>
-                      <select
-                        id="status"
-                        value={newReviewStatus}
-                        onChange={(e) => setNewReviewStatus(e.target.value)}
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md bg-white bg-opacity-20 text-white"
-                        required
-                      >
-                        <option value="">Velg status</option>
-                        <option value="APPROVED">Godkjent</option>
-                        <option value="DENIED">Ikke godkjent</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="comment" className="block text-sm font-medium text-green-100">Kommentar</label>
-                      <textarea
-                        id="comment"
-                        value={reviewComment}
-                        onChange={(e) => setReviewComment(e.target.value)}
-                        rows={3}
-                        className="mt-1 block w-full sm:text-sm border-gray-300 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400 p-3"
-                        placeholder="Legg til en kommentar..."
-                        required
-                      ></textarea>
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                      Send
-                    </button>
-                  </form>
-                }
               </div>
+            </div>
 
-
-              <div className="bg-white bg-opacity-10 rounded-lg shadow-lg p-6 backdrop-blur-sm md:col-span-2 items-center">
-                <h2 className="text-xl font-semibold mb-4 text-white">Vedlegg</h2>
-                <div className="flex items-center mb-2 justify-center">
-                  <PaperClipIcon className="h-4 w-4 mr-1 text-white" />
-                  <span className="text-sm font-medium">Antall vedlegg: {data.attachmentCount}</span>
-                </div>
+            <div className="flex-col w-full">
+              <p className="text-left tracking-wide">Vedlegg ({data.attachmentCount})</p>
+              <div className="bg-white bg-opacity-10 text-white p-3 rounded w-full">
                 {data.attachments.map((attachment, index) => (
-                  <img key={index} src={`data:image/png;base64,${attachment}`} alt={`Attachment ${index + 1}`} className="max-w-full h-auto mx-auto" />
+                  <img src={"data:image/png;base64," + attachment} key={index} className="h-fill" />
+               
                 ))}
               </div>
-            </>)}
-        </div>
+            </div>
 
+            <form onSubmit={handleReviewSubmit} className="space-y-4 text-center ">
+              <h2 className="text-2xl">Ny review</h2>
+              <div className=' '>
+                <label htmlFor="status" className="block text-sm font-medium">Ny status</label>
+                <select
+                  id="status"
+                  value={newReviewStatus}
+                  onChange={(e) => setNewReviewStatus(e.target.value)}
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 mx-auto focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md bg-white bg-opacity-20 text-white"
+                  required
+                >
+                  <option value="">Velg status</option>
+                  <option value="APPROVED">Godkjent</option>
+                  <option value="DENIED">Ikke godkjent</option>
+                </select>
+              </div>
+              <div className=''>
+                <label htmlFor="comment" className="block text-sm font-medium">Kommentar</label>
+                <textarea
+                  id="comment"
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
+                  rows={3}
+                  className="mt-1 p-3 block w-full sm:text-sm border-gray-300 rounded-md bg-white bg-opacity-20 text-white placeholder-gray-400"
+                  placeholder="Add a comment..."
+                  required
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                className="w-full  flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Send review
+              </button>
+            </form>
+
+          </div>
+
+        )}
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default AdminReviewReceiptPage
+export default AdminReviewReceiptPage;
