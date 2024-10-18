@@ -62,7 +62,7 @@ const AdminReceiptPage = () => {
 
   return (
     <div className="w-full flex-row p-5">
-      <div className="w-full flex flex-row justify-between items-center">
+      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto">
         <input
           name="search"
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -80,18 +80,21 @@ const AdminReceiptPage = () => {
             ))}
         </Dropdown>
       </div>
-      <div className="w-full">
+      <div className="w-full flex flex-row justify-start items-center max-w-[1100px] ml-auto mr-auto pl-5 pt-5 space-x-4">
         <Button
           title="Aktive"
-          color={"white"}
+          color={"green"}
           onClick={handleSetStatusActive}
+          className="w-[120px] rounded-t-lg rounded-b-none"
         ></Button>
         <Button
           title="Historikk"
-          color={"white"}
+          color={"green"}
           onClick={handleSetStatusHistory}
+          className="w-[120px] rounded-t-lg rounded-b-none"
         ></Button>
       </div>
+      <hr className="max-w-[1100px] ml-auto mr-auto"></hr>
       {filteredReceipts && filteredReceipts.length > 0 ? (
         <table className="w-full border-separate border-spacing-y-3 max-w-[1100px] ml-auto mr-auto">
           <thead>
