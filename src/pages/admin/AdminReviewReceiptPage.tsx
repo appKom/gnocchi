@@ -140,7 +140,7 @@ const AdminReviewReceiptPage = () => {
                     <p className="ml-2"><span className='font-bold'>Kommentar: </span>{data.latestReviewComment}</p>
                     </div>
                   ) : (
-                    <span className="text-gray-500">Ikke reviewed</span>
+                    <span className="text-white">Ikke besvart</span>
                   )}
                 </div>
               </div>
