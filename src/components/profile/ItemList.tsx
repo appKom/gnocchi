@@ -3,7 +3,12 @@ import Item from "./Item";
 
 const itemList = [
   { type: "Fondet", title: "Sofa", status: "✓" },
-  { type: "Fondet", title: "Støtte til årerturen", status: "✕" },
+  {
+    type: "Fondet",
+    title:
+      "Støtte til åreturen dfka sd fla nsdjnf alkjs dfljkaslkdjf lajk sdlj flkajs dlkjf lkjas lkj ",
+    status: "✕",
+  },
   { type: "Onlinepotten", title: "Arbeidskveld", status: "✓" },
   { type: "Kvitteringskjema", title: "Flyreise", status: "✓" },
   { type: "Kvitteringskjema", title: "Arbeidskveld", status: "✕" },
@@ -11,7 +16,7 @@ const itemList = [
 
 const ItemList: React.FC = () => {
   return (
-    <div className="border-t border-gray-300">
+    <div>
       {itemList.map((item, index) => (
         <Item
           key={index}
