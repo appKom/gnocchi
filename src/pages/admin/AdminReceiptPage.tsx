@@ -93,13 +93,14 @@ const AdminReceiptPage = () => {
             displayEmpty
             renderValue={(selected) => {
               if (selected === "") {
-                return <span className="text-gray-500">Velg Komité</span>;
+                return <span className="text-gray-500">Filtrer...</span>;
               }
               return selected;
             }}
             sx={{
               backgroundColor: "white",
               height: "40px",
+              textAlign: "left", // Ensure the content inside is left-aligned
             }}
           >
             {/* Map over committee data */}

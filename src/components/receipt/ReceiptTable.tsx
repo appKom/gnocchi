@@ -14,9 +14,9 @@ const ReceiptTable = ({
   onSetActive,
   onSetHistory,
 }: ReceiptTableProps) => {
-  const [selectedButton, setSelectedButton] = useState<"active" | "history">(
-    "history"
-  );
+  const [selectedButton, setSelectedButton] = useState<
+    "active" | "history" | "none"
+  >("none");
 
   // Handle button click and set active state
   const handleSetActive = () => {
