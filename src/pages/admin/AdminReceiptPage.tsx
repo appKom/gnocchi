@@ -4,9 +4,11 @@ import { fetchAllReceipts, Receipt_Info } from "../../api/adminReceiptAPI";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCommittees, Committee } from "../../api/baseAPI";
 import {
+  Checkbox,
   FormControl,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@mui/material";
@@ -15,7 +17,7 @@ import ReceiptTable from "../../components/receipt/ReceiptTable";
 const AdminReceiptPage = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [receipts, setReceipts] = useState<Receipt_Info[]>([]);
-  const [selectedCommittee, setSelectedCommittee] = useState<String>();
+  const [selectedCommittees, setSelectedCommittees] = useState<String[]>([]);
   const [receiptStatus, setReceiptStatus] = useState<String>();
   const [searchTerm, setSearchTerm] = useState<String>();
 
@@ -32,7 +34,9 @@ const AdminReceiptPage = () => {
   // Filter receipts based on selected committee and receipt status
   const filteredReceipts = receiptData
     ?.filter((receipt) =>
-      selectedCommittee ? receipt.committeeName === selectedCommittee : true
+      selectedCommittees.length > 0
+        ? selectedCommittees.includes(receipt.committeeName)
+        : true
     )
     ?.filter((receipt) => {
       if (receiptStatus === "Active") {
@@ -63,6 +67,11 @@ const AdminReceiptPage = () => {
     setReceiptStatus("Active");
   };
 
+  const handleCommitteeChange = (event: any) => {
+    const value = event.target.value;
+    setSelectedCommittees(typeof value === "string" ? value.split(",") : value);
+  };
+
   return (
     <div className="w-full flex-row p-5">
       <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5">
@@ -87,26 +96,31 @@ const AdminReceiptPage = () => {
         <FormControl sx={{ width: "200px", height: "40px" }}>
           <Select
             id="committeeDropdown"
-            value={selectedCommittee || ""}
-            onChange={(e) => setSelectedCommittee(e.target.value as string)}
+            multiple
+            value={selectedCommittees || ""}
+            onChange={handleCommitteeChange}
             inputProps={{ "aria-label": "Without label" }}
+            input={<OutlinedInput label="Tag" />}
             displayEmpty
             renderValue={(selected) => {
-              if (selected === "") {
+              if (selected.length === 0) {
                 return <span className="text-gray-500">Filtrer...</span>;
               }
-              return selected;
+              return selected.join(", ");
             }}
             sx={{
               backgroundColor: "white",
               height: "40px",
-              textAlign: "left", // Ensure the content inside is left-aligned
+              textAlign: "left",
             }}
           >
             {/* Map over committee data */}
             {committeeData &&
               committeeData?.map((committee: Committee) => (
                 <MenuItem key={committee.id} value={committee.name}>
+                  <Checkbox
+                    checked={selectedCommittees.includes(committee.name)}
+                  />
                   {committee.name}
                 </MenuItem>
               ))}
