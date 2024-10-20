@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import Button from "../../components/universal/Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchAllReceipts, Receipt_Info } from "../../api/adminReceiptAPI";
 import { useQuery } from "@tanstack/react-query";
-import ReceiptRow from "../../components/receipt/ReceiptRow";
 import { fetchCommittees, Committee } from "../../api/baseAPI";
-import { Dropdown } from "flowbite-react";
-import { Receipt } from "@mui/icons-material";
 import {
   FormControl,
   InputLabel,
@@ -34,7 +30,6 @@ const AdminReceiptPage = () => {
   });
 
   // Filter receipts based on selected committee and receipt status
-
   const filteredReceipts = receiptData
     ?.filter((receipt) =>
       selectedCommittee ? receipt.committeeName === selectedCommittee : true
@@ -76,9 +71,22 @@ const AdminReceiptPage = () => {
           label="Søk på anledning..."
           variant="outlined"
           onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{
+            backgroundColor: "white",
+            width: "200px",
+            height: "30px",
+            "& .MuiOutlinedInput-input": {
+              padding: "10px",
+            },
+          }}
         />
         <FormControl>
-          <InputLabel id="committeeLabel">Velg Komité</InputLabel>
+          <InputLabel
+            id="committeeLabel"
+            sx={{ top: "50px", transform: "translateY(-50%)" }}
+          >
+            Velg Komité
+          </InputLabel>
           <Select
             labelId="comitteeLabel"
             id="committeeDropdown"
@@ -88,36 +96,24 @@ const AdminReceiptPage = () => {
             sx={{
               backgroundColor: "white",
               width: "200px",
+              height: "40px",
             }}
           >
             {committeeData &&
               committeeData?.map((committee: Committee) => (
-                <MenuItem
-                  key={committee.id}
-                  value={committee.name} // This value will be passed on change
-                >
+                <MenuItem key={committee.id} value={committee.name}>
                   {committee.name}
                 </MenuItem>
               ))}
           </Select>
         </FormControl>
       </div>
-      <div className="w-full flex flex-row justify-start items-center max-w-[1100px] ml-auto mr-auto pl-5 pt-5 space-x-4">
-        <Button
-          title="Aktive"
-          color={"green"}
-          onClick={handleSetStatusActive}
-          className="w-[120px] rounded-t-lg rounded-b-none"
-        ></Button>
-        <Button
-          title="Historikk"
-          color={"green"}
-          onClick={handleSetStatusHistory}
-          className="w-[120px] rounded-t-lg rounded-b-none"
-        ></Button>
-      </div>
-      <hr className="max-w-[1100px] ml-auto mr-auto"></hr>
-      <ReceiptTable receipts={filteredReceipts} />
+
+      <ReceiptTable
+        receipts={filteredReceipts}
+        onSetActive={handleSetStatusActive}
+        onSetHistory={handleSetStatusHistory}
+      />
     </div>
   );
 };
