@@ -57,6 +57,12 @@
   transform-origin: bottom right;
 }
 
+.money-honey {
+  animation: money-shake 2s linear infinite;
+  transform-origin: bottom;
+  transform: scaleX(-1);
+}
+
 .flipped {
   animation-delay: 2.5s;
   transform: scaleX(-1);
