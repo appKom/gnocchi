@@ -6,7 +6,6 @@ import { fetchCommittees, Committee } from "../../api/baseAPI";
 import {
   Checkbox,
   FormControl,
-  InputLabel,
   MenuItem,
   OutlinedInput,
   Select,
@@ -74,7 +73,7 @@ const AdminReceiptPage = () => {
 
   return (
     <div className="w-full flex-row p-5">
-      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5">
+      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-24">
         <TextField
           id="search"
           label="Søk på anledning..."
@@ -100,7 +99,7 @@ const AdminReceiptPage = () => {
             value={selectedCommittees || ""}
             onChange={handleCommitteeChange}
             inputProps={{ "aria-label": "Without label" }}
-            input={<OutlinedInput label="Tag" />}
+            input={<OutlinedInput notched={false} />}
             displayEmpty
             renderValue={(selected) => {
               if (selected.length === 0) {
