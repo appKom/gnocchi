@@ -16,7 +16,7 @@ export default function frontPage()
         <div className="flex flex-row items-center space-x-4 mx-10">
             <div className="w-1/2">
                 <p className="text-white px-20 text-left text-xl">
-                Trenger du økonomsik støtte til diverse arrangement?
+                Trenger du økonomisk støtte til diverse arrangement?
                 Autobank er et hjelpemiddel for studenter i Online som ønsker å søke om økonomisk støtte eller sende inn kvitteringer for personlige utlegg.
                 Onlines økonomiansvarlige vil behandle dine henvendelser fortløpende. Følg med i din profil for å se statusoppdateringer på dine saker.
                 </p>
