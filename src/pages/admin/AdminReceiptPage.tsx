@@ -75,7 +75,7 @@ const AdminReceiptPage = () => {
             backgroundColor: "white",
             width: "200px",
             height: "40px",
-            borderRadius: "8px",
+            borderRadius: "4px",
             "& .MuiOutlinedInput-root": {
               height: "40px",
             },
