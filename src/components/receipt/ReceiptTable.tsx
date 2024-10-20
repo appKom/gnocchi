@@ -35,13 +35,13 @@ const ReceiptTable = ({
       <div className="w-full flex flex-row justify-start items-center max-w-[1100px] ml-auto mr-auto pl-5 pt-5 space-x-4">
         <Button
           title="Aktive"
-          color={selectedButton === "active" ? "green" : "dark green"}
+          color={selectedButton === "active" ? "green" : "darkGreen"}
           onClick={handleSetActive}
           className="w-[120px] rounded-t-lg rounded-b-none"
         />
         <Button
           title="Historikk"
-          color={selectedButton === "history" ? "green" : "dark green"}
+          color={selectedButton === "history" ? "green" : "darkGreen"}
           onClick={handleSetHistory}
           className="w-[120px] rounded-t-lg rounded-b-none"
         />
