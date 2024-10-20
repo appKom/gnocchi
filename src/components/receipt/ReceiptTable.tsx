@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReceiptRow from "../../components/receipt/ReceiptRow";
 import { Receipt_Info } from "../../api/adminReceiptAPI";
 import Button from "../../components/universal/Button";
@@ -14,20 +14,35 @@ const ReceiptTable = ({
   onSetActive,
   onSetHistory,
 }: ReceiptTableProps) => {
+  const [selectedButton, setSelectedButton] = useState<"active" | "history">(
+    "history"
+  );
+
+  // Handle button click and set active state
+  const handleSetActive = () => {
+    setSelectedButton("active");
+    onSetActive();
+  };
+
+  const handleSetHistory = () => {
+    setSelectedButton("history");
+    onSetHistory();
+  };
+
   return (
     <div>
       {/* Buttons Section */}
       <div className="w-full flex flex-row justify-start items-center max-w-[1100px] ml-auto mr-auto pl-5 pt-5 space-x-4">
         <Button
           title="Aktive"
-          color={"green"}
-          onClick={onSetActive}
+          color={selectedButton === "active" ? "green" : "dark green"}
+          onClick={handleSetActive}
           className="w-[120px] rounded-t-lg rounded-b-none"
         />
         <Button
           title="Historikk"
-          color={"green"}
-          onClick={onSetHistory}
+          color={selectedButton === "history" ? "green" : "dark green"}
+          onClick={handleSetHistory}
           className="w-[120px] rounded-t-lg rounded-b-none"
         />
       </div>

@@ -65,7 +65,7 @@ const AdminReceiptPage = () => {
 
   return (
     <div className="w-full flex-row p-5">
-      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto">
+      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5">
         <TextField
           id="search"
           label="Søk på anledning..."
@@ -74,31 +74,35 @@ const AdminReceiptPage = () => {
           sx={{
             backgroundColor: "white",
             width: "200px",
-            height: "30px",
-            "& .MuiOutlinedInput-input": {
-              padding: "10px",
+            height: "40px",
+            borderRadius: "8px",
+            "& .MuiOutlinedInput-root": {
+              height: "40px",
+            },
+            "& .MuiInputLabel-root": {
+              top: "-5px",
             },
           }}
         />
-        <FormControl>
-          <InputLabel
-            id="committeeLabel"
-            sx={{ top: "50px", transform: "translateY(-50%)" }}
-          >
-            Velg Komité
-          </InputLabel>
+        <FormControl sx={{ width: "200px", height: "40px" }}>
           <Select
-            labelId="comitteeLabel"
             id="committeeDropdown"
-            value={selectedCommittee}
-            label="Komité"
+            value={selectedCommittee || ""}
             onChange={(e) => setSelectedCommittee(e.target.value as string)}
+            inputProps={{ "aria-label": "Without label" }}
+            displayEmpty
+            renderValue={(selected) => {
+              if (selected === "") {
+                return <span className="text-gray-500">Velg Komité</span>;
+              }
+              return selected;
+            }}
             sx={{
               backgroundColor: "white",
-              width: "200px",
               height: "40px",
             }}
           >
+            {/* Map over committee data */}
             {committeeData &&
               committeeData?.map((committee: Committee) => (
                 <MenuItem key={committee.id} value={committee.name}>

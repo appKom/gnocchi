@@ -1,6 +1,6 @@
 interface Props {
   title: string;
-  color: "blue" | "white" | "orange" | "green" | "gray";
+  color: "blue" | "white" | "orange" | "green" | "gray" | "dark green";
   size?: "small";
   icon?: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -35,6 +35,9 @@ const Button = (props: Props) => {
       break;
     case "gray":
       colorClasses = "bg-gray-500 text-white hover:bg-gray-600";
+      break;
+    case "dark green":
+      colorClasses = "bg-[#2D433A] text-white hover:bg-[#1f3029]"; // Dark green background and hover effect
       break;
     default:
       colorClasses = "bg-white text-black hover:bg-gray-200"; // Default to white if no color is specified
