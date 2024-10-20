@@ -7,6 +7,14 @@ import ReceiptRow from "../../components/receipt/ReceiptRow";
 import { fetchCommittees, Committee } from "../../api/baseAPI";
 import { Dropdown } from "flowbite-react";
 import { Receipt } from "@mui/icons-material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import ReceiptTable from "../../components/receipt/ReceiptTable";
 
 const AdminReceiptPage = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -63,22 +71,36 @@ const AdminReceiptPage = () => {
   return (
     <div className="w-full flex-row p-5">
       <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto">
-        <input
-          name="search"
+        <TextField
+          id="search"
+          label="Søk på anledning..."
+          variant="outlined"
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Søk på anledning..."
-        ></input>
-        <Dropdown label={selectedCommittee ? selectedCommittee : "Velg Komité"}>
-          {committeeData &&
-            committeeData?.map((committee: Committee) => (
-              <Dropdown.Item
-                key={committee.id}
-                onClick={() => setSelectedCommittee(committee.name)}
-              >
-                {committee.name}
-              </Dropdown.Item>
-            ))}
-        </Dropdown>
+        />
+        <FormControl>
+          <InputLabel id="committeeLabel">Velg Komité</InputLabel>
+          <Select
+            labelId="comitteeLabel"
+            id="committeeDropdown"
+            value={selectedCommittee}
+            label="Komité"
+            onChange={(e) => setSelectedCommittee(e.target.value as string)}
+            sx={{
+              backgroundColor: "white",
+              width: "200px",
+            }}
+          >
+            {committeeData &&
+              committeeData?.map((committee: Committee) => (
+                <MenuItem
+                  key={committee.id}
+                  value={committee.name} // This value will be passed on change
+                >
+                  {committee.name}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
       </div>
       <div className="w-full flex flex-row justify-start items-center max-w-[1100px] ml-auto mr-auto pl-5 pt-5 space-x-4">
         <Button
@@ -95,39 +117,7 @@ const AdminReceiptPage = () => {
         ></Button>
       </div>
       <hr className="max-w-[1100px] ml-auto mr-auto"></hr>
-      {filteredReceipts && filteredReceipts.length > 0 ? (
-        <table className="w-full border-separate border-spacing-y-3 max-w-[1100px] ml-auto mr-auto">
-          <thead>
-            <tr>
-              <th></th>
-              <th className="text-left text-white text-xl font-normal">
-                Komité
-              </th>
-              <th className="text-left text-white text-xl font-normal">
-                Anledning
-              </th>
-              <th className="text-left text-white text-xl font-normal hidden md:table-cell">
-                Type
-              </th>
-              <th className="text-left text-white text-xl font-normal hidden md:table-cell">
-                Kommentar
-              </th>
-              <th className="text-middle w-[110px] text-white text-xl font-normal">
-                Dato
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredReceipts.map((receipt) => (
-              <ReceiptRow key={receipt.receiptId} receipt={receipt} />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p className="text-middle text-white text-xl font-normal pt-5">
-          Ingen kvitteringer å vise
-        </p>
-      )}
+      <ReceiptTable receipts={filteredReceipts} />
     </div>
   );
 };
