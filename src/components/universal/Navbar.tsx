@@ -95,7 +95,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-[#2e6e53] flex">
-      <div className="flex items-center justify-between p-3 w-full">
+      <div className="flex items-center justify-between p-3 w-full fixed z-50 bg-[#2e6e53]">
         <div className="flex items-center">
           <img
             src={`${
@@ -103,7 +103,7 @@ const Navbar = () => {
             }resources/logo/online-logo-white.png`}
             className="h-12 w-auto cursor-pointer hidden dark:block"
           ></img>
-          <p className="text-[25px] ml-3 font-semibold text-white">Autobank</p>
+          <a className="text-[25px] ml-3 font-semibold text-white " href="/">Autobank</a>
         </div>
 
         {/* Navbar small-medium width */}

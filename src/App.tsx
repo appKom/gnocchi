@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./components/universal/Navbar";
 import "./App.css";
+import FrontPage from "./pages/FrontPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/universal/Home";
@@ -35,7 +36,7 @@ function App() {
           <Navbar />
           {isAuthenticated ?
             <Routes>
-              <Route path="/" element={<Home />} /> :
+              <Route path="/" element={<FrontPage />} /> :
               <Route path="/authentication/callback" element={<Authcallback />} />
               <Route path="/kvittering" element={<ReceiptPage />} />
             <Route path="/faq" element={<FaqPage />} />
@@ -50,7 +51,7 @@ function App() {
             </Routes>
             :
             <Routes>
-              <Route path="/*" element={<LoginPage />} />
+              <Route path="/*" element={<FrontPage />} />
             <Route path="/faq" element={<FaqPage />} />
               <Route path="/authentication/callback" element={<Authcallback />} />
             </Routes>
