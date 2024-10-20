@@ -51,7 +51,7 @@ function App() {
             </Routes>
             :
             <Routes>
-              <Route path="/*" element={<LoginPage />} />
+              <Route path="/*" element={<FrontPage />} />
             <Route path="/faq" element={<FaqPage />} />
               <Route path="/authentication/callback" element={<Authcallback />} />
             </Routes>

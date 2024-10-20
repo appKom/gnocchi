@@ -103,7 +103,7 @@ const Navbar = () => {
             }resources/logo/online-logo-white.png`}
             className="h-12 w-auto cursor-pointer hidden dark:block"
           ></img>
-          <p className="text-[25px] ml-3 font-semibold text-white">Autobank</p>
+          <a className="text-[25px] ml-3 font-semibold text-white " href="/">Autobank</a>
         </div>
 
         {/* Navbar small-medium width */}
