@@ -11,7 +11,7 @@ const FaqPage = () => {
   return (
     <div className="flex min-h-screen">
       <ProfileCard />
-      <div className="flex-grow p-8">
+      <div className="ml-5 mr-5 rounded-xl flex-grow p-8 bg-[#669782] h-full">
         <Tabs />
         <ItemList />
       </div>

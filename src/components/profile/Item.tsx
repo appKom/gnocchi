@@ -18,7 +18,7 @@ const Item: React.FC<ItemProps> = ({
   return (
     <div
       className={`flex items-center p-4 mb-2 bg-[#99CAB5] ${
-        status === "✓" ? "border-l-green-600" : "border-l-red-700"
+        status === "✓" ? "border-l-[#B5FFA8]" : "border-l-[#DA4943]"
       } border-l-4`}
     >
       <div className="w-6 h-6 mr-4">
@@ -54,7 +54,7 @@ const Item: React.FC<ItemProps> = ({
           </svg>
         )}
       </div>
-      <div className=" w-40 text-left flex-grow">{type}</div>
+      <div className="w-40 text-left flex-grow">{type}</div>
 
       <div className="flex-grow text-left w-40 font-bold">{title}</div>
 
@@ -62,8 +62,8 @@ const Item: React.FC<ItemProps> = ({
         <span
           className={
             status === "✓"
-              ? "text-green-600 font-bold"
-              : "text-red-600 font-bold"
+              ? "text-[#B5FFA8] font-bold"
+              : "text-[#DA4943] font-bold"
           }
         >
           {status}
