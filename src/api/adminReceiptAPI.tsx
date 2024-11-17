@@ -37,19 +37,34 @@ export interface ReceiptReview {
 }
 
 
-export const fetchAllReceipts = async (getAccessTokenSilently: Function, from: Number, count: Number): Promise<Receipt_Info[]> => {
-  const accesstoken = await getAccessTokenSilently();
-  return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/all?from=' + from + '&count=' + count,
+export const fetchAllReceipts = async (
+  getAccessTokenSilently: Function,
+  from: Number,
+  count: Number
+): Promise<Receipt_Info[]> => {
+  const accessToken = await getAccessTokenSilently();
+
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/admin/receipt/all?from=${from}&count=${count}`,
     {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ` + accesstoken,
+        'Authorization': `Bearer ${accessToken}`,
       },
     }
-  ).then((res) => res.json()
   );
+
+  const data: Receipt_Info[] = await response.json();
+
+  // Sort receipts by `receiptCreatedAt` date in descending order (most recent first)
+  const sortedData = data.sort((a, b) =>
+    new Date(b.receiptCreatedAt).getTime() - new Date(a.receiptCreatedAt).getTime()
+  );
+
+  return sortedData;
 };
+
 
 export const fetchCompleteReceipt = async (getAccessTokenSilently: Function, receiptId: Number): Promise<CompleteReceipt> => {
   const accesstoken = await getAccessTokenSilently();
