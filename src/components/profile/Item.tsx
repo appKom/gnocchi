@@ -3,7 +3,7 @@ import React from "react";
 interface ItemProps {
   type: string;
   title: string;
-  status: string;
+  status: React.ReactNode;
   isExpanded?: boolean;
   isCompleted?: boolean;
 }

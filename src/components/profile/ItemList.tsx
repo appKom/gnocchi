@@ -1,30 +1,40 @@
 import React from "react";
 import Item from "./Item";
-
-const itemList = [
-  { type: "Fondet", title: "Sofa", status: "✓" },
-  {
-    type: "Fondet",
-    title:
-      "Støtte til åreturen dfka sd fla nsdjnf alkjs dfljkaslkdjf lajk sdlj flkajs dlkjf lkjas lkj ",
-    status: "✕",
-  },
-  { type: "Onlinepotten", title: "Arbeidskveld", status: "✓" },
-  { type: "Kvitteringskjema", title: "Flyreise", status: "✓" },
-  { type: "Kvitteringskjema", title: "Arbeidskveld", status: "✕" },
-];
+import { useQuery } from "@tanstack/react-query";
+import { fetchAllUserReceipts } from "../../api/userAPI";
+import { useAuth0 } from "@auth0/auth0-react";
+import { IoIosCloseCircle, IoIosMail, IoMdCheckmark } from "react-icons/io";
 
 const ItemList: React.FC = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  
+  const {data: receiptData, isError} = useQuery({
+    queryKey: ["receipts_user"],
+    queryFn: () => fetchAllUserReceipts(getAccessTokenSilently, 0, 10),
+  });
+  console.log(Array.isArray(receiptData) && receiptData.length > 0 ? receiptData[0].name : "No data available");
+  console.log(receiptData)
   return (
     <div>
-      {itemList.map((item, index) => (
-        <Item
-          key={index}
-          type={item.type}
-          title={item.title}
-          status={item.status}
-        />
-      ))}
+      {Array.isArray(receiptData) && receiptData.length > 0 &&
+      receiptData.map((item, index) => (
+            <Item
+              key={index}
+              type="Receipt"
+              title={item.name}
+              status={
+                item.latestReviewStatus === "APPROVED" ? (
+                  <IoMdCheckmark color="green" className="text-3xl" />
+                ) : item.latestReviewStatus === "DENIED" ? (
+                  <IoIosCloseCircle color="#DD0000" className="text-3xl" />
+                ) : (
+                  <IoIosMail color="#0000CC" className="text-3xl" />
+                )
+              }
+            />
+          ))
+      }
+
     </div>
   );
 };

@@ -1,7 +1,7 @@
 export interface Receipt_Info {
     receiptId: number;
     amount: number;
-    receiptName: string;
+    name: string;
     receiptDescription: string;
     receiptCreatedAt: string;
     committeeName: string;
