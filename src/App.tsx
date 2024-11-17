@@ -40,7 +40,7 @@ function App() {
                 element={<Authcallback />}
               />
               <Route path="/kvittering" element={<ReceiptPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/minside" element={<ProfilePage />} />
               <Route path="/faq" element={<FaqPage />} />
               {isAuthenticated && isAdmin() && (
                 <Fragment>
