@@ -59,11 +59,19 @@ const AdminReceiptPage = () => {
     });
 
   const handleSetStatusHistory = () => {
-    setReceiptStatus("History");
+    if (receiptStatus === "History") {
+      setReceiptStatus(undefined);
+    } else {
+      setReceiptStatus("History");
+    }
   };
 
   const handleSetStatusActive = () => {
-    setReceiptStatus("Active");
+    if (receiptStatus === "Active") {
+      setReceiptStatus(undefined);
+    } else {
+      setReceiptStatus("Active");
+    }
   };
 
   const handleCommitteeChange = (event: any) => {
@@ -76,7 +84,7 @@ const AdminReceiptPage = () => {
       <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-24">
         <TextField
           id="search"
-          label="Søk på anledning..."
+          placeholder="Søk på anledning..."
           variant="outlined"
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{
@@ -131,6 +139,7 @@ const AdminReceiptPage = () => {
         receipts={filteredReceipts}
         onSetActive={handleSetStatusActive}
         onSetHistory={handleSetStatusHistory}
+        receiptStatus={receiptStatus}
       />
     </div>
   );

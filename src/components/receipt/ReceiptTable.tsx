@@ -7,26 +7,25 @@ interface ReceiptTableProps {
   receipts: Receipt_Info[] | undefined;
   onSetActive: () => void;
   onSetHistory: () => void;
+  receiptStatus: String | undefined;
 }
 
 const ReceiptTable = ({
   receipts,
   onSetActive,
   onSetHistory,
+  receiptStatus
 }: ReceiptTableProps) => {
-  const [selectedButton, setSelectedButton] = useState<
-    "active" | "history" | "none"
-  >("none");
+  const selectedButton = receiptStatus === "Active" ? "active" : receiptStatus === "History" ? "history" : "none";
+
 
   // Handle button click and set active state
   const handleSetActive = () => {
-    setSelectedButton("active");
     onSetActive();
   };
 
   const handleSetHistory = () => {
-    setSelectedButton("history");
-    onSetHistory();
+      onSetHistory();
   };
 
   return (
