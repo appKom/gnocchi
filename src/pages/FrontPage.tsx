@@ -27,7 +27,7 @@ export default function frontPage()
             </div>
         </div>
         <div className="flex w-1/2 flex-row items-center justify-center space-x-10">
-        {!isAuthenticated && <Button title={"Logg inn ->"} color={"green"} onClick={()=>loginWithRedirect()}></Button>}
+        {!isAuthenticated && <Button title={"Logg inn ->"} color={"darkGreen"} onClick={()=>loginWithRedirect()}></Button>}
             
             <Button title={"FAQ"} color={"white"} href="/faq"></Button>
             <Button title={"Kontakt"} color={"white"} href="mailto:appkom@online.ntnu.no" ></Button>
