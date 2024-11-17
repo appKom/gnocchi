@@ -12,8 +12,7 @@ const ItemList: React.FC = () => {
     queryKey: ["receipts_user"],
     queryFn: () => fetchAllUserReceipts(getAccessTokenSilently, 0, 10),
   });
-  console.log(Array.isArray(receiptData) && receiptData.length > 0 ? receiptData[0].name : "No data available");
-  console.log(receiptData)
+  
   return (
     <div>
       {Array.isArray(receiptData) && receiptData.length > 0 &&
@@ -21,7 +20,7 @@ const ItemList: React.FC = () => {
             <Item
               key={index}
               type="Receipt"
-              title={item.name}
+              title={item.receiptName}
               status={
                 item.latestReviewStatus === "APPROVED" ? (
                   <IoMdCheckmark color="green" className="text-3xl" />
