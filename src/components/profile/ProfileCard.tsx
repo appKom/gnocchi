@@ -26,7 +26,7 @@ const ProfileCard = () => {
   console.log(userObject);
 
   return (
-    <div className="w-64 bg-[#669782] text-white p-8 min-h-max rounded-xl ml-10 mt-20">
+    <div className="w-64 bg-[#669782] text-white p-8 min-h-max rounded-xl ml-5">
       <div className="flex flex-col items-center">
         <img src={profilePicture} alt="" />
         <h2 className="text-2xl mb-2 mt-5">{userObject.name}</h2>
