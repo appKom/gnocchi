@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from "./reportWebVitals";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-console.log(import.meta.env.VITE_AUTH0_DOMAIN);
+const queryClient = new QueryClient();
+
+
 root.render(
   <React.StrictMode>
     <Auth0Provider
@@ -21,7 +24,9 @@ root.render(
       }}
       cacheLocation={"localstorage"}
       >
+         <QueryClientProvider client={queryClient}>
       <App />
+    </QueryClientProvider>
     </Auth0Provider>
   </React.StrictMode>
 );

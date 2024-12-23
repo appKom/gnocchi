@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 export default function frontPage()
 {
     const { isAuthenticated, loginWithRedirect } = useAuth0();
-    return (<body className="bg-[#2E6E53] flex flex-col space-y-4">
+    return (<div className="bg-[#2E6E53] flex flex-col space-y-4">
     <Topbar/>
     <FrontInfo/>
     <Bottombar/>
@@ -33,5 +33,5 @@ export default function frontPage()
             <Button title={"Kontakt"} color={"white"} href="mailto:appkom@online.ntnu.no" ></Button>
         </div>
     </div>
-    </body>)
+    </div>)
 }

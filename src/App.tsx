@@ -20,6 +20,7 @@ import AdminReviewReceiptPage from "./pages/admin/AdminReviewReceiptPage";
 
 
 
+
 function App() {
   const { isAuthenticated } = useAuth0();
   const queryClient = new QueryClient();
@@ -32,38 +33,44 @@ function App() {
   };
     
 
+const routes = {
+  unautenticated: [
+    <Route key="unautenticated-front" path="/*" element={<FrontPage />} />,
+    <Route key="unautenticated-faq" path="/faq" element={<FaqPage />} />,
+  ],
+  authenticated: [
+    <Route key="authenticated-front" path="/" element={<FrontPage />} />,
+    <Route key="authenticated-receipt" path="/kvittering" element={<ReceiptPage />} />,
+    <Route key="authenticated-application" path="/soknad" element={<ApplicationPage />} />,
+    <Route key="authenticated-faq" path="/faq" element={<FaqPage />} />,
+  ],
+  admin: [
+    <Route key="admin-front" path="/" element={<FrontPage />} />,
+    <Route key="admin-receipt" path="/kvittering" element={<ReceiptPage />} />,
+    <Route key="admin-application" path="/soknad" element={<ApplicationPage />} />,
+    <Route key="admin-faq" path="/faq" element={<FaqPage />} />,
+    <Route key="admin-main" path="/admin/" element={<AdminMainPage />} />,
+    <Route key="admin-receipt-page" path="/admin/kvittering" element={<AdminReceiptPage />} />,
+    <Route key="admin-economic-request" path="/admin/soknad" element={<AdminEconomicRequestPage />} />,
+    <Route key="admin-review-receipt" path="/admin/kvittering/:receiptid" element={<AdminReviewReceiptPage />} />,
+  ],
+};
+
+
+
 
   return (
     <Router>
-      <QueryClientProvider client={queryClient}>
+     
         <div className="App bg-[#2e6e53]">
           <Navbar />
-          {isAuthenticated ?
-            <Routes>
-              <Route path="/" element={<FrontPage />} /> :
-              <Route path="/authentication/callback" element={<Authcallback />} />
-              <Route path="/kvittering" element={<ReceiptPage />} />
-              <Route path="/soknad" element={<ApplicationPage />} />
-            <Route path="/faq" element={<FaqPage />} />
-              {isAuthenticated && isAdmin() &&
-                <Fragment>
-                  <Route path="/admin/" element={<AdminMainPage />} />
-                  <Route path="/admin/kvittering" element={<AdminReceiptPage />} />
-                  <Route path="/admin/soknad" element={<AdminEconomicRequestPage />} />
-                  <Route path="/admin/kvittering/:receiptid" element={<AdminReviewReceiptPage />} />
-                </Fragment>
-              }
-            </Routes>
-            :
-            <Routes>
-              <Route path="/*" element={<FrontPage />} />
-            <Route path="/faq" element={<FaqPage />} />
-              <Route path="/authentication/callback" element={<Authcallback />} />
-            </Routes>
-          }
+          <Routes>
+            {
+              isAdmin() ? routes.admin : isAuthenticated ? routes.authenticated : routes.unautenticated
+            }
+          </Routes>
         </div>
       <Footer />
-      </QueryClientProvider>
     </Router>
   );
 }
