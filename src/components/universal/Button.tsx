@@ -29,7 +29,6 @@ const Button = (props: Props) => {
     sizeClasses = "w-[140px] h-[50px] px-6 py-3";
   }
 
-
   // Combine class names, ensuring `props.className` is applied last for higher precedence
   const className = `flex items-center justify-center p-2 h-[40px] justify-self-end relative z-20 font-medium text-center transition-all shadow-sm focus:ring focus:ring-primary-200 inline-flex items-center gap-1.5 ${colorClasses} ${sizeClasses} rounded-[15px] ${
     props.className || ""

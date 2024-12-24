@@ -26,8 +26,8 @@ const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
             {receipt.latestReviewStatus === "APPROVED"
               ? "Godkjent"
               : receipt.latestReviewStatus === "DENIED"
-              ? "Avvist"
-              : "Ubesvart"}
+                ? "Avvist"
+                : "Ubesvart"}
           </span>
         </div>
       </td>

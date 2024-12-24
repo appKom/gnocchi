@@ -46,6 +46,7 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## ENV
+
 - VITE_AUTH0_REDIRECT_URI
 - VITE_AUTH0_DOMAIN
 - VITE_AUTH0_CLIENT_ID

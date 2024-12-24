@@ -14,10 +14,14 @@ const ReceiptTable = ({
   receipts,
   onSetActive,
   onSetHistory,
-  receiptStatus
+  receiptStatus,
 }: ReceiptTableProps) => {
-  const selectedButton = receiptStatus === "Active" ? "active" : receiptStatus === "History" ? "history" : "none";
-
+  const selectedButton =
+    receiptStatus === "Active"
+      ? "active"
+      : receiptStatus === "History"
+        ? "history"
+        : "none";
 
   // Handle button click and set active state
   const handleSetActive = () => {
@@ -25,7 +29,7 @@ const ReceiptTable = ({
   };
 
   const handleSetHistory = () => {
-      onSetHistory();
+    onSetHistory();
   };
 
   return (

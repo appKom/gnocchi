@@ -35,7 +35,7 @@ const AdminReceiptPage = () => {
     ?.filter((receipt) =>
       selectedCommittees.length > 0
         ? selectedCommittees.includes(receipt.committeeName)
-        : true
+        : true,
     )
     ?.filter((receipt) => {
       if (receiptStatus === "Active") {

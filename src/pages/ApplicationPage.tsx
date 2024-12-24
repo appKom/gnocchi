@@ -46,7 +46,7 @@ const ApplicationPage = () => {
       field3: formdata.field3,
       amount: formdata.amount,
       attachments: await Promise.all(
-        [...attachments].map(async (file) => await fileToBase64(file))
+        [...attachments].map(async (file) => await fileToBase64(file)),
       ),
       comments: formdata.comments,
       id: 0,

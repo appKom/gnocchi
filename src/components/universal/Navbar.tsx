@@ -60,7 +60,10 @@ const NavDropdown = (props: NavdropdownProps) => {
           <hr className="border-b-2 w-full "></hr>
 
           {routes.map((route) => (
-            <div className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer">
+            <div
+              className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
+              key={route.name}
+            >
               <a href={route.name}>{route.name}</a>
             </div>
           ))}
@@ -103,7 +106,9 @@ const Navbar = () => {
               }resources/logo/online-logo-white.png`}
               className="h-12 w-auto cursor-pointer hidden dark:block"
             ></img>
-            <a className="text-[25px] ml-3 font-semibold text-white " href="/">Autobank</a>
+            <a className="text-[25px] ml-3 font-semibold text-white " href="/">
+              Autobank
+            </a>
           </div>
 
           {/* Navbar small-medium width */}
@@ -136,19 +141,38 @@ const Navbar = () => {
           {/* Navbar large width */}
           {isAuthenticated ? (
             <div className="hidden lg:flex flex justify-self-end absolute right-[20px] gap-10 items-center">
-              <div className='flex justify-self-end md:static right-[20px] gap-10 items-center'>
-                <div className={(showNavDropdown ? "" : "hidden") + " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"}>
-
-                  <a className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer" href="/kvittering">Kvittering</a>
-                  <a className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer" href="/soknad">Søknad</a>
-                  <a className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800  cursor-pointer" href="/minside">Min side</a>
+              <div className="flex justify-self-end md:static right-[20px] gap-10 items-center">
+                <div
+                  className={
+                    (showNavDropdown ? "" : "hidden") +
+                    " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"
+                  }
+                >
+                  <a
+                    className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
+                    href="/kvittering"
+                  >
+                    Kvittering
+                  </a>
+                  <a
+                    className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
+                    href="/soknad"
+                  >
+                    Søknad
+                  </a>
+                  <a
+                    className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800  cursor-pointer"
+                    href="/minside"
+                  >
+                    Min side
+                  </a>
                 </div>
               </div>
               <div>
                 <Button
                   title="Logg ut"
                   color="white"
-                  size="small"
+                  className="inline-flex"
                   icon={<LogOutIcon className="w-4 h-4" />}
                   onClick={() => logout()}
                 />
