@@ -36,34 +36,51 @@ export interface ReceiptReview {
   comment: string;
 }
 
+export interface AllReceiptsResponse {
+  receipts: Receipt_Info[];
+  total: number;
+}
+
 export const fetchAllReceipts = async (
   getAccessTokenSilently: Function,
-  from: Number,
-  count: Number,
-): Promise<Receipt_Info[]> => {
+  from: number,
+  count: number,
+  search?: string,
+  committee?: string,
+  status?: string,
+  sortOrder?: string,
+  sortField?: string,
+): Promise<AllReceiptsResponse> => {
   const accessToken = await getAccessTokenSilently();
 
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URI}/api/admin/receipt/all?from=${from}&count=${count}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const params = new URLSearchParams({
+    from: from.toString() || "0",
+    count: count.toString() || "10",
+  });
+
+  if (search) params.append("search", search);
+  if (committee) params.append("committee", committee);
+  if (status) params.append("status", status);
+  if (sortOrder) params.append("sortOrder", sortOrder);
+  if (sortField) params.append("sortField", sortField);
+
+  const url = `${import.meta.env.VITE_BACKEND_URI}/api/admin/receipt/all?${params.toString()}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
-  );
+  });
 
-  const data: Receipt_Info[] = await response.json();
+  if (!response.ok) {
+    throw new Error(`Error fetching receipts: ${response.statusText}`);
+  }
 
-  // Sort receipts by `receiptCreatedAt` date in descending order (most recent first)
-  const sortedData = data.sort(
-    (a, b) =>
-      new Date(b.receiptCreatedAt).getTime() -
-      new Date(a.receiptCreatedAt).getTime(),
-  );
+  const data: AllReceiptsResponse = await response.json();
 
-  return sortedData;
+  return data;
 };
 
 export const fetchCompleteReceipt = async (
