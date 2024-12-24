@@ -9,6 +9,8 @@ import { fileToBase64 } from "../utils/fileutils";
 
 import { submitReceipt } from "../api/formsAPI";
 
+import { useNavigate } from "react-router-dom";
+
 interface Committee {
   id: number;
   name: string;
@@ -44,6 +46,8 @@ interface ReceiptRequestBody {
 }
 
 const ReceiptPage = () => {
+  const navigate = useNavigate();
+
   const [usedOnlineCard, setUsedOnlineCard] = useState(false);
   const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -59,7 +63,6 @@ const ReceiptPage = () => {
 
   const onFileChange = async (files: File[]) => {
     setAttachments([...files]);
-    console.log(attachments);
   };
 
   const [formdata, setFormdata]: [FormData, any] = useState({
@@ -99,7 +102,7 @@ const ReceiptPage = () => {
     if (res.ok) {
       alert("Kvittering sendt inn!");
       // TODO: Fix with popup success message in home something
-      window.location.href = "/?receiptsubmitted=true";
+      navigate("/?receiptsubmittedsuccess=1");
     } else {
       // TODO: Popup error message
       alert("Noe gikk galt, prøv igjen senere");
@@ -150,8 +153,8 @@ const ReceiptPage = () => {
             <label>Onlines bankkort</label>
           </div>
         </div>
-        <div className={`${usedOnlineCard ? "hidden" : ""} text-white`}>
-          <div className="flex justify-center gap-10">
+        <div className={`${usedOnlineCard ? "hidden" : ""} text-white `}>
+          <div className="flex justify-center gap-3 flex-col md:gap-10 md:flex-row items-center">
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Kontonummer</p>
               <input
@@ -176,7 +179,7 @@ const ReceiptPage = () => {
               ></input>
             </div>
           </div>
-          <div className="flex justify-center gap-10 mt-[10px]">
+          <div className="flex justify-center mt-[10px] gap-3 flex-col md:gap-10 md:flex-row items-center">
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Anledning</p>
               <input
@@ -213,7 +216,7 @@ const ReceiptPage = () => {
           </div>
         </div>
         <div className={`${!usedOnlineCard ? "hidden" : ""} text-white`}>
-          <div className="flex justify-center gap-10">
+          <div className="flex justify-center gap-3 flex-col md:gap-10 md:flex-row items-center">
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Kortinformasjon</p>
               <input
@@ -238,7 +241,7 @@ const ReceiptPage = () => {
               ></input>
             </div>
           </div>
-          <div className="flex justify-center gap-10 mt-[10px]">
+          <div className="flex justify-center mt-[10px] gap-3 flex-col md:gap-10 md:flex-row items-center">
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Anledning</p>
               <input
@@ -279,7 +282,7 @@ const ReceiptPage = () => {
           <h1 className="text-3xl text-white text-center self-center mt-[20px] font-thin mb-[10px]">
             Vedlegg/Kvitteringer
           </h1>
-          <p>
+          <p className="mx-5">
             Last opp et tydelig bilde/scan av kvitteringen. Husk at kvitteringen
             må være gyldig for at den skal godkjennes. Er du usikker på om
             kvitteringen er gyldig?{" "}
@@ -288,11 +291,11 @@ const ReceiptPage = () => {
             </a>
           </p>
         </div>
-        <div className="flex-col ">
+        <div className="flex-col mx-5">
           <p className="text-white w-full text-left text-l mb-[5px]">Vedlegg</p>
           <FileUpload onFileChange={onFileChange} />
         </div>
-        <div className="flex-col mt-[20px]">
+        <div className="flex-col mt-[20px] mx-5">
           <p className="text-white w-full text-left text-l mb-[5px]">
             Kommentarer
           </p>

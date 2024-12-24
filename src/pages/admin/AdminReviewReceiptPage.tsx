@@ -200,15 +200,17 @@ const AdminReviewReceiptPage = () => {
               <p className="text-left tracking-wide">
                 Vedlegg ({data.attachmentCount})
               </p>
-              <div className="bg-white bg-opacity-10 text-white p-3 rounded w-full">
-                {data.attachments.map((attachment, index) => (
-                  <img
-                    src={"data:image/png;base64," + attachment}
-                    key={index}
-                    className="h-fill"
-                  />
-                ))}
-              </div>
+              {data.attachmentCount != 0 && (
+                <div className="bg-white bg-opacity-10 text-white p-3 rounded w-full">
+                  {data.attachments.map((attachment, index) => (
+                    <img
+                      src={"data:image/png;base64," + attachment}
+                      key={index}
+                      className="h-fill"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             <form
