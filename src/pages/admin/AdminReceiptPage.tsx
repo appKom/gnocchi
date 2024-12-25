@@ -10,10 +10,11 @@ import {
   OutlinedInput,
   Select,
   TextField,
-  TablePagination,
+  Pagination,
 } from "@mui/material";
 import ReceiptTable from "../../components/receipt/ReceiptTable";
 import debounce from "lodash.debounce";
+import AdminBadge from "../../components/admin/AdminBadge";
 
 const AdminReceiptPage = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -23,8 +24,8 @@ const AdminReceiptPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>(); // The raw value from the input field
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
 
   const debouncedSetSearchTerm = useMemo(
     () => debounce((value: string) => setDebouncedSearchTerm(value), 500),
@@ -47,12 +48,6 @@ const AdminReceiptPage = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   const {
     data: receiptData,
@@ -61,7 +56,7 @@ const AdminReceiptPage = () => {
   } = useQuery({
     queryKey: [
       "receipts_admin",
-      page,
+      page-1,
       rowsPerPage,
       debouncedSearchTerm,
       selectedCommittees.join(","),
@@ -70,7 +65,7 @@ const AdminReceiptPage = () => {
     queryFn: () =>
       fetchAllReceipts(
         getAccessTokenSilently,
-        page,
+        page-1,
         rowsPerPage,
         debouncedSearchTerm,
         selectedCommittees.join(","),
@@ -106,7 +101,13 @@ const AdminReceiptPage = () => {
 
   return (
     <div className="w-full flex-row p-5">
-      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-24">
+      <div>
+        <AdminBadge />
+        <h1
+        className="text-3xl font-bold pt-5 text-white"
+        >Alle kvitteringer</h1>
+      </div>
+      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-16">
         <TextField
           id="search"
           placeholder="Søk på anledning..."
@@ -169,14 +170,17 @@ const AdminReceiptPage = () => {
         />
       )}
       {receiptData && receiptData.total > 0 && (
-        <TablePagination
-          className="flex justify-center"
-          component="div"
-          count={receiptData?.total || 0}
+        <Pagination
+        
+        
+          className="flex justify-center mt-5"
+          count={Math.ceil(receiptData?.total / rowsPerPage)}
+          color="primary"
+
           page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          onChange={handleChangePage}
+         
+        
         />
       )}
     </div>

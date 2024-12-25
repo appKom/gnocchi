@@ -5,6 +5,8 @@ interface ReceiptOverviewProps {
   receipt: Receipt_Info;
 }
 
+
+
 const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
   return (
     <tr
@@ -31,15 +33,15 @@ const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
           </span>
         </div>
       </td>
-      <td className="bg-green-200 text-left">{receipt.committeeName}</td>
-      <td className="bg-green-200 text-left">{receipt.receiptName}</td>
-      <td className="bg-green-200 text-left hidden md:table-cell">
+      <td className="bg-green-200 text-left font-semibold ">{receipt.committeeName}</td>
+      <td className="bg-green-200 text-left ">{receipt.receiptName}</td>
+      <td className="bg-green-200 text-left hidden md:table-cell  font-semibold ">
         {receipt.paymentOrCard === "Payment" ? "Utlegg" : "Kort"}
       </td>
-      <td className="bg-green-200 text-left hidden md:table-cell max-w-[150px] overflow-hidden">
-        {receipt.receiptDescription}
+      <td className="bg-green-200 text-left max-h-3 hidden md:table-cell max-w-[150px] overflow-hidden line-clamp-3">
+        {receipt.receiptDescription.slice(0, 70)}{receipt.receiptDescription.length > 70 ? "..." : ""}
       </td>
-      <td className="bg-green-200 text-center w-[110px] rounded-tr rounded-br">
+      <td className="bg-green-200 text-center w-[110px] rounded-tr rounded-br font-semibold">
         {`${new Date(receipt.receiptCreatedAt).getDate()}.${
           new Date(receipt.receiptCreatedAt).getMonth() + 1
         } ${new Date(receipt.receiptCreatedAt).getFullYear()}`}

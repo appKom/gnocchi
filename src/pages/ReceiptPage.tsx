@@ -1,4 +1,3 @@
-import Navbar from "../components/universal/Navbar";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
