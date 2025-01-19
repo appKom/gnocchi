@@ -23,7 +23,7 @@ interface Application {
 
 export const submitReceipt = async (
   getAccessTokenSilently: Function,
-  receiptbody: ReceiptRequestBody
+  receiptbody: ReceiptRequestBody,
 ) => {
   const accesstoken = await getAccessTokenSilently();
   return fetch(
@@ -35,13 +35,13 @@ export const submitReceipt = async (
         Authorization: `Bearer ` + accesstoken,
       },
       body: JSON.stringify(receiptbody),
-    }
+    },
   );
 };
 
 export const submitEconomicRequest = async (
   getAccessTokenSilently: Function,
-  application: Application
+  application: Application,
 ) => {
   //   const accesstoken = await getAccessTokenSilently();
   //   return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/receipt/create',

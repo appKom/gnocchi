@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import ReceiptRow from "../../components/receipt/ReceiptRow";
 import { Receipt_Info } from "../../api/adminReceiptAPI";
 import Button from "../../components/universal/Button";
+import { Oval } from "react-loader-spinner";
 
 interface ReceiptTableProps {
   receipts: Receipt_Info[] | undefined;
+  receiptsLoading: boolean;
   onSetActive: () => void;
   onSetHistory: () => void;
   receiptStatus: String | undefined;
@@ -12,20 +14,24 @@ interface ReceiptTableProps {
 
 const ReceiptTable = ({
   receipts,
+  receiptsLoading,
   onSetActive,
   onSetHistory,
-  receiptStatus
+  receiptStatus,
 }: ReceiptTableProps) => {
-  const selectedButton = receiptStatus === "Active" ? "active" : receiptStatus === "History" ? "history" : "none";
+  const selectedButton =
+    receiptStatus === "NONE"
+      ? "active"
+      : receiptStatus === "DONE"
+        ? "history"
+        : "none";
 
-
-  // Handle button click and set active state
   const handleSetActive = () => {
     onSetActive();
   };
 
   const handleSetHistory = () => {
-      onSetHistory();
+    onSetHistory();
   };
 
   return (
@@ -48,8 +54,11 @@ const ReceiptTable = ({
 
       <hr className="max-w-[1100px] ml-auto mr-auto" />
 
-      {/* Receipt Table */}
-      {receipts && receipts.length > 0 ? (
+      {receiptsLoading ? (
+        <div className="flex justify-center items-center h-[200px] w-[100vw]">
+          <Oval height={40} />
+        </div>
+      ) : receipts && receipts.length > 0 ? (
         <table className="w-full border-separate border-spacing-y-3 max-w-[1100px] ml-auto mr-auto">
           <thead>
             <tr>
