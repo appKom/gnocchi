@@ -13,30 +13,52 @@ const Authcallback = () => {
 
   const auth = useAuth0();
   const { isAuthenticated, user, getAccessTokenSilently } = auth;
+  
 
   const storeUser = async () => {
     try {
+
       if (isAuthenticated && user) {
+     
         const res: Response = await fetch(`${BACKEND_URI}/api/auth/check`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${await getAccessTokenSilently()}`,
+            "Authorization": `Bearer ${await getAccessTokenSilently()}`,
+          
+        
           },
+          credentials: "include",
+          
         });
 
         /* Temporary solution */
         if (!res.ok) {
           throw new Error("Failed to fetch user");
         }
-        const data: checkUserResponse = await res.json();
+
+        const res2: Response = await fetch(`${BACKEND_URI}/api/auth/check2`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+        
+          },
+          credentials: "include",
+          
+        });
+
+        /* Temporary solution */
+        if (!res2.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        const data: checkUserResponse = await res2.json();
         if (!data.success) {
           throw new Error("Failed to fetch user");
         }
         /* ----- */
 
         localStorage.setItem("autobankauth0login", JSON.stringify(data));
-        window.location.href = "/";
+   //     window.location.href = "/";
       }
     } catch (e) {
       console.error(e);

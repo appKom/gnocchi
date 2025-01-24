@@ -42,7 +42,7 @@ root.render(
         redirect_uri: import.meta.env.VITE_AUTH0_REDIRECT_URI as string,
         audience: import.meta.env.VITE_AUTH0_AUDIENCE as string,
       }}
-      cacheLocation={"localstorage"}
+      cacheLocation="memory"
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
