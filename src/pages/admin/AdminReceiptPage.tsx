@@ -17,7 +17,6 @@ import debounce from "lodash.debounce";
 import AdminBadge from "../../components/admin/AdminBadge";
 
 const AdminReceiptPage = () => {
-  const { getAccessTokenSilently } = useAuth0();
   const [receipts, setReceipts] = useState<Receipt_Info[]>([]);
   const [selectedCommittees, setSelectedCommittees] = useState<string[]>([]);
   const [receiptStatus, setReceiptStatus] = useState<string | undefined>();
@@ -48,7 +47,6 @@ const AdminReceiptPage = () => {
     setPage(newPage);
   };
 
-
   const {
     data: receiptData,
     isLoading: receiptDataLoading,
@@ -56,7 +54,7 @@ const AdminReceiptPage = () => {
   } = useQuery({
     queryKey: [
       "receipts_admin",
-      page-1,
+      page - 1,
       rowsPerPage,
       debouncedSearchTerm,
       selectedCommittees.join(","),
@@ -64,8 +62,7 @@ const AdminReceiptPage = () => {
     ],
     queryFn: () =>
       fetchAllReceipts(
-        getAccessTokenSilently,
-        page-1,
+        page - 1,
         rowsPerPage,
         debouncedSearchTerm,
         selectedCommittees.join(","),
@@ -75,7 +72,7 @@ const AdminReceiptPage = () => {
 
   const { data: committeeData } = useQuery({
     queryKey: ["committees"],
-    queryFn: () => fetchCommittees(getAccessTokenSilently),
+    queryFn: () => fetchCommittees(),
   });
 
   const handleSetStatusHistory = () => {
@@ -103,9 +100,9 @@ const AdminReceiptPage = () => {
     <div className="w-full flex-row p-5">
       <div>
         <AdminBadge />
-        <h1
-        className="text-3xl font-bold pt-5 text-white"
-        >Alle kvitteringer</h1>
+        <h1 className="text-3xl font-bold pt-5 text-white">
+          Alle kvitteringer
+        </h1>
       </div>
       <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-16">
         <TextField
@@ -171,16 +168,11 @@ const AdminReceiptPage = () => {
       )}
       {receiptData && receiptData.total > 0 && (
         <Pagination
-        
-        
           className="flex justify-center mt-5"
           count={Math.ceil(receiptData?.total / rowsPerPage)}
           color="primary"
-
           page={page}
           onChange={handleChangePage}
-         
-        
         />
       )}
     </div>

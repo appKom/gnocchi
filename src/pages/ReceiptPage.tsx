@@ -53,11 +53,10 @@ const ReceiptPage = () => {
   const [attachments, setAttachments] = useState<File[]>([]);
 
   const auth = useAuth0();
-  const { getAccessTokenSilently } = auth;
 
   const { data, isError } = useQuery({
     queryKey: ["committees"],
-    queryFn: () => fetchCommittees(getAccessTokenSilently),
+    queryFn: () => fetchCommittees(),
   });
 
   const onFileChange = async (files: File[]) => {
@@ -96,7 +95,7 @@ const ReceiptPage = () => {
       ),
       receiptPaymentInformation: paymentInfo,
     };
-    const res: Response = await submitReceipt(getAccessTokenSilently, body);
+    const res: Response = await submitReceipt(body);
 
     if (res.ok) {
       alert("Kvittering sendt inn!");

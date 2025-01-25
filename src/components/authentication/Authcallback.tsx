@@ -2,49 +2,49 @@ import { useEffect } from "react";
 import Navbar from "../universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../universal/Spinner";
+import { useNavigate } from "react-router-dom";
+import  useAutobankStore from "../../store/autobankstore";
+import { USER_STORAGE_KEY } from "../../utils/constants";
 
-interface checkUserResponse {
+export interface checkUserResponse {
   success: boolean;
   isadmin: boolean;
+  issuperadmin: boolean;
+  expiresat: string;
+  fullname: string;
 }
 
 const Authcallback = () => {
   const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
+  const { setUserInfo } = useAutobankStore();
 
   const auth = useAuth0();
   const { isAuthenticated, user, getAccessTokenSilently } = auth;
-  
+  const navigate = useNavigate();
 
   const storeUser = async () => {
     try {
-
       if (isAuthenticated && user) {
-     
-        const res: Response = await fetch(`${BACKEND_URI}/api/auth/check`, {
+        const res: Response = await fetch(`${BACKEND_URI}/api/auth/setuser`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${await getAccessTokenSilently()}`,
-          
-        
+            Authorization: `Bearer ${await getAccessTokenSilently()}`,
           },
           credentials: "include",
-          
         });
 
         /* Temporary solution */
         if (!res.ok) {
           throw new Error("Failed to fetch user");
-        }
+        } else {
 
-        const res2: Response = await fetch(`${BACKEND_URI}/api/auth/check2`, {
+        const res2: Response = await fetch(`${BACKEND_URI}/api/auth/getuser`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-        
           },
           credentials: "include",
-          
         });
 
         /* Temporary solution */
@@ -57,8 +57,13 @@ const Authcallback = () => {
         }
         /* ----- */
 
-        localStorage.setItem("autobankauth0login", JSON.stringify(data));
-   //     window.location.href = "/";
+        data.fullname = user.name || "";
+
+        setUserInfo(data);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(data));
+
+        navigate("/");
+      }
       }
     } catch (e) {
       console.error(e);
@@ -68,7 +73,6 @@ const Authcallback = () => {
   useEffect(() => {
     storeUser();
   }, [isAuthenticated, user]);
-
   return (
     <div>
       <div className="mt-[100px] font-bold text-xl text-white">
