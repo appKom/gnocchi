@@ -10,6 +10,7 @@ import { submitReceipt } from "../api/formsAPI";
 
 import { useNavigate } from "react-router-dom";
 
+
 interface Committee {
   id: number;
   name: string;
@@ -53,7 +54,9 @@ const ReceiptPage = () => {
   const [attachments, setAttachments] = useState<File[]>([]);
 
   const auth = useAuth0();
+  const { getAccessTokenSilently, user } = auth;
 
+ 
   const { data, isError } = useQuery({
     queryKey: ["committees"],
     queryFn: () => fetchCommittees(),
@@ -72,6 +75,7 @@ const ReceiptPage = () => {
     card_number: "",
     account_number: "",
   });
+
 
   const submitform = async () => {
     console.log(attachments);
@@ -115,6 +119,7 @@ const ReceiptPage = () => {
         <div className="flex justify-center gap-[50px] mt-[60px]">
           <h1 className="text-5xl text-white text-center self-center mb-auto mt-auto font-thin">
             Kvitteringsskjema
+            {user && user.email}
           </h1>
           <img
             src={"../../../resources/images/receiptpageimage.png"}
@@ -129,6 +134,7 @@ const ReceiptPage = () => {
             Kort brukt til kjøpet
           </h1>
         </div>
+    
         <div className="flex justify-center gap-5 mt-[10px] text-white mb-[10px]">
           <div className="flex items-center gap-3">
             <input

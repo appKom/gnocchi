@@ -6,6 +6,9 @@ import happy from "../components/happy.png";
 import { useAuth0 } from "@auth0/auth0-react";
 export default function frontPage() {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+  console.log("YYY");
+
   return (
     <div className="bg-[#2E6E53] flex flex-col space-y-4">
       <Topbar />

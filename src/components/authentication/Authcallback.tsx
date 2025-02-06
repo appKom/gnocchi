@@ -15,6 +15,8 @@ export interface checkUserResponse {
 }
 
 const Authcallback = () => {
+
+  
   const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
   const { setUserInfo } = useAutobankStore();
 
@@ -73,6 +75,7 @@ const Authcallback = () => {
   useEffect(() => {
     storeUser();
   }, [isAuthenticated, user]);
+  
   return (
     <div>
       <div className="mt-[100px] font-bold text-xl text-white">

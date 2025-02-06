@@ -40,6 +40,7 @@ root.render(
         redirect_uri: import.meta.env.VITE_AUTH0_REDIRECT_URI as string,
         audience: import.meta.env.VITE_AUTH0_AUDIENCE as string,
       }}
+      useRefreshTokens={true}
       cacheLocation="memory"
     >
       <QueryClientProvider client={queryClient}>
