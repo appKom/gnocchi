@@ -13,7 +13,7 @@ import ApplicationPage from "./pages/ApplicationPage";
 import Footer from "./components/universal/Footer";
 import FaqPage from "./pages/FaqPage";
 import AdminReviewReceiptPage from "./pages/admin/AdminReviewReceiptPage";
-import { USER_STORAGE_KEY } from "./utils/constants";
+
 import { logoutUser } from "./utils/userutils";
 import useAutobankStore from "./store/autobankstore";
 

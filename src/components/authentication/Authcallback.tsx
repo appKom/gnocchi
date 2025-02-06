@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../universal/Spinner";
 import { useNavigate } from "react-router-dom";
 import  useAutobankStore from "../../store/autobankstore";
-import { USER_STORAGE_KEY } from "../../utils/constants";
+
 
 export interface checkUserResponse {
   success: boolean;
@@ -62,8 +62,7 @@ const Authcallback = () => {
         data.fullname = user.name || "";
 
         setUserInfo(data);
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(data));
-
+    
         navigate("/");
       }
       }
