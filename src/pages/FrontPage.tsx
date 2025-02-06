@@ -35,7 +35,7 @@ export default function frontPage() {
   Login
 </a>
           <div className="w-1/2 ">
-            <img src={happy.src} alt="" className="money-honey px-20" />
+            <img src={happy} alt="" className="money-honey px-20" />
           </div>
         </div>
         <div className="flex w-1/2 flex-row items-center justify-center space-x-10">
