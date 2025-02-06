@@ -21,9 +21,9 @@ type NavdropdownProps = {
 };
 
 const routes = [
-  { name: "Kvittering", path: "/kvittering" },
-  { name: "Søknad", path: "/soknad" },
-  { name: "Min side", path: "/minside" },
+  { name: "Kvittering", path: `${import.meta.env.BASE_URL}kvittering` },
+  { name: "Søknad", path: `${import.meta.env.BASE_URL}soknad` },
+  { name: "Min side", path: `${import.meta.env.BASE_URL}minside` },
 ];
 
 const NavDropdown = (props: NavdropdownProps) => {
@@ -59,7 +59,7 @@ const NavDropdown = (props: NavdropdownProps) => {
               className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
               key={route.name}
             >
-              <a href={route.name}>{route.name}</a>
+              <a href={route.path}>{route.name}</a>
             </div>
           ))}
         </div>
@@ -90,11 +90,12 @@ const Navbar = () => {
     setShowNavDropdown(!showNavDropdown);
   };
 
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, logout: auth0Logout  } = useAuth0();
 
   const logout = () => {
     setUserInfo(null);
     logoutUser();
+    auth0Logout();
   };
 
   return (
@@ -149,24 +150,16 @@ const Navbar = () => {
                     " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"
                   }
                 >
-                  <a
-                    className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
-                    href="/kvittering"
-                  >
-                    Kvittering
-                  </a>
-                  <a
-                    className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
-                    href="/soknad"
-                  >
-                    Søknad
-                  </a>
-                  <a
-                    className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800  cursor-pointer"
-                    href="/minside"
-                  >
-                    Min side
-                  </a>
+                  {routes.map((route) => (
+                    <a
+                      className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
+                      href={route.path}
+                      key={route.name}
+                    >
+                      {route.name}
+                    </a>
+                  ))}
+              
                 </div>
               </div>
               <div>
