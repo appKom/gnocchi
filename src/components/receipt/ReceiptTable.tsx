@@ -9,7 +9,7 @@ interface ReceiptTableProps {
   receiptsLoading: boolean;
   onSetActive: () => void;
   onSetHistory: () => void;
-  receiptStatus: String | undefined;
+  receiptStatus: String | null;
 }
 
 const ReceiptTable = ({
