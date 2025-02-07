@@ -4,10 +4,12 @@ import Bottombar from "../components/BottomBar";
 import Button from "../components/universal/Button";
 import happy from "../components/happy.png";
 import { useAuth0 } from "@auth0/auth0-react";
+import useAutobankStore from "../store/autobankstore";
 export default function frontPage() {
  
-  console.log("YYY");
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
+  const { userInfo } = useAutobankStore();
+  
 
   return (
     <div className="bg-[#2E6E53] flex flex-col space-y-4">
@@ -30,22 +32,19 @@ export default function frontPage() {
               dine saker.
             </p>
           </div>
-          // Example login link with explicit redirect_uri
-<a href={`/api/auth/login`}>
-  Login
-</a>
           <div className="w-1/2 ">
             <img src={happy} alt="" className="money-honey px-20" />
           </div>
         </div>
         <div className="flex w-1/2 flex-row items-center justify-center space-x-10">
-          {!isAuthenticated && (
+          {userInfo == null && (
             <Button
               title={"Logg inn ->"}
               color={"darkGreen"}
               onClick={() => loginWithRedirect()}
             ></Button>
           )}
+
 
           <Button title={"FAQ"} color={"white"} href="/faq"></Button>
           <Button

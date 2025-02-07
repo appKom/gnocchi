@@ -22,7 +22,6 @@ const ApplicationPage = () => {
 
   const onFileChange = async (files: File[]) => {
     setAttachments([...files]);
-    console.log(attachments);
   };
 
   const [formdata, setFormdata]: [Application, any] = useState({
@@ -36,7 +35,6 @@ const ApplicationPage = () => {
   });
 
   const submitform = async () => {
-    console.log(attachments);
     setDisableSubmit(true);
 
     const application: Application = {

@@ -28,16 +28,12 @@ function App() {
   const isAuthenticated = (): Boolean => {
     return userInfo != null;
   }
-  console.log(userInfo);
+
   if (userInfo != null) {
-    console.log("Checking token expiration");
-  
-  console.log(userInfo.expiresat);
-  console.log(new Date(userInfo.expiresat).getTime() * 1000);
-  console.log(Date.now());
+   
   
     if (Date.now() >= new Date(userInfo.expiresat).getTime()) {
-      console.log("Token expired");
+      console.log("Token expired, logging out");
       setUserInfo(null);
       logoutUser();
     }

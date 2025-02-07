@@ -44,9 +44,9 @@ export interface AllReceiptsResponse {
 export const fetchAllReceipts = async (
   from: number,
   count: number,
+  status: string | null,
   search?: string,
   committee?: string,
-  status?: string,
   sortOrder?: string,
   sortField?: string,
 ): Promise<AllReceiptsResponse> => {
@@ -97,10 +97,8 @@ export const fetchCompleteReceipt = async (
   );
 
   if (res.ok) {
-    console.log("f");
     return res.json();
   } else {
-    console.log("fff");
     throw new Error("Failed to fetch receipt");
   }
 };
@@ -121,10 +119,8 @@ export const postReceiptReview = async (
   );
 
   if (res.status == 200) {
-    console.log("AAA");
     return;
   } else {
-    console.log("BBB");
     throw new Error("Failed to post receipt review");
   }
 };

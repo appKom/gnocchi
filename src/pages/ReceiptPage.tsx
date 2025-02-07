@@ -78,7 +78,6 @@ const ReceiptPage = () => {
 
 
   const submitform = async () => {
-    console.log(attachments);
     setDisableSubmit(true);
     const paymentInfo: PaymentInformation = {
       usedOnlineCard: usedOnlineCard,

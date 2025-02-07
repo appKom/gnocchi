@@ -19,8 +19,8 @@ import AdminBadge from "../../components/admin/AdminBadge";
 const AdminReceiptPage = () => {
   const [receipts, setReceipts] = useState<Receipt_Info[]>([]);
   const [selectedCommittees, setSelectedCommittees] = useState<string[]>([]);
-  const [receiptStatus, setReceiptStatus] = useState<string | undefined>();
-  const [searchTerm, setSearchTerm] = useState<string>(); // The raw value from the input field
+  const [receiptStatus, setReceiptStatus] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // The raw value from the input field
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
 
   const [page, setPage] = useState(1);
@@ -33,15 +33,21 @@ const AdminReceiptPage = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+ 
     setSearchTerm(value);
     debouncedSetSearchTerm(value);
   };
 
   useEffect(() => {
+    
     return () => {
       debouncedSetSearchTerm.cancel();
     };
   }, [debouncedSetSearchTerm]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm, selectedCommittees, receiptStatus]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -56,17 +62,18 @@ const AdminReceiptPage = () => {
       "receipts_admin",
       page - 1,
       rowsPerPage,
+      receiptStatus,
       debouncedSearchTerm,
       selectedCommittees.join(","),
-      receiptStatus,
     ],
     queryFn: () =>
       fetchAllReceipts(
         page - 1,
         rowsPerPage,
+        receiptStatus,
         debouncedSearchTerm,
         selectedCommittees.join(","),
-        receiptStatus,
+
       ),
   });
 
@@ -77,7 +84,7 @@ const AdminReceiptPage = () => {
 
   const handleSetStatusHistory = () => {
     if (receiptStatus === "DONE") {
-      setReceiptStatus(undefined);
+      setReceiptStatus(null);
     } else {
       setReceiptStatus("DONE");
     }
@@ -85,7 +92,7 @@ const AdminReceiptPage = () => {
 
   const handleSetStatusActive = () => {
     if (receiptStatus === "NONE") {
-      setReceiptStatus(undefined);
+      setReceiptStatus(null);
     } else {
       setReceiptStatus("NONE");
     }
