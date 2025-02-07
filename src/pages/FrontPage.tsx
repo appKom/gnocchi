@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 export default function frontPage()
 {
     const { isAuthenticated, loginWithRedirect } = useAuth0();
-    return (<body className="bg-[#2E6E53] flex flex-col space-y-4">
+    return (<body className="bg-[#2E6E53] md:flex flex-col space-y-4 xs:h-auto ph:h-screen">
     <Topbar/>
     <FrontInfo/>
     <Bottombar/>
