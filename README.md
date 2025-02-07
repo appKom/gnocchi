@@ -1,3 +1,8 @@
+# Autobank
+This project is a website for the bank comite in online. Its a website both for users, seeking funding or money back from the line union, and for admins, approving or rejecting applications for funding or reimbursement. So the users can apply for money, they can send in a receipt and have an overlook over their applications and receipts that have been sent in. There will also be a frequently asked questions site, to help users understand and hopefully find answers to their questions. 
+
+For admins they can review applications and receipts, either approving or rejecting, they will also get an overview of all the different applications. Further plans are to incorporate a form to make invoices to different companies, to make this easier for the admins. 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
