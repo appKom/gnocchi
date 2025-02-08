@@ -20,6 +20,8 @@ import useAutobankStore from "./store/autobankstore";
 function App() {
 
   const { setUserInfo, userInfo } = useAutobankStore();
+  const auth = useAuth0();
+  const { logout } = auth;
 
   const isAdmin = (): Boolean => {
     return userInfo != null && userInfo.isadmin;
@@ -30,12 +32,13 @@ function App() {
   }
 
   if (userInfo != null) {
+    
    
-  
     if (Date.now() >= new Date(userInfo.expiresat).getTime()) {
-      console.log("Token expired, logging out");
+
       setUserInfo(null);
       logoutUser();
+      logout();
     }
   }
 
