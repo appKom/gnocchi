@@ -36,60 +36,102 @@ export interface ReceiptReview {
   comment: string;
 }
 
+export interface AllReceiptsResponse {
+  receipts: Receipt_Info[];
+  total: number;
+}
 
-export const fetchAllReceipts = async (getAccessTokenSilently: Function, from: Number, count: Number): Promise<Receipt_Info[]> => {
-  const accesstoken = await getAccessTokenSilently();
-  return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/all?from=' + from + '&count=' + count,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ` + accesstoken,
-      },
-    }
-  ).then((res) => res.json()
-  );
+export const fetchAllReceipts = async (
+  getAccessTokenSilently: Function,
+  from: number,
+  count: number,
+  search?: string,
+  committee?: string,
+  status?: string,
+  sortOrder?: string,
+  sortField?: string,
+): Promise<AllReceiptsResponse> => {
+  const accessToken = await getAccessTokenSilently();
+
+  const params = new URLSearchParams({
+    from: from.toString() || "0",
+    count: count.toString() || "10",
+  });
+
+  if (search) params.append("search", search);
+  if (committee) params.append("committee", committee);
+  if (status) params.append("status", status);
+  if (sortOrder) params.append("sortOrder", sortOrder);
+  if (sortField) params.append("sortField", sortField);
+
+  const url = `${import.meta.env.VITE_BACKEND_URI}/api/admin/receipt/all?${params.toString()}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error fetching receipts: ${response.statusText}`);
+  }
+
+  const data: AllReceiptsResponse = await response.json();
+
+  return data;
 };
 
-export const fetchCompleteReceipt = async (getAccessTokenSilently: Function, receiptId: Number): Promise<CompleteReceipt> => {
+export const fetchCompleteReceipt = async (
+  getAccessTokenSilently: Function,
+  receiptId: Number,
+): Promise<CompleteReceipt> => {
   const accesstoken = await getAccessTokenSilently();
-  const res = await fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/get/' + receiptId,
+  const res = await fetch(
+    (import.meta.env.VITE_BACKEND_URI as string) +
+      "/api/admin/receipt/get/" +
+      receiptId,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ` + accesstoken,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ` + accesstoken,
       },
-    }
-  )
-  
+    },
+  );
+
   if (res.ok) {
-    console.log("f")
+    console.log("f");
     return res.json();
   } else {
-    console.log("fff")
-    throw new Error('Failed to fetch receipt');
+    console.log("fff");
+    throw new Error("Failed to fetch receipt");
   }
-}
+};
 
-export const postReceiptReview = async (getAccessTokenSilently: Function, receiptreview: ReceiptReview): Promise<void> => {
+export const postReceiptReview = async (
+  getAccessTokenSilently: Function,
+  receiptreview: ReceiptReview,
+): Promise<void> => {
   const accesstoken = await getAccessTokenSilently();
-  const res = await fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/review',
+  const res = await fetch(
+    (import.meta.env.VITE_BACKEND_URI as string) + "/api/admin/receipt/review",
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ` + accesstoken,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ` + accesstoken,
       },
-      body: JSON.stringify(receiptreview)
-    }
-  )
+      body: JSON.stringify(receiptreview),
+    },
+  );
 
   if (res.status == 200) {
-    console.log("AAA")
+    console.log("AAA");
     return;
   } else {
-    console.log("BBB")
-    throw new Error('Failed to post receipt review');
+    console.log("BBB");
+    throw new Error("Failed to post receipt review");
   }
-}
+};

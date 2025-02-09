@@ -13,6 +13,6 @@ export const fetchCommittees = async (getAccessTokenSilently: Function) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ` + accesstoken,
       },
-    }
+    },
   ).then((res) => res.json());
 };

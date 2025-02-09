@@ -1,41 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import ReceiptRow from "../../components/receipt/ReceiptRow";
 import { Receipt_Info } from "../../api/adminReceiptAPI";
 import Button from "../../components/universal/Button";
+import { Oval } from "react-loader-spinner";
 
 interface ReceiptTableProps {
   receipts: Receipt_Info[] | undefined;
+  receiptsLoading: boolean;
   onSetActive: () => void;
   onSetHistory: () => void;
+  receiptStatus: String | undefined;
 }
 
 const ReceiptTable = ({
   receipts,
+  receiptsLoading,
   onSetActive,
   onSetHistory,
+  receiptStatus,
 }: ReceiptTableProps) => {
+  const selectedButton =
+    receiptStatus === "NONE"
+      ? "active"
+      : receiptStatus === "DONE"
+        ? "history"
+        : "none";
+
+  const handleSetActive = () => {
+    onSetActive();
+  };
+
+  const handleSetHistory = () => {
+    onSetHistory();
+  };
+
   return (
     <div>
       {/* Buttons Section */}
       <div className="w-full flex flex-row justify-start items-center max-w-[1100px] ml-auto mr-auto pl-5 pt-5 space-x-4">
         <Button
           title="Aktive"
-          color={"green"}
-          onClick={onSetActive}
+          color={selectedButton === "active" ? "green" : "darkGreen"}
+          onClick={handleSetActive}
           className="w-[120px] rounded-t-lg rounded-b-none"
         />
         <Button
           title="Historikk"
-          color={"green"}
-          onClick={onSetHistory}
+          color={selectedButton === "history" ? "green" : "darkGreen"}
+          onClick={handleSetHistory}
           className="w-[120px] rounded-t-lg rounded-b-none"
         />
       </div>
 
       <hr className="max-w-[1100px] ml-auto mr-auto" />
 
-      {/* Receipt Table */}
-      {receipts && receipts.length > 0 ? (
+      {receiptsLoading ? (
+        <div className="flex justify-center items-center h-[200px] w-[100vw]">
+          <Oval height={40} />
+        </div>
+      ) : receipts && receipts.length > 0 ? (
         <table className="w-full border-separate border-spacing-y-3 max-w-[1100px] ml-auto mr-auto">
           <thead>
             <tr>

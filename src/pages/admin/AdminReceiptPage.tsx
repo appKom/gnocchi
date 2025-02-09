@@ -1,27 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchAllReceipts, Receipt_Info } from "../../api/adminReceiptAPI";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCommittees, Committee } from "../../api/baseAPI";
 import {
+  Checkbox,
   FormControl,
-  InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
+  Pagination,
 } from "@mui/material";
 import ReceiptTable from "../../components/receipt/ReceiptTable";
+import debounce from "lodash.debounce";
+import AdminBadge from "../../components/admin/AdminBadge";
 
 const AdminReceiptPage = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [receipts, setReceipts] = useState<Receipt_Info[]>([]);
-  const [selectedCommittee, setSelectedCommittee] = useState<String>();
-  const [receiptStatus, setReceiptStatus] = useState<String>();
-  const [searchTerm, setSearchTerm] = useState<String>();
+  const [selectedCommittees, setSelectedCommittees] = useState<string[]>([]);
+  const [receiptStatus, setReceiptStatus] = useState<string | undefined>();
+  const [searchTerm, setSearchTerm] = useState<string>(); // The raw value from the input field
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
 
-  const { data: receiptData, isError } = useQuery({
-    queryKey: ["receipts_admin"],
-    queryFn: () => fetchAllReceipts(getAccessTokenSilently, 0, 10),
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
+
+  const debouncedSetSearchTerm = useMemo(
+    () => debounce((value: string) => setDebouncedSearchTerm(value), 500),
+    [],
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    debouncedSetSearchTerm(value);
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedSetSearchTerm.cancel();
+    };
+  }, [debouncedSetSearchTerm]);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+
+  const {
+    data: receiptData,
+    isLoading: receiptDataLoading,
+    isError,
+  } = useQuery({
+    queryKey: [
+      "receipts_admin",
+      page-1,
+      rowsPerPage,
+      debouncedSearchTerm,
+      selectedCommittees.join(","),
+      receiptStatus,
+    ],
+    queryFn: () =>
+      fetchAllReceipts(
+        getAccessTokenSilently,
+        page-1,
+        rowsPerPage,
+        debouncedSearchTerm,
+        selectedCommittees.join(","),
+        receiptStatus,
+      ),
   });
 
   const { data: committeeData } = useQuery({
@@ -29,91 +78,111 @@ const AdminReceiptPage = () => {
     queryFn: () => fetchCommittees(getAccessTokenSilently),
   });
 
-  // Filter receipts based on selected committee and receipt status
-  const filteredReceipts = receiptData
-    ?.filter((receipt) =>
-      selectedCommittee ? receipt.committeeName === selectedCommittee : true
-    )
-    ?.filter((receipt) => {
-      if (receiptStatus === "Active") {
-        return receipt.latestReviewStatus === null; // Show null status reviews
-      } else if (receiptStatus === "History") {
-        return (
-          receipt.latestReviewStatus === "APPROVED" ||
-          receipt.latestReviewStatus === "DENIED"
-        );
-      }
-      return true; // Show all if no status is selected
-    })
-    ?.filter((receipt) => {
-      if (searchTerm) {
-        return receipt.receiptName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      } else {
-        return true;
-      }
-    });
-
   const handleSetStatusHistory = () => {
-    setReceiptStatus("History");
+    if (receiptStatus === "DONE") {
+      setReceiptStatus(undefined);
+    } else {
+      setReceiptStatus("DONE");
+    }
   };
 
   const handleSetStatusActive = () => {
-    setReceiptStatus("Active");
+    if (receiptStatus === "NONE") {
+      setReceiptStatus(undefined);
+    } else {
+      setReceiptStatus("NONE");
+    }
+  };
+
+  const handleCommitteeChange = (event: any) => {
+    const value = event.target.value;
+    setSelectedCommittees(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
     <div className="w-full flex-row p-5">
-      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto">
+      <div>
+        <AdminBadge />
+        <h1
+        className="text-3xl font-bold pt-5 text-white"
+        >Alle kvitteringer</h1>
+      </div>
+      <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-16">
         <TextField
           id="search"
-          label="Søk på anledning..."
+          placeholder="Søk på anledning..."
           variant="outlined"
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
+          value={searchTerm}
           sx={{
             backgroundColor: "white",
             width: "200px",
-            height: "30px",
-            "& .MuiOutlinedInput-input": {
-              padding: "10px",
+            height: "40px",
+            borderRadius: "4px",
+            "& .MuiOutlinedInput-root": {
+              height: "40px",
+            },
+            "& .MuiInputLabel-root": {
+              top: "-5px",
             },
           }}
         />
-        <FormControl>
-          <InputLabel
-            id="committeeLabel"
-            sx={{ top: "50px", transform: "translateY(-50%)" }}
-          >
-            Velg Komité
-          </InputLabel>
+        <FormControl sx={{ width: "200px", height: "40px" }}>
           <Select
-            labelId="comitteeLabel"
             id="committeeDropdown"
-            value={selectedCommittee}
-            label="Komité"
-            onChange={(e) => setSelectedCommittee(e.target.value as string)}
+            multiple
+            value={selectedCommittees || ""}
+            onChange={handleCommitteeChange}
+            inputProps={{ "aria-label": "Without label" }}
+            input={<OutlinedInput notched={false} />}
+            displayEmpty
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <span className="text-gray-500">Filtrer...</span>;
+              }
+              return selected.join(", ");
+            }}
             sx={{
               backgroundColor: "white",
-              width: "200px",
               height: "40px",
+              textAlign: "left",
             }}
           >
             {committeeData &&
               committeeData?.map((committee: Committee) => (
                 <MenuItem key={committee.id} value={committee.name}>
+                  <Checkbox
+                    checked={selectedCommittees.includes(committee.name)}
+                  />
                   {committee.name}
                 </MenuItem>
               ))}
           </Select>
         </FormControl>
       </div>
+      {(receiptData || receiptDataLoading) && (
+        <ReceiptTable
+          receipts={receiptData?.receipts}
+          receiptsLoading={receiptDataLoading}
+          onSetActive={handleSetStatusActive}
+          onSetHistory={handleSetStatusHistory}
+          receiptStatus={receiptStatus}
+        />
+      )}
+      {receiptData && receiptData.total > 0 && (
+        <Pagination
+        
+        
+          className="flex justify-center mt-5"
+          count={Math.ceil(receiptData?.total / rowsPerPage)}
+          color="primary"
 
-      <ReceiptTable
-        receipts={filteredReceipts}
-        onSetActive={handleSetStatusActive}
-        onSetHistory={handleSetStatusHistory}
-      />
+          page={page}
+          onChange={handleChangePage}
+         
+        
+        />
+      )}
     </div>
   );
 };
