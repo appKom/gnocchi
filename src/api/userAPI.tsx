@@ -42,29 +42,29 @@ export interface Receipt_Info {
   }
   
   
-  export const fetchAllUserReceipts = async (getAccessTokenSilently: Function, from: Number, count: Number): Promise<AllReceiptsResponse> => {
-    const accesstoken = await getAccessTokenSilently();
+  export const fetchAllUserReceipts = async (from: Number, count: Number): Promise<Receipt_Info[]> => {
     return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/receipt/getall?from=' + from + '&count=' + count,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ` + accesstoken,
+          
         },
+        credentials: 'include',
       }
     ).then((res) => res.json()
     );
   };
   
-  export const fetchCompleteReceipt = async (getAccessTokenSilently: Function, receiptId: Number): Promise<CompleteReceipt> => {
-    const accesstoken = await getAccessTokenSilently();
+  export const fetchCompleteReceipt = async (receiptId: Number): Promise<CompleteReceipt> => {
     const res = await fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/get/' + receiptId,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ` + accesstoken,
+     
         },
+        credentials: 'include',
       }
     )
     
@@ -77,15 +77,14 @@ export interface Receipt_Info {
     }
   }
   
-  export const postReceiptReview = async (getAccessTokenSilently: Function, receiptreview: ReceiptReview): Promise<void> => {
-    const accesstoken = await getAccessTokenSilently();
+  export const postReceiptReview = async (receiptreview: ReceiptReview): Promise<void> => {
     const res = await fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/admin/receipt/review',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ` + accesstoken,
         },
+        credentials: 'include',
         body: JSON.stringify(receiptreview)
       }
     )

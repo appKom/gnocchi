@@ -33,7 +33,8 @@ const ReceiptTable = ({
   const handleSetHistory = () => {
     onSetHistory();
   };
-
+  // console.log("receipts", receipts);
+  // console.log(receipts?.length);
   return (
     <div>
       {/* Buttons Section */}

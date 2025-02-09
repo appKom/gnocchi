@@ -9,11 +9,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 const ProfileCard = () => {
 
   const auth = useAuth0();
-  const { getAccessTokenSilently } = auth;
+
 
   const { data , isError } = useQuery({
     queryKey: ["committees"],
-    queryFn: () => fetchUserComittees(getAccessTokenSilently),
+    queryFn: () => fetchUserComittees(),
   });
 
   const capitalizeFirstLetter = (str: string) => {

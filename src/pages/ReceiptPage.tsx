@@ -54,7 +54,7 @@ const ReceiptPage = () => {
   const [attachments, setAttachments] = useState<File[]>([]);
 
   const auth = useAuth0();
-  const { getAccessTokenSilently, user } = auth;
+  const { user } = auth;
 
  
   const { data, isError } = useQuery({

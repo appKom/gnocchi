@@ -22,7 +22,7 @@ export const fetchCommittees = async () => {
   ).then((res) => res.json());
 };
 
-export const fetchUserComittees = async (getAccessTokenSilently: Function): Promise<UserCommittees> => {
+export const fetchUserComittees = async (): Promise<UserCommittees> => {
   return await fetch(
     (import.meta.env.VITE_BACKEND_URI as string) + "/api/committee/user",
     {
