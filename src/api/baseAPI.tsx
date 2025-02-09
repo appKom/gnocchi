@@ -23,15 +23,14 @@ export const fetchCommittees = async () => {
 };
 
 export const fetchUserComittees = async (getAccessTokenSilently: Function): Promise<UserCommittees> => {
-  const accesstoken = await getAccessTokenSilently();
   return await fetch(
     (import.meta.env.VITE_BACKEND_URI as string) + "/api/committee/user",
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ` + accesstoken,
       },
+      credentials: "include",
     }
   ).then((res) => res.json());
 };
