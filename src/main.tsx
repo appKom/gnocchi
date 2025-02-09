@@ -42,9 +42,6 @@ root.render(
         audience: import.meta.env.VITE_AUTH0_AUDIENCE as string,
         
       }}
-      useRefreshTokens={true}
-    
-      cacheLocation="memory"
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
