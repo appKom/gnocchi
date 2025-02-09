@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import Spinner from "../components/universal/Spinner";
 import AdminBadge from "../components/admin/AdminBadge";
 
-const AdminReviewReceiptPage = () => {
+const DetailedReceiptPage = () => {
 
   const receiptid = useParams<{ receiptid: string }>().receiptid;
 
@@ -193,4 +193,4 @@ const AdminReviewReceiptPage = () => {
   );
 };
 
-export default AdminReviewReceiptPage;
+export default DetailedReceiptPage;

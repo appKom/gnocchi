@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 
 import { logoutUser } from "./utils/userutils";
 import useAutobankStore from "./store/autobankstore";
+import DetailedReceiptPage from "./pages/DetailedReceiptPage";
 
 function App() {
 
@@ -111,6 +112,11 @@ function App() {
         path="/admin/kvittering/:receiptid"
         element={<AdminReviewReceiptPage />}
       />,
+      <Route
+      key="user-review-receipt"
+      path="/minside/:receiptid"
+      element={<DetailedReceiptPage />}
+    />,
       <Route
         key="auth-callback"
         path="/authentication/callback"
