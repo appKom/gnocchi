@@ -15,20 +15,30 @@ import FaqPage from "./pages/FaqPage";
 import AdminReviewReceiptPage from "./pages/admin/AdminReviewReceiptPage";
 import ProfilePage from "./pages/ProfilePage";
 
+import { logoutUser } from "./utils/userutils";
+import useAutobankStore from "./store/autobankstore";
+
 function App() {
-  const { isAuthenticated, logout } = useAuth0();
+
+  const { setUserInfo, userInfo } = useAutobankStore();
+  const auth = useAuth0();
+  const { logout } = auth;
 
   const isAdmin = (): Boolean => {
-    return localStorage.getItem("autobankauth0login") != null
-      ? JSON.parse(localStorage.getItem("autobankauth0login")!).isadmin
-      : false;
+    return userInfo != null && userInfo.isadmin;
   };
 
-  const token = localStorage.getItem("autobankauth0login");
-  if (token != null) {
-    const parsed = JSON.parse(token);
-    if (Date.now() >= parsed.expiresat * 1000) {
-      localStorage.removeItem("autobankauth0login");
+  const isAuthenticated = (): Boolean => {
+    return userInfo != null;
+  }
+
+  if (userInfo != null) {
+    
+   
+    if (Date.now() >= new Date(userInfo.expiresat).getTime()) {
+
+      setUserInfo(null);
+      logoutUser();
       logout();
     }
   }
@@ -116,7 +126,7 @@ function App() {
         <Routes>
           {isAdmin()
             ? routes.admin
-            : isAuthenticated
+            : isAuthenticated()
               ? routes.authenticated
               : routes.unautenticated}
         </Routes>

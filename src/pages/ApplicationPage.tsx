@@ -19,11 +19,9 @@ const ApplicationPage = () => {
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
   const auth = useAuth0();
-  const { getAccessTokenSilently } = auth;
 
   const onFileChange = async (files: File[]) => {
     setAttachments([...files]);
-    console.log(attachments);
   };
 
   const [formdata, setFormdata]: [Application, any] = useState({
@@ -37,7 +35,6 @@ const ApplicationPage = () => {
   });
 
   const submitform = async () => {
-    console.log(attachments);
     setDisableSubmit(true);
 
     const application: Application = {

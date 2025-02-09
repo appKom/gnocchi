@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -10,31 +10,26 @@ import {
   XMarkIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
-
-type User = {
-  name?: string;
-  email?: string;
-  picture?: string;
-  given_name?: string;
-};
+import { logoutUser } from "../../utils/userutils";
+import { checkUserResponse } from "../authentication/Authcallback";
+import useAutobankStore from "../../store/autobankstore";
 
 type NavdropdownProps = {
-  user?: User;
+  user?: checkUserResponse | null;
   logout: () => void;
   login: () => void;
-  isAuthenticated: boolean;
 };
 
 const routes = [
-  { name: "Kvittering", path: "/kvittering" },
-  { name: "Søknad", path: "/soknad" },
-  { name: "Min side", path: "/minside" },
+  { name: "Kvittering", path: `${import.meta.env.BASE_URL}kvittering` },
+  { name: "Søknad", path: `${import.meta.env.BASE_URL}soknad` },
+  { name: "Min side", path: `${import.meta.env.BASE_URL}minside` },
 ];
 
 const NavDropdown = (props: NavdropdownProps) => {
   return (
     <div className="lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none rounded-lg shadow-xl cursor-pointer bg-[#2e6e53]">
-      {props.isAuthenticated ? (
+      {props.user != null ? (
         <div>
           <div className="">
             <button className="hover:bg-green-900 flex items-center w-full rounded-[10px] justify-center relativ p-4  h-[50px] bg-[#2e6e53] justify-self-end relative z-20 ">
@@ -44,7 +39,7 @@ const NavDropdown = (props: NavdropdownProps) => {
                 }resources/logo/online-logo-white.png`}
                 className="h-5 mr-2"
               ></img>
-              <p>{props.user?.given_name}</p>
+              <p>{props.user?.fullname}</p>
             </button>
           </div>
 
@@ -64,7 +59,7 @@ const NavDropdown = (props: NavdropdownProps) => {
               className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
               key={route.name}
             >
-              <a href={route.name}>{route.name}</a>
+              <a href={route.path}>{route.name}</a>
             </div>
           ))}
         </div>
@@ -89,11 +84,19 @@ const NavDropdown = (props: NavdropdownProps) => {
 const Navbar = () => {
   const [showNavDropdown, setShowNavDropdown] = useState<Boolean>(false);
 
+  const { userInfo, setUserInfo } = useAutobankStore();
+
   const toggleNavbarDropdown = () => {
     setShowNavDropdown(!showNavDropdown);
   };
 
-  const { isAuthenticated, loginWithRedirect, user, logout } = useAuth0();
+  const { loginWithRedirect, logout: auth0Logout  } = useAuth0();
+
+  const logout = () => {
+    setUserInfo(null);
+    logoutUser();
+    auth0Logout();
+  };
 
   return (
     <div className="relative">
@@ -131,15 +134,14 @@ const Navbar = () => {
           </button>
           {showNavDropdown && (
             <NavDropdown
-              isAuthenticated={isAuthenticated}
-              user={user}
+              user={userInfo}
               logout={logout}
               login={loginWithRedirect}
             />
           )}
 
           {/* Navbar large width */}
-          {isAuthenticated ? (
+          {userInfo != null ? (
             <div className="hidden lg:flex flex justify-self-end absolute right-[20px] gap-10 items-center">
               <div className="flex justify-self-end md:static right-[20px] gap-10 items-center">
                 <div
@@ -148,24 +150,16 @@ const Navbar = () => {
                     " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"
                   }
                 >
-                  <a
-                    className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
-                    href="/kvittering"
-                  >
-                    Kvittering
-                  </a>
-                  <a
-                    className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
-                    href="/soknad"
-                  >
-                    Søknad
-                  </a>
-                  <a
-                    className="text-white  text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800  cursor-pointer"
-                    href="/minside"
-                  >
-                    Min side
-                  </a>
+                  {routes.map((route) => (
+                    <a
+                      className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
+                      href={route.path}
+                      key={route.name}
+                    >
+                      {route.name}
+                    </a>
+                  ))}
+              
                 </div>
               </div>
               <div>
@@ -185,7 +179,7 @@ const Navbar = () => {
                     }resources/logo/online-logo-blue.png`}
                     className="h-5 mr-2"
                   ></img>
-                  <p>{user?.name}</p>
+                  <p>{userInfo.fullname}</p>
                 </button>
               </div>
             </div>

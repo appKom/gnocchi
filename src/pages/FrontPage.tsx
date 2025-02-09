@@ -4,8 +4,13 @@ import Bottombar from "../components/BottomBar";
 import Button from "../components/universal/Button";
 import happy from "../components/happy.png";
 import { useAuth0 } from "@auth0/auth0-react";
+import useAutobankStore from "../store/autobankstore";
 export default function frontPage() {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+ 
+  const { loginWithRedirect } = useAuth0();
+  const { userInfo } = useAutobankStore();
+  
+
   return (
     <div className="bg-[#2E6E53] flex flex-col space-y-4">
       <Topbar />
@@ -13,6 +18,7 @@ export default function frontPage() {
       <Bottombar />
       <div className="z-30">
         <header className="w-1/2 text-white text-5xl font-bold z-30 px-10">
+        
           Autobank
         </header>
         <div className="flex flex-row items-center space-x-4 mx-10">
@@ -26,19 +32,19 @@ export default function frontPage() {
               dine saker.
             </p>
           </div>
-
           <div className="w-1/2 ">
             <img src={happy} alt="" className="money-honey px-20" />
           </div>
         </div>
         <div className="flex w-1/2 flex-row items-center justify-center space-x-10">
-          {!isAuthenticated && (
+          {userInfo == null && (
             <Button
               title={"Logg inn ->"}
               color={"darkGreen"}
               onClick={() => loginWithRedirect()}
             ></Button>
           )}
+
 
           <Button title={"FAQ"} color={"white"} href="/faq"></Button>
           <Button

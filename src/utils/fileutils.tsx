@@ -1,5 +1,5 @@
 export const fileToBase64 = (file: File): Promise<string> => {
-  console.log(file);
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
