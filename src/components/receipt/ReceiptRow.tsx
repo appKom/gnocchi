@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { Receipt_Info } from "../../api/adminReceiptAPI";
 import { IoIosMail, IoIosCloseCircle, IoMdCheckmark } from "react-icons/io";
 
@@ -8,10 +9,26 @@ interface ReceiptOverviewProps {
 
 
 const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = () => {
+
+    const linkBase = location.pathname.includes("/admin")
+      ? "/admin/kvittering/"
+      : "/minside/";
+
+
+    const fullLink = `${linkBase}${receipt.receiptId}`;
+
+
+    navigate(fullLink);
+  };
+
   return (
     <tr
-      onClick={() =>
-        (window.location.href = `/admin/kvittering/${receipt.receiptId}`)
+      onClick={
+        handleClick
       }
       className="h-[100px] shadow-black border-violet-500 mb-5 ml-0 group hover:cursor-pointer"
     >

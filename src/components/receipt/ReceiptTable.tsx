@@ -82,7 +82,7 @@ const ReceiptTable = ({
           </thead>
           <tbody>
             {receipts.map((receipt) => (
-              <ReceiptRow key={receipt.receiptId} receipt={receipt} />
+              <ReceiptRow key={receipt.receiptId} receipt={receipt}/>
             ))}
           </tbody>
         </table>

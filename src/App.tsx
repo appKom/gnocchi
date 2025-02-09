@@ -13,6 +13,7 @@ import ApplicationPage from "./pages/ApplicationPage";
 import Footer from "./components/universal/Footer";
 import FaqPage from "./pages/FaqPage";
 import AdminReviewReceiptPage from "./pages/admin/AdminReviewReceiptPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const { isAuthenticated, logout } = useAuth0();
@@ -50,6 +51,11 @@ function App() {
         element={<ReceiptPage />}
       />,
       <Route
+      key="authenticated-profile"
+      path="/minside"
+      element={<ProfilePage />}
+      />,
+      <Route
         key="authenticated-application"
         path="/soknad"
         element={<ApplicationPage />}
@@ -67,6 +73,11 @@ function App() {
         key="admin-receipt"
         path="/kvittering"
         element={<ReceiptPage />}
+      />,
+      <Route
+      key="authenticated-profile"
+      path="/minside"
+      element={<ProfilePage />}
       />,
       <Route
         key="admin-application"

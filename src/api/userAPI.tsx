@@ -1,7 +1,7 @@
 export interface Receipt_Info {
     receiptId: number;
     amount: number;
-    name: string;
+    receiptName: string;
     receiptDescription: string;
     receiptCreatedAt: string;
     committeeName: string;
@@ -35,9 +35,14 @@ export interface Receipt_Info {
     status: string;
     comment: string;
   }
+
+  export interface AllReceiptsResponse {
+    receipts: Receipt_Info[];
+    total: number;
+  }
   
   
-  export const fetchAllUserReceipts = async (getAccessTokenSilently: Function, from: Number, count: Number): Promise<Receipt_Info[]> => {
+  export const fetchAllUserReceipts = async (getAccessTokenSilently: Function, from: Number, count: Number): Promise<AllReceiptsResponse> => {
     const accesstoken = await getAccessTokenSilently();
     return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/receipt/getall?from=' + from + '&count=' + count,
       {
