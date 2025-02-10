@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../universal/Spinner";
-import { useNavigate } from "react-router-dom";
-import  useAutobankStore from "../../store/autobankstore";
+import { Link, useNavigate } from "react-router-dom";
+import useAutobankStore from "../../store/autobankstore";
+import { checkCookie, setCookie } from "../../api/authAPI";
+import { set } from "lodash";
 
 
 export interface checkUserResponse {
@@ -16,57 +18,38 @@ export interface checkUserResponse {
 
 const Authcallback = () => {
 
-  
-  const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
-  const { setUserInfo } = useAutobankStore();
 
+  const { setUserInfo } = useAutobankStore();
   const auth = useAuth0();
   const { isAuthenticated, user, getAccessTokenSilently } = auth;
   const navigate = useNavigate();
+  const [loadingStatus, setLoadingStatus] = useState("Henter informasjon");
+
+  const [redirectNotWorking, setRedirectNotWorking] = useState(false);
+
 
   const storeUser = async () => {
     try {
       if (isAuthenticated && user) {
-        const res: Response = await fetch(`${BACKEND_URI}/api/auth/setuser`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${await getAccessTokenSilently()}`,
-          },
-          credentials: "include",
-        });
+        setLoadingStatus("Lagrer informasjon");
+        await setCookie(await getAccessTokenSilently());
 
-        /* Temporary solution */
-        if (!res.ok) {
-          throw new Error("Failed to fetch user");
-        } else {
+        setLoadingStatus("Sjekekr informasjon");
+        const data = await checkCookie();
 
-        const res2: Response = await fetch(`${BACKEND_URI}/api/auth/getuser`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
-
-        /* Temporary solution */
-        if (!res2.ok) {
-          throw new Error("Failed to fetch user");
-        }
-        const data: checkUserResponse = await res2.json();
-        if (!data.success) {
-          throw new Error("Failed to fetch user");
-        }
-        /* ----- */
-
+        setLoadingStatus("Gyldig informasjon");
         data.fullname = user.name || "";
-
         setUserInfo(data);
-    
+
+        setLoadingStatus("Videresender");
+        setTimeout(() => {
+          setRedirectNotWorking(true);
+        }
+          , 2000);
         navigate("/");
       }
-      }
     } catch (e) {
+      setLoadingStatus("Feil oppstod");
       console.error(e);
     }
   };
@@ -74,12 +57,14 @@ const Authcallback = () => {
   useEffect(() => {
     storeUser();
   }, [isAuthenticated, user]);
-  
+
   return (
     <div>
       <div className="mt-[100px] font-bold text-xl text-white">
         <Spinner size={4} color="green" />
         <p className="mt-[20px] text-green">Vennligst vent</p>
+        {!redirectNotWorking && <p className="mt-[20px] text-sm text-green">{loadingStatus}</p>}
+        {redirectNotWorking && <Link className="underline" to="/">Videresend manuelt.</Link>}
       </div>
     </div>
   );
