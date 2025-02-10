@@ -19,16 +19,11 @@ import Spinner from "../../components/universal/Spinner";
 import AdminBadge from "../../components/admin/AdminBadge";
 
 const AdminReviewReceiptPage = () => {
-  const { getAccessTokenSilently } = useAuth0();
   const receiptid = useParams<{ receiptid: string }>().receiptid;
 
   const { data, isError, isLoading } = useQuery({
     queryKey: ["completereceipt", receiptid],
-    queryFn: () =>
-      fetchCompleteReceipt(
-        getAccessTokenSilently,
-        receiptid as unknown as Number,
-      ),
+    queryFn: () => fetchCompleteReceipt(receiptid as unknown as Number),
   });
 
   const formatDate = (dateString: string) => {
@@ -53,7 +48,7 @@ const AdminReviewReceiptPage = () => {
     };
 
     try {
-      await postReceiptReview(getAccessTokenSilently, receiptreview);
+      await postReceiptReview(receiptreview);
       alert("Review sent");
       window.location.reload();
     } catch (error) {

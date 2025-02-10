@@ -3,16 +3,15 @@ export interface Committee {
   name: string;
 }
 
-export const fetchCommittees = async (getAccessTokenSilently: Function) => {
-  const accesstoken = await getAccessTokenSilently();
+export const fetchCommittees = async () => {
   return fetch(
     (import.meta.env.VITE_BACKEND_URI as string) + "/api/committee/all",
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ` + accesstoken,
       },
+      credentials: "include",
     },
   ).then((res) => res.json());
 };

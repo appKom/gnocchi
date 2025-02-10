@@ -1,44 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../universal/Spinner";
+import { Link, useNavigate } from "react-router-dom";
+import useAutobankStore from "../../store/autobankstore";
+import { checkCookie, setCookie } from "../../api/authAPI";
+import { set } from "lodash";
 
-interface checkUserResponse {
+
+export interface checkUserResponse {
   success: boolean;
   isadmin: boolean;
+  issuperadmin: boolean;
+  expiresat: string;
+  fullname: string;
 }
 
 const Authcallback = () => {
-  const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
 
+
+  const { setUserInfo } = useAutobankStore();
   const auth = useAuth0();
   const { isAuthenticated, user, getAccessTokenSilently } = auth;
+  const navigate = useNavigate();
+  const [loadingStatus, setLoadingStatus] = useState("Henter informasjon");
+
+  const [redirectNotWorking, setRedirectNotWorking] = useState(false);
+
 
   const storeUser = async () => {
     try {
       if (isAuthenticated && user) {
-        const res: Response = await fetch(`${BACKEND_URI}/api/auth/check`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${await getAccessTokenSilently()}`,
-          },
-        });
+        setLoadingStatus("Lagrer informasjon");
+        await setCookie(await getAccessTokenSilently());
 
-        /* Temporary solution */
-        if (!res.ok) {
-          throw new Error("Failed to fetch user");
-        }
-        const data: checkUserResponse = await res.json();
-        if (!data.success) {
-          throw new Error("Failed to fetch user");
-        }
-        /* ----- */
+        setLoadingStatus("Sjekekr informasjon");
+        const data = await checkCookie();
 
-        localStorage.setItem("autobankauth0login", JSON.stringify(data));
-        window.location.href = "/";
+        setLoadingStatus("Gyldig informasjon");
+        data.fullname = user.name || "";
+        setUserInfo(data);
+
+        setLoadingStatus("Videresender");
+        setTimeout(() => {
+          setRedirectNotWorking(true);
+        }
+          , 2000);
+        navigate("/");
       }
     } catch (e) {
+      setLoadingStatus("Feil oppstod");
       console.error(e);
     }
   };
@@ -52,6 +63,8 @@ const Authcallback = () => {
       <div className="mt-[100px] font-bold text-xl text-white">
         <Spinner size={4} color="green" />
         <p className="mt-[20px] text-green">Vennligst vent</p>
+        {!redirectNotWorking && <p className="mt-[20px] text-sm text-green">{loadingStatus}</p>}
+        {redirectNotWorking && <Link className="underline" to="/">Videresend manuelt.</Link>}
       </div>
     </div>
   );

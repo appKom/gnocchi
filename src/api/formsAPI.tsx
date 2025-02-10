@@ -21,28 +21,21 @@ interface Application {
   id: 0;
 }
 
-export const submitReceipt = async (
-  getAccessTokenSilently: Function,
-  receiptbody: ReceiptRequestBody,
-) => {
-  const accesstoken = await getAccessTokenSilently();
+export const submitReceipt = async (receiptbody: ReceiptRequestBody) => {
   return fetch(
     (import.meta.env.VITE_BACKEND_URI as string) + "/api/receipt/create",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ` + accesstoken,
       },
       body: JSON.stringify(receiptbody),
+      credentials: "include",
     },
   );
 };
 
-export const submitEconomicRequest = async (
-  getAccessTokenSilently: Function,
-  application: Application,
-) => {
+export const submitEconomicRequest = async (application: Application) => {
   //   const accesstoken = await getAccessTokenSilently();
   //   return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/receipt/create',
   //   {

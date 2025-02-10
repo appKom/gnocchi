@@ -17,11 +17,10 @@ import debounce from "lodash.debounce";
 import AdminBadge from "../../components/admin/AdminBadge";
 
 const AdminReceiptPage = () => {
-  const { getAccessTokenSilently } = useAuth0();
   const [receipts, setReceipts] = useState<Receipt_Info[]>([]);
   const [selectedCommittees, setSelectedCommittees] = useState<string[]>([]);
-  const [receiptStatus, setReceiptStatus] = useState<string | undefined>();
-  const [searchTerm, setSearchTerm] = useState<string>(); // The raw value from the input field
+  const [receiptStatus, setReceiptStatus] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // The raw value from the input field
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
 
   const [page, setPage] = useState(1);
@@ -34,20 +33,25 @@ const AdminReceiptPage = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+ 
     setSearchTerm(value);
     debouncedSetSearchTerm(value);
   };
 
   useEffect(() => {
+    
     return () => {
       debouncedSetSearchTerm.cancel();
     };
   }, [debouncedSetSearchTerm]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm, selectedCommittees, receiptStatus]);
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
 
   const {
     data: receiptData,
@@ -56,31 +60,31 @@ const AdminReceiptPage = () => {
   } = useQuery({
     queryKey: [
       "receipts_admin",
-      page-1,
+      page - 1,
       rowsPerPage,
+      receiptStatus,
       debouncedSearchTerm,
       selectedCommittees.join(","),
-      receiptStatus,
     ],
     queryFn: () =>
       fetchAllReceipts(
-        getAccessTokenSilently,
-        page-1,
+        page - 1,
         rowsPerPage,
+        receiptStatus,
         debouncedSearchTerm,
         selectedCommittees.join(","),
-        receiptStatus,
+
       ),
   });
 
   const { data: committeeData } = useQuery({
     queryKey: ["committees"],
-    queryFn: () => fetchCommittees(getAccessTokenSilently),
+    queryFn: () => fetchCommittees(),
   });
 
   const handleSetStatusHistory = () => {
     if (receiptStatus === "DONE") {
-      setReceiptStatus(undefined);
+      setReceiptStatus(null);
     } else {
       setReceiptStatus("DONE");
     }
@@ -88,7 +92,7 @@ const AdminReceiptPage = () => {
 
   const handleSetStatusActive = () => {
     if (receiptStatus === "NONE") {
-      setReceiptStatus(undefined);
+      setReceiptStatus(null);
     } else {
       setReceiptStatus("NONE");
     }
@@ -103,9 +107,9 @@ const AdminReceiptPage = () => {
     <div className="w-full flex-row p-5">
       <div>
         <AdminBadge />
-        <h1
-        className="text-3xl font-bold pt-5 text-white"
-        >Alle kvitteringer</h1>
+        <h1 className="text-3xl font-bold pt-5 text-white">
+          Alle kvitteringer
+        </h1>
       </div>
       <div className="w-full flex flex-row justify-between items-center max-w-[1100px] ml-auto mr-auto pb-5 pt-16">
         <TextField
@@ -171,16 +175,11 @@ const AdminReceiptPage = () => {
       )}
       {receiptData && receiptData.total > 0 && (
         <Pagination
-        
-        
           className="flex justify-center mt-5"
           count={Math.ceil(receiptData?.total / rowsPerPage)}
           color="primary"
-
           page={page}
           onChange={handleChangePage}
-         
-        
         />
       )}
     </div>

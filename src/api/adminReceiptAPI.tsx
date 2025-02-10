@@ -42,17 +42,14 @@ export interface AllReceiptsResponse {
 }
 
 export const fetchAllReceipts = async (
-  getAccessTokenSilently: Function,
   from: number,
   count: number,
+  status: string | null,
   search?: string,
   committee?: string,
-  status?: string,
   sortOrder?: string,
   sortField?: string,
 ): Promise<AllReceiptsResponse> => {
-  const accessToken = await getAccessTokenSilently();
-
   const params = new URLSearchParams({
     from: from.toString() || "0",
     count: count.toString() || "10",
@@ -70,8 +67,8 @@ export const fetchAllReceipts = async (
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
     },
+    credentials: "include",
   });
 
   if (!response.ok) {
@@ -84,10 +81,8 @@ export const fetchAllReceipts = async (
 };
 
 export const fetchCompleteReceipt = async (
-  getAccessTokenSilently: Function,
   receiptId: Number,
 ): Promise<CompleteReceipt> => {
-  const accesstoken = await getAccessTokenSilently();
   const res = await fetch(
     (import.meta.env.VITE_BACKEND_URI as string) +
       "/api/admin/receipt/get/" +
@@ -96,42 +91,36 @@ export const fetchCompleteReceipt = async (
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ` + accesstoken,
       },
+      credentials: "include",
     },
   );
 
   if (res.ok) {
-    console.log("f");
     return res.json();
   } else {
-    console.log("fff");
     throw new Error("Failed to fetch receipt");
   }
 };
 
 export const postReceiptReview = async (
-  getAccessTokenSilently: Function,
   receiptreview: ReceiptReview,
 ): Promise<void> => {
-  const accesstoken = await getAccessTokenSilently();
   const res = await fetch(
     (import.meta.env.VITE_BACKEND_URI as string) + "/api/admin/receipt/review",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ` + accesstoken,
       },
+      credentials: "include",
       body: JSON.stringify(receiptreview),
     },
   );
 
   if (res.status == 200) {
-    console.log("AAA");
     return;
   } else {
-    console.log("BBB");
     throw new Error("Failed to post receipt review");
   }
 };
