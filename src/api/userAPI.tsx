@@ -42,9 +42,12 @@ export interface Receipt_Info {
   }
   
   
-  export const fetchAllUserReceipts = async (from: Number, count: Number): Promise<Receipt_Info[]> => {
-    return fetch(import.meta.env.VITE_BACKEND_URI as string + '/api/receipt/getall?from=' + from + '&count=' + count,
-      {
+  export const fetchAllUserReceipts = async (from: Number, count: Number, status: string | null,
+  ): Promise<Receipt_Info[]> => {
+
+    return fetch(
+      `${import.meta.env.VITE_BACKEND_URI}/api/receipt/getall?from=${from}&count=${count}${status ? `&status=${status}` : ''}`,
+          {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

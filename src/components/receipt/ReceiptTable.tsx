@@ -7,17 +7,15 @@ import { Oval } from "react-loader-spinner";
 interface ReceiptTableProps {
   receipts: Receipt_Info[] | undefined;
   receiptsLoading: boolean;
-  onSetActive: () => void;
-  onSetHistory: () => void;
   receiptStatus: String | undefined | null;
+  setReceiptStatus: (status: string | null) => void;
 }
 
 const ReceiptTable = ({
   receipts,
   receiptsLoading,
-  onSetActive,
-  onSetHistory,
   receiptStatus,
+  setReceiptStatus
 }: ReceiptTableProps) => {
   const selectedButton =
     receiptStatus === "NONE"
@@ -27,14 +25,14 @@ const ReceiptTable = ({
         : "none";
 
   const handleSetActive = () => {
-    onSetActive();
+    setReceiptStatus(receiptStatus === "NONE" ? null : "NONE");
   };
-
+  
   const handleSetHistory = () => {
-    onSetHistory();
+    setReceiptStatus(receiptStatus === "DONE" ? null : "DONE");
   };
-  // console.log("receipts", receipts);
-  // console.log(receipts?.length);
+  
+
   return (
     <div>
       {/* Buttons Section */}

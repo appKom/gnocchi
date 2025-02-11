@@ -1,6 +1,4 @@
 import ProfileCard from "../components/profile/ProfileCard";
-import ItemList from "../components/profile/ItemList";
-import Navbar from "../components/universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -9,48 +7,31 @@ import ReceiptTable from "../components/receipt/ReceiptTable";
 
 const ProfilePage = () => {
     const auth = useAuth0();
-    const { loginWithRedirect } = auth;
-    const [searchTerm, setSearchTerm] = useState<string>(); // The raw value from the input field
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
     const [page, setPage] = useState(1);
     const rowsPerPage = 10;
-    const [receiptStatus, setReceiptStatus] = useState<string | undefined>();
+    const [receiptStatus, setReceiptStatus] = useState<string | null>(null);
 
   const {
     data: receiptData,
     isLoading: receiptDataLoading,
-    isError,
   } = useQuery({
     queryKey: [
       "receipts_user",
       page-1,
       rowsPerPage,
+      receiptStatus,
       debouncedSearchTerm,
     ],
     queryFn: () =>
       fetchAllUserReceipts(
         page-1,
         rowsPerPage,
+        receiptStatus
     ),
   });
 
-  const handleSetStatusHistory = () => {
-    if (receiptStatus === "DONE") {
-      setReceiptStatus(undefined);
-    } else {
-      setReceiptStatus("DONE");
-    }
-  };
-
-  const handleSetStatusActive = () => {
-    if (receiptStatus === "NONE") {
-      setReceiptStatus(undefined);
-    } else {
-      setReceiptStatus("NONE");
-    }
-  };
-  console.log("receiptData", receiptData);
-  console.log("receipts", receiptData);
+  
   return (
     <div className="flex min-h-screen">
       <div className="hidden sm:block lg:block">
@@ -61,8 +42,7 @@ const ProfilePage = () => {
         <ReceiptTable 
           receipts={receiptData}
           receiptsLoading={receiptDataLoading}
-          onSetActive={handleSetStatusActive}
-          onSetHistory={handleSetStatusHistory}
+          setReceiptStatus={setReceiptStatus}
           receiptStatus={receiptStatus}/>
       </div>
     </div>
