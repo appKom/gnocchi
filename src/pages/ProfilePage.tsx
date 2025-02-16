@@ -30,7 +30,6 @@ const ProfilePage = () => {
         receiptStatus
     ),
   });
-
   
   return (
     <div className="flex min-h-screen">
@@ -40,7 +39,7 @@ const ProfilePage = () => {
       <div className="ml-5 mr-5 rounded-xl flex-grow p-8 bg-[#669782] h-full">
         
         <ReceiptTable 
-          receipts={receiptData}
+          receipts={receiptData?.receipts}
           receiptsLoading={receiptDataLoading}
           setReceiptStatus={setReceiptStatus}
           receiptStatus={receiptStatus}/>

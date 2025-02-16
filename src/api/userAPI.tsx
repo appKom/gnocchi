@@ -43,7 +43,7 @@ export interface Receipt_Info {
   
   
   export const fetchAllUserReceipts = async (from: Number, count: Number, status: string | null,
-  ): Promise<Receipt_Info[]> => {
+  ): Promise<AllReceiptsResponse> => {
 
     return fetch(
       `${import.meta.env.VITE_BACKEND_URI}/api/receipt/getall?from=${from}&count=${count}${status ? `&status=${status}` : ''}`,
