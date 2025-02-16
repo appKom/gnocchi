@@ -4,13 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchAllUserReceipts } from "../api/userAPI";
 import ReceiptTable from "../components/receipt/ReceiptTable";
+import { Pagination } from "@mui/material";
 
 const ProfilePage = () => {
-    const auth = useAuth0();
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
-    const [page, setPage] = useState(1);
-    const rowsPerPage = 10;
-    const [receiptStatus, setReceiptStatus] = useState<string | null>(null);
+  const auth = useAuth0();
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 5;
+  const [receiptStatus, setReceiptStatus] = useState<string | null>(null);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
 
   const {
     data: receiptData,
@@ -18,31 +23,35 @@ const ProfilePage = () => {
   } = useQuery({
     queryKey: [
       "receipts_user",
-      page-1,
+      page - 1,
       rowsPerPage,
       receiptStatus,
       debouncedSearchTerm,
     ],
-    queryFn: () =>
-      fetchAllUserReceipts(
-        page-1,
-        rowsPerPage,
-        receiptStatus
-    ),
+    queryFn: () => fetchAllUserReceipts(page - 1, rowsPerPage, receiptStatus),
   });
-  
+
   return (
     <div className="flex min-h-screen">
       <div className="hidden sm:block lg:block">
         <ProfileCard />
       </div>
       <div className="ml-5 mr-5 rounded-xl flex-grow p-8 bg-[#669782] h-full">
-        
-        <ReceiptTable 
+        <ReceiptTable
           receipts={receiptData?.receipts}
           receiptsLoading={receiptDataLoading}
           setReceiptStatus={setReceiptStatus}
-          receiptStatus={receiptStatus}/>
+          receiptStatus={receiptStatus}
+        />
+        {receiptData && receiptData.total > 0 && (
+          <Pagination
+            className="flex justify-center mt-5"
+            count={Math.ceil(receiptData.total / rowsPerPage)}
+            color="primary"
+            page={page}
+            onChange={handleChangePage}
+          />
+        )}
       </div>
     </div>
   );
