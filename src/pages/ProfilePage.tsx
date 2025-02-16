@@ -5,6 +5,7 @@ import { useState } from "react";
 import { fetchAllUserReceipts } from "../api/userAPI";
 import ReceiptTable from "../components/receipt/ReceiptTable";
 import { Pagination } from "@mui/material";
+import { useEffect } from "react";
 
 const ProfilePage = () => {
   const auth = useAuth0();
@@ -30,6 +31,10 @@ const ProfilePage = () => {
     ],
     queryFn: () => fetchAllUserReceipts(page - 1, rowsPerPage, receiptStatus),
   });
+
+   useEffect(() => {
+      setPage(1);
+    }, [debouncedSearchTerm, receiptStatus]);
 
   return (
     <div className="flex min-h-screen pt-5">
