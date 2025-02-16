@@ -32,7 +32,7 @@ const ProfilePage = () => {
   });
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-5">
       <div className="hidden sm:block lg:block">
         <ProfileCard />
       </div>
