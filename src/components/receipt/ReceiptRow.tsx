@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { Receipt_Info } from "../../api/adminReceiptAPI";
 import { IoIosMail, IoIosCloseCircle, IoMdCheckmark } from "react-icons/io";
 
@@ -6,10 +7,26 @@ interface ReceiptOverviewProps {
 }
 
 const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = () => {
+
+    const linkBase = location.pathname.includes("/admin")
+      ? "/admin/kvittering/"
+      : "/minside/";
+
+
+    const fullLink = `${linkBase}${receipt.receiptId}`;
+
+
+    navigate(fullLink);
+  };
+
   return (
     <tr
-      onClick={() =>
-        (window.location.href = `/admin/kvittering/${receipt.receiptId}`)
+      onClick={
+        handleClick
       }
       className="h-[100px] shadow-black border-violet-500 mb-5 ml-0 group hover:cursor-pointer"
     >
@@ -39,8 +56,8 @@ const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
         {receipt.paymentOrCard === "Payment" ? "Utlegg" : "Kort"}
       </td>
       <td className="bg-green-200 text-left max-h-3 hidden md:table-cell max-w-[150px] overflow-hidden line-clamp-3">
-        {receipt.receiptDescription.slice(0, 70)}
-        {receipt.receiptDescription.length > 70 ? "..." : ""}
+        {receipt.receiptDescription.slice(0, 60)}
+        {receipt.receiptDescription.length > 60 ? "..." : ""}
       </td>
       <td className="bg-green-200 text-center w-[110px] rounded-tr rounded-br font-semibold">
         {`${new Date(receipt.receiptCreatedAt).getDate()}.${

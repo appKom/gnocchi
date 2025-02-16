@@ -7,17 +7,15 @@ import { Oval } from "react-loader-spinner";
 interface ReceiptTableProps {
   receipts: Receipt_Info[] | undefined;
   receiptsLoading: boolean;
-  onSetActive: () => void;
-  onSetHistory: () => void;
-  receiptStatus: String | null;
+  receiptStatus: String | undefined | null;
+  setReceiptStatus: (status: string | null) => void;
 }
 
 const ReceiptTable = ({
   receipts,
   receiptsLoading,
-  onSetActive,
-  onSetHistory,
   receiptStatus,
+  setReceiptStatus
 }: ReceiptTableProps) => {
   const selectedButton =
     receiptStatus === "NONE"
@@ -27,12 +25,13 @@ const ReceiptTable = ({
         : "none";
 
   const handleSetActive = () => {
-    onSetActive();
+    setReceiptStatus(receiptStatus === "NONE" ? null : "NONE");
   };
-
+  
   const handleSetHistory = () => {
-    onSetHistory();
+    setReceiptStatus(receiptStatus === "DONE" ? null : "DONE");
   };
+  
 
   return (
     <div>
@@ -54,43 +53,43 @@ const ReceiptTable = ({
 
       <hr className="max-w-[1100px] ml-auto mr-auto" />
 
-      {receiptsLoading ? (
-        <div className="flex justify-center items-center h-[200px] w-[100vw]">
-          <Oval height={40} />
-        </div>
-      ) : receipts && receipts.length > 0 ? (
-        <table className="w-full border-separate border-spacing-y-3 max-w-[1100px] ml-auto mr-auto">
-          <thead>
-            <tr>
-              <th></th>
-              <th className="text-left text-white text-xl font-normal">
-                Komité
-              </th>
-              <th className="text-left text-white text-xl font-normal">
-                Anledning
-              </th>
-              <th className="text-left text-white text-xl font-normal hidden md:table-cell">
-                Type
-              </th>
-              <th className="text-left text-white text-xl font-normal hidden md:table-cell">
-                Kommentar
-              </th>
-              <th className="text-middle w-[110px] text-white text-xl font-normal">
-                Dato
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {receipts.map((receipt) => (
-              <ReceiptRow key={receipt.receiptId} receipt={receipt} />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p className="text-middle text-white text-xl font-normal pt-5">
-          Ingen kvitteringer å vise
-        </p>
-      )}
+      <div className="min-h-[280px] flex justify-center items-center">
+        {receiptsLoading ? (
+            <Oval height={40} />
+        ) : receipts && receipts.length > 0 ? (
+          <table className="w-full border-separate border-spacing-y-3 max-w-[1100px] ml-auto mr-auto">
+            <thead>
+              <tr>
+                <th></th>
+                <th className="text-left text-white text-xl font-normal">
+                  Komité
+                </th>
+                <th className="text-left text-white text-xl font-normal">
+                  Anledning
+                </th>
+                <th className="text-left text-white text-xl font-normal hidden md:table-cell">
+                  Type
+                </th>
+                <th className="text-left text-white text-xl font-normal hidden md:table-cell">
+                  Kommentar
+                </th>
+                <th className="text-middle w-[110px] text-white text-xl font-normal">
+                  Dato
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {receipts.map((receipt) => (
+                <ReceiptRow key={receipt.receiptId} receipt={receipt}/>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-middle text-white text-xl font-normal pt-5">
+            Ingen kvitteringer å vise
+          </p>
+        )}
+      </div>
     </div>
   );
 };

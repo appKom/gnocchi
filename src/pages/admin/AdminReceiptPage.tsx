@@ -82,22 +82,6 @@ const AdminReceiptPage = () => {
     queryFn: () => fetchCommittees(),
   });
 
-  const handleSetStatusHistory = () => {
-    if (receiptStatus === "DONE") {
-      setReceiptStatus(null);
-    } else {
-      setReceiptStatus("DONE");
-    }
-  };
-
-  const handleSetStatusActive = () => {
-    if (receiptStatus === "NONE") {
-      setReceiptStatus(null);
-    } else {
-      setReceiptStatus("NONE");
-    }
-  };
-
   const handleCommitteeChange = (event: any) => {
     const value = event.target.value;
     setSelectedCommittees(typeof value === "string" ? value.split(",") : value);
@@ -168,10 +152,8 @@ const AdminReceiptPage = () => {
         <ReceiptTable
           receipts={receiptData?.receipts}
           receiptsLoading={receiptDataLoading}
-          onSetActive={handleSetStatusActive}
-          onSetHistory={handleSetStatusHistory}
           receiptStatus={receiptStatus}
-        />
+          setReceiptStatus={setReceiptStatus}        />
       )}
       {receiptData && receiptData.total > 0 && (
         <Pagination
