@@ -56,8 +56,8 @@ const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
         {receipt.paymentOrCard === "Payment" ? "Utlegg" : "Kort"}
       </td>
       <td className="bg-green-200 text-left max-h-3 hidden md:table-cell max-w-[150px] overflow-hidden line-clamp-3">
-        {receipt.receiptDescription.slice(0, 70)}
-        {receipt.receiptDescription.length > 70 ? "..." : ""}
+        {receipt.receiptDescription.slice(0, 60)}
+        {receipt.receiptDescription.length > 60 ? "..." : ""}
       </td>
       <td className="bg-green-200 text-center w-[110px] rounded-tr rounded-br font-semibold">
         {`${new Date(receipt.receiptCreatedAt).getDate()}.${
