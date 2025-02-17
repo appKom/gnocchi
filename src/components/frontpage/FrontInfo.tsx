@@ -1,7 +1,5 @@
-import money from "./money.png";
-import money2 from "./money2.png";
-import moneyCopy from "./money copy.png";
-import moneyCopy2 from "./money2 copy.png";
+import money1 from "../../resources/frontpage/money1.png";
+import money2 from "../../resources/frontpage/money2.png";
 
 export default function FrontInfo() {
   return (
@@ -11,14 +9,14 @@ export default function FrontInfo() {
         <span className="block">men hvor mye du beholder.</span>
       </div>
       <img
-        src={moneyCopy}
+        src={money1}
         alt=""
         className="money-money object-contain  w-[500px] h-auto absolute right-0 overflow-hidden top-[30%]"
       />
 
       <div className="flipped  absolute top-[20%] left-0 ">
         <img
-          src={moneyCopy2}
+          src={money2}
           alt=""
           className="money-money object-contain  w-[500px] h-auto left-0"
         />

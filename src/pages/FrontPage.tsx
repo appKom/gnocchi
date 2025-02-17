@@ -1,8 +1,8 @@
-import FrontInfo from "../components/FrontInfo";
-import Topbar from "../components/TopBar";
-import Bottombar from "../components/BottomBar";
+import FrontInfo from "../components/frontpage/FrontInfo";
+import Topbar from "../components/frontpage/TopBar";
+import Bottombar from "../components/frontpage/BottomBar";
 import Button from "../components/universal/Button";
-import happy from "../components/happy.png";
+import happy from "../resources/frontpage/happy.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import useAutobankStore from "../store/autobankstore";
 export default function frontPage() {

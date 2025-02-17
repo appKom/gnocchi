@@ -11,7 +11,7 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { logoutUser } from "../../utils/userutils";
-import { checkUserResponse } from "../authentication/Authcallback";
+import { checkUserResponse } from "../../pages/Authcallback";
 import useAutobankStore from "../../store/autobankstore";
 
 type NavdropdownProps = {

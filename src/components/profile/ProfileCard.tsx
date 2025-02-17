@@ -1,5 +1,5 @@
 import React from "react";
-import profilePicture from "../../../public/resources/images/profile_pic.png";
+import profilePicture from "../../resources/profile/profile_pic.png";
 import mailIcon from "../../icons/mail_icon.png";
 import groupIcon from "../../icons/group_icon.png";
 import { fetchCommittees, fetchUserComittees } from "../../api/baseAPI";
