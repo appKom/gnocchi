@@ -1,3 +1,5 @@
+import { sendRequest, GET } from "./helper";
+
 export interface Committee {
   id: number;
   name: string;
@@ -10,27 +12,9 @@ export interface UserCommittees {
 }
 
 export const fetchCommittees = async () => {
-  return fetch(
-    (import.meta.env.VITE_BACKEND_URI as string) + "/api/committee/all",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    },
-  ).then((res) => res.json());
+  return sendRequest<undefined, Committee[]>("/committee/all", GET);
 };
 
-export const fetchUserComittees = async (): Promise<UserCommittees> => {
-  return await fetch(
-    (import.meta.env.VITE_BACKEND_URI as string) + "/api/committee/user",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }
-  ).then((res) => res.json());
+export const fetchUserComittees = async () => {
+  return sendRequest<undefined, UserCommittees>("/committee/user", GET);
 };

@@ -98,15 +98,16 @@ const ReceiptPage = () => {
       ),
       receiptPaymentInformation: paymentInfo,
     };
-    const res: Response = await submitReceipt(body);
 
-    if (res.ok) {
-      alert("Kvittering sendt inn!");
-      // TODO: Fix with popup success message in home something
-      navigate("/?receiptsubmittedsuccess=1");
-    } else {
-      // TODO: Popup error message
+    try {
+    await submitReceipt(body);
+    alert("Kvittering sendt inn!");
+    // TODO: Fix with popup success message in home something
+    navigate("/?receiptsubmittedsuccess=1");
+    } catch (e) {
+
       alert("Noe gikk galt, prøv igjen senere");
+  
     }
 
     setDisableSubmit(false);
