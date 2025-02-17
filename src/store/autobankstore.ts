@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { checkUserResponse } from "../components/authentication/Authcallback";
+import { checkUserResponse } from "../pages/Authcallback";
 
 
 

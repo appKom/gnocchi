@@ -4,7 +4,7 @@ import "./App.css";
 import FrontPage from "./pages/FrontPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Authcallback from "./components/authentication/Authcallback";
+import Authcallback from "./pages/Authcallback";
 import ReceiptPage from "./pages/ReceiptPage";
 import AdminMainPage from "./pages/admin/AdminMainPage";
 import AdminReceiptPage from "./pages/admin/AdminReceiptPage";
