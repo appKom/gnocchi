@@ -5,7 +5,6 @@ import Spinner from "../components/universal/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import useAutobankStore from "../store/autobankstore";
 import { checkCookie, setCookie } from "../api/authAPI";
-import { set } from "lodash";
 
 
 export interface checkUserResponse {
@@ -34,7 +33,7 @@ const Authcallback = () => {
         setLoadingStatus("Lagrer informasjon");
         await setCookie(await getAccessTokenSilently());
 
-        setLoadingStatus("Sjekekr informasjon");
+        setLoadingStatus("Sjekker informasjon");
         const data = await checkCookie();
 
         setLoadingStatus("Gyldig informasjon");

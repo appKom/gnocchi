@@ -1,3 +1,5 @@
+import { GET, POST, sendRequest } from "./helper";
+
 export interface Receipt_Info {
   receiptId: number;
   amount: number;
@@ -61,66 +63,19 @@ export const fetchAllReceipts = async (
   if (sortOrder) params.append("sortOrder", sortOrder);
   if (sortField) params.append("sortField", sortField);
 
-  const url = `${import.meta.env.VITE_BACKEND_URI}/api/admin/receipt/all?${params.toString()}`;
+  const url = `/admin/receipt/all?${params.toString()}`;
 
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Error fetching receipts: ${response.statusText}`);
-  }
-
-  const data: AllReceiptsResponse = await response.json();
-
-  return data;
+  return sendRequest<undefined, AllReceiptsResponse>(url, GET);
 };
 
 export const fetchCompleteReceipt = async (
   receiptId: Number,
 ): Promise<CompleteReceipt> => {
-  const res = await fetch(
-    (import.meta.env.VITE_BACKEND_URI as string) +
-      "/api/admin/receipt/get/" +
-      receiptId,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    },
-  );
-
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Failed to fetch receipt");
-  }
+  return sendRequest<undefined, CompleteReceipt>("/admin/receipt/get/" + receiptId, GET);
 };
 
 export const postReceiptReview = async (
   receiptreview: ReceiptReview,
 ): Promise<void> => {
-  const res = await fetch(
-    (import.meta.env.VITE_BACKEND_URI as string) + "/api/admin/receipt/review",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(receiptreview),
-    },
-  );
-
-  if (res.status == 200) {
-    return;
-  } else {
-    throw new Error("Failed to post receipt review");
-  }
+  return sendRequest<ReceiptReview, void>("/admin/receipt/review", POST, receiptreview);
 };
