@@ -1,13 +1,11 @@
-import React from "react";
 import Navbar from "./components/universal/Navbar";
 import "./App.css";
-import FrontPage from "./pages/FrontPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import Router from "./pages/Router";
-
 import { logoutUser } from "./utils/userutils";
 import useAutobankStore from "./store/autobankstore";
-import DetailedReceiptPage from "./pages/DetailedReceiptPage";
+import Footer from "./components/universal/Footer";
+
 
 
 function App() {

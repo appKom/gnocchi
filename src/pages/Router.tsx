@@ -1,9 +1,6 @@
-
-import React from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
-
 import ApplicationPage from './ApplicationPage';
-import Authcallback from '../components/authentication/Authcallback';
+import Authcallback from '../pages/Authcallback';
 import FaqPage from './FaqPage';
 import FrontPage from './FrontPage';
 import ReceiptPage from './ReceiptPage';
@@ -13,11 +10,7 @@ import AdminReceiptPage from './admin/AdminReceiptPage';
 import AdminEconomicRequestPage from './admin/AdminEconomicRequestPage';
 import AdminReviewReceiptPage from './admin/AdminReviewReceiptPage';
 import DetailedReceiptPage from './DetailedReceiptPage';
-
 import  useAutobankStore  from '../store/autobankstore';
-
-
-
 
 
 interface ABRoute {
@@ -27,8 +20,14 @@ interface ABRoute {
     permissions: string;
 }
 
+const ADMIN = "admin";
+const AUTHENTICATED = "authenticated";
+const UNAUTHENTICATED = "unauthenticated";
+
+
 const Router = () => {
 
+ 
     const { userInfo } = useAutobankStore();
 
     const isAdmin = (): Boolean => {
@@ -40,29 +39,27 @@ const Router = () => {
     }
 
     const routes: ABRoute[] = [
-        { key: "unautenticated-front", path: "/*", element: <FrontPage />, permissions: "unauthenticated" },
-        { key: "unautenticated-faq", path: "/faq", element: <FaqPage />, permissions: "unauthenticated" },
-        { key: "auth-callback", path: "/authentication/callback", element: <Authcallback />, permissions: "unauthenticated" },
+        { key: "unautenticated-front", path: "/*", element: <FrontPage />, permissions: UNAUTHENTICATED },
+        { key: "unautenticated-faq", path: "/faq", element: <FaqPage />, permissions: UNAUTHENTICATED },
+        { key: "auth-callback", path: "/authentication/callback", element: <Authcallback />, permissions: UNAUTHENTICATED },
 
-        { key: "authenticated-receipt", path: "/kvittering", element: <ReceiptPage />, permissions: "authenticated" },
-        { key: "authenticated-profile", path: "/minside", element: <ProfilePage />, permissions: "authenticated" },
-        { key: "authenticated-application", path: "/soknad", element: <ApplicationPage />, permissions: "authenticated" },
-        { key: "user-review-receipt", path: "/minside/:receiptid", element: <DetailedReceiptPage />, permissions: "authenticated" },
+        { key: "authenticated-receipt", path: "/kvittering", element: <ReceiptPage />, permissions: AUTHENTICATED },
+        { key: "authenticated-profile", path: "/minside", element: <ProfilePage />, permissions: AUTHENTICATED },
+        { key: "authenticated-application", path: "/soknad", element: <ApplicationPage />, permissions: AUTHENTICATED },
+        { key: "user-review-receipt", path: "/minside/:receiptid", element: <DetailedReceiptPage />, permissions: AUTHENTICATED },
         
-        { key: "admin-main", path: "/admin/", element: <AdminMainPage />, permissions: "admin" },
-        { key: "admin-receipt-page", path: "/admin/kvittering", element: <AdminReceiptPage />, permissions: "admin" },
-        { key: "admin-economic-request", path: "/admin/soknad", element: <AdminEconomicRequestPage />, permissions: "admin" },
-        { key: "admin-review-receipt", path: "/admin/kvittering/:receiptid", element: <AdminReviewReceiptPage />, permissions: "admin" },
+        { key: "admin-main", path: "/admin/", element: <AdminMainPage />, permissions: ADMIN },
+        { key: "admin-receipt-page", path: "/admin/kvittering", element: <AdminReceiptPage />, permissions: ADMIN },
+        { key: "admin-economic-request", path: "/admin/soknad", element: <AdminEconomicRequestPage />, permissions: ADMIN },
+        { key: "admin-review-receipt", path: "/admin/kvittering/:receiptid", element: <AdminReviewReceiptPage />, permissions: ADMIN },
     ];
 
-
-    const permissionlevels = ["unauthenticated", "authenticated", "admin"];
-    const userpermissions = isAdmin() ? "admin" : isAuthenticated() ? "authenticated" : "unauthenticated";
+    const userpermissions = isAdmin() ? ADMIN : isAuthenticated() ? AUTHENTICATED : UNAUTHENTICATED;
 
     return (
     <BrowserRouter> 
         <Routes>
-            {routes.filter(x => permissionlevels.indexOf(x.permissions) <= permissionlevels.indexOf(userpermissions)).map(route => {
+            {routes.filter(x => (userpermissions == ADMIN) ? true : (userpermissions == AUTHENTICATED) ? [UNAUTHENTICATED, AUTHENTICATED].includes(x.permissions) : x.permissions == UNAUTHENTICATED).map(route => {
                 return (
                     <Route key={route.key} path={route.path} element={route.element} />
                 )
