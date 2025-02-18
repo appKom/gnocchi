@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Navbar from "../universal/Navbar";
+import Navbar from "../components/universal/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
-import Spinner from "../universal/Spinner";
+import Spinner from "../components/universal/Spinner";
 import { Link, useNavigate } from "react-router-dom";
-import useAutobankStore from "../../store/autobankstore";
-import { checkCookie, setCookie } from "../../api/authAPI";
+import useAutobankStore from "../store/autobankstore";
+import { checkCookie, setCookie } from "../api/authAPI";
 import { set } from "lodash";
 
 
