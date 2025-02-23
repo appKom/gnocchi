@@ -61,10 +61,10 @@ const ReceiptTable = ({
             <thead>
               <tr>
                 <th></th>
-                <th className="text-left text-white text-xl font-normal">
+                <th className="text-left text-white text-xl font-normal hidden min-[450px]:table-cell">
                   Komité
                 </th>
-                <th className="text-left text-white text-xl font-normal">
+                <th className="text-center min-[450px]:text-left text-white text-xl font-normal">
                   Anledning
                 </th>
                 <th className="text-left text-white text-xl font-normal hidden md:table-cell">
@@ -73,7 +73,7 @@ const ReceiptTable = ({
                 <th className="text-left text-white text-xl font-normal hidden md:table-cell">
                   Kommentar
                 </th>
-                <th className="text-middle w-[110px] text-white text-xl font-normal">
+                <th className="text-middle w-[110px] text-white text-xl font-normal hidden min-[450px]:table-cell">
                   Dato
                 </th>
               </tr>

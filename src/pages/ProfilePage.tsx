@@ -41,7 +41,7 @@ const ProfilePage = () => {
       <div className="hidden sm:block lg:block">
         <ProfileCard />
       </div>
-      <div className="ml-5 mr-5 rounded-xl flex-grow p-8 bg-[#669782] h-full">
+      <div className="ml-5 mr-5 rounded-xl flex-grow p-2 min-[400px]:p-8 bg-[#669782] h-full">
         <ReceiptTable
           receipts={receiptData?.receipts}
           receiptsLoading={receiptDataLoading}
