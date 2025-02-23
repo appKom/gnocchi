@@ -14,7 +14,7 @@ export default function FrontInfo() {
         className="money-money object-contain  w-[500px] h-auto absolute right-0 overflow-hidden top-[30%]"
       />
 
-      <div className="flipped  absolute top-[20%] left-0 ">
+      <div className="flipped  absolute top-[20%] left-0 hidden md:block">
         <img
           src={money2}
           alt=""
