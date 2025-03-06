@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/universal/Navbar";
-import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../components/universal/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import useAutobankStore from "../store/autobankstore";
 import { checkCookie, setCookie } from "../api/authAPI";
+import { useAuth } from "react-oidc-context";
 
 
 export interface checkUserResponse {
@@ -19,8 +19,8 @@ const Authcallback = () => {
 
 
   const { setUserInfo } = useAutobankStore();
-  const auth = useAuth0();
-  const { isAuthenticated, user, getAccessTokenSilently } = auth;
+  const auth = useAuth();
+  const { isAuthenticated, user } = auth;
   const navigate = useNavigate();
   const [loadingStatus, setLoadingStatus] = useState("Henter informasjon");
 
@@ -30,14 +30,12 @@ const Authcallback = () => {
   const storeUser = async () => {
     try {
       if (isAuthenticated && user) {
-        setLoadingStatus("Lagrer informasjon");
-        await setCookie(await getAccessTokenSilently());
-
         setLoadingStatus("Sjekker informasjon");
         const data = await checkCookie();
+        
 
         setLoadingStatus("Gyldig informasjon");
-        data.fullname = user.name || "";
+    
         setUserInfo(data);
 
         setLoadingStatus("Videresender");

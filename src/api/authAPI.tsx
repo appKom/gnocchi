@@ -1,6 +1,5 @@
 import { sendRequest, GET } from "./helper";
 
-const BACKEND_URI = import.meta.env.VITE_BACKEND_URI as string;
 export interface checkUserResponse {
     success: boolean;
     isadmin: boolean;
@@ -9,8 +8,8 @@ export interface checkUserResponse {
     fullname: string;
 }
 
-export const setCookie = async (token: string) => {
-    return sendRequest<void, void>("/auth/setuser", GET, undefined, new Map([["Authorization", `Bearer ${token}`]]));
+export const setCookie = async () => {
+    return sendRequest<void, void>("/auth/setuser", GET, undefined);
 };
 
 export const checkCookie = async () => {

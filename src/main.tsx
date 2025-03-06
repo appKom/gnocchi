@@ -2,10 +2,25 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@emotion/react";
+import { AuthProvider, AuthProviderProps } from "react-oidc-context"
+import { WebStorageStateStore } from "oidc-client-ts"
+
+const configuration: AuthProviderProps = {
+  client_id: import.meta.env.VITE_AUTH0_CLIENT_ID,
+  redirect_uri: import.meta.env.VITE_AUTH0_REDIRECT_URI,
+  scope: "openid profile email",
+  authority: import.meta.env.VITE_AUTH0_DOMAIN,
+  metadataUrl: `${import.meta.env.VITE_AUTH0_DOMAIN}/.well-known/openid-configuration`,
+  automaticSilentRenew: false,
+  filterProtocolClaims: true,
+  loadUserInfo: true,
+  revokeTokensOnSignout: true,
+  post_logout_redirect_uri: import.meta.env.VITE_AUTH0_LOGOUT_URI,
+  userStore: new WebStorageStateStore({ store: window.sessionStorage }),
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -31,24 +46,16 @@ const theme = createTheme({
 
 const queryClient = new QueryClient();
 
+
 root.render(
   <React.StrictMode>
-    <Auth0Provider
-      domain={import.meta.env.VITE_AUTH0_DOMAIN as string}
-      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID as string}
-      
-      authorizationParams={{
-        redirect_uri: import.meta.env.VITE_AUTH0_REDIRECT_URI as string,
-        audience: import.meta.env.VITE_AUTH0_AUDIENCE as string,
-        
-      }}
-    >
+    <AuthProvider {...configuration}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>
       </QueryClientProvider>
-    </Auth0Provider>
+    </AuthProvider>
   </React.StrictMode>,
 );
 

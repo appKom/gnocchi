@@ -2,13 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { fetchCommittees } from "../api/baseAPI";
-import { useAuth0 } from "@auth0/auth0-react";
 import FileUpload from "../components/form/FileUpload";
 import { fileToBase64 } from "../utils/fileutils";
 
 import { submitReceipt } from "../api/formsAPI";
 
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
 
 
 interface Committee {
@@ -53,7 +53,7 @@ const ReceiptPage = () => {
 
   const [attachments, setAttachments] = useState<File[]>([]);
 
-  const auth = useAuth0();
+  const auth = useAuth();
   const { user } = auth;
 
  
@@ -119,7 +119,6 @@ const ReceiptPage = () => {
         <div className="flex justify-center gap-[50px] mt-[60px]">
           <h1 className="text-5xl text-white text-center self-center mb-auto mt-auto font-thin">
             Kvitteringsskjema
-            {user && user.email}
           </h1>
           <img
             src={"../../../resources/images/receiptpageimage.png"}

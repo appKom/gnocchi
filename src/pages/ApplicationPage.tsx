@@ -1,6 +1,5 @@
 import Navbar from "../components/universal/Navbar";
 import { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import FileUpload from "../components/form/FileUpload";
 import { fileToBase64 } from "../utils/fileutils";
 // import { submitEconomicRequest } from "../api/formsAPI";
@@ -18,7 +17,6 @@ interface Application {
 const ApplicationPage = () => {
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
-  const auth = useAuth0();
 
   const onFileChange = async (files: File[]) => {
     setAttachments([...files]);

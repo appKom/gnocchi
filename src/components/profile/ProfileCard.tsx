@@ -4,11 +4,8 @@ import mailIcon from "../../icons/mail_icon.png";
 import groupIcon from "../../icons/group_icon.png";
 import { fetchCommittees, fetchUserComittees } from "../../api/baseAPI";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const ProfileCard = () => {
-
-  const auth = useAuth0();
 
 
   const { data , isError } = useQuery({

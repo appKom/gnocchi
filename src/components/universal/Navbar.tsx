@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import MenuIcon from "@mui/icons-material/Menu";
-
-import { useAuth0 } from "@auth0/auth0-react";
 import LogOutIcon from "../../icons/LogOutIcon";
 import Button from "./Button";
 import {
@@ -13,11 +11,14 @@ import {
 import { logoutUser } from "../../utils/userutils";
 import { checkUserResponse } from "../../pages/Authcallback";
 import useAutobankStore from "../../store/autobankstore";
+import { useAuth } from "react-oidc-context";
 
 type NavdropdownProps = {
   user?: checkUserResponse | null;
+  name: string | undefined;
   logout: () => void;
   login: () => void;
+  isAuthenticated: boolean;
 };
 
 const routes = [
@@ -27,9 +28,10 @@ const routes = [
 ];
 
 const NavDropdown = (props: NavdropdownProps) => {
+  console.log(props.isAuthenticated);
   return (
     <div className="lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none rounded-lg shadow-xl cursor-pointer bg-[#2e6e53]">
-      {props.user != null ? (
+      {props.isAuthenticated ? (
         <div>
           <div className="">
             <button className="hover:bg-green-900 flex items-center w-full rounded-[10px] justify-center relativ p-4  h-[50px] bg-[#2e6e53] justify-self-end relative z-20 ">
@@ -39,7 +41,7 @@ const NavDropdown = (props: NavdropdownProps) => {
                 }resources/logo/online-logo-white.png`}
                 className="h-5 mr-2"
               ></img>
-              <p>{props.user?.fullname}</p>
+              <p>{props.name}</p>
             </button>
           </div>
 
@@ -90,12 +92,11 @@ const Navbar = () => {
     setShowNavDropdown(!showNavDropdown);
   };
 
-  const { loginWithRedirect, logout: auth0Logout  } = useAuth0();
+  const { signinRedirect, removeUser, user, isAuthenticated } = useAuth();
 
   const logout = () => {
     setUserInfo(null);
-    logoutUser();
-    auth0Logout();
+    removeUser();
   };
 
   return (
@@ -136,12 +137,14 @@ const Navbar = () => {
             <NavDropdown
               user={userInfo}
               logout={logout}
-              login={loginWithRedirect}
+              login={signinRedirect}
+              name={user?.profile.name}
+              isAuthenticated={isAuthenticated}
             />
           )}
 
           {/* Navbar large width */}
-          {userInfo != null ? (
+          {isAuthenticated ? (
             <div className="hidden lg:flex flex justify-self-end absolute right-[20px] gap-10 items-center">
               <div className="flex justify-self-end md:static right-[20px] gap-10 items-center">
                 <div
@@ -179,14 +182,14 @@ const Navbar = () => {
                     }resources/logo/online-logo-blue.png`}
                     className="h-5 mr-2"
                   ></img>
-                  <p>{userInfo.fullname}</p>
+                  <p>{user?.profile.name}</p>
                 </button>
               </div>
             </div>
           ) : (
             <div className="hidden  lg:flex justify-self-end absolute right-[20px] gap-10 items-center">
               <button
-                onClick={() => loginWithRedirect()}
+                onClick={() => signinRedirect()}
                 className="flex rounded-[15px] items-center justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20"
               >
                 <img

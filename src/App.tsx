@@ -1,29 +1,20 @@
 import Navbar from "./components/universal/Navbar";
 import "./App.css";
-import { useAuth0 } from "@auth0/auth0-react";
 import Router from "./pages/Router";
 import { logoutUser } from "./utils/userutils";
 import useAutobankStore from "./store/autobankstore";
 import Footer from "./components/universal/Footer";
+import { useAuth } from "react-oidc-context";
+import axios from "axios";
 
 
 
 function App() {
 
-
-  const { setUserInfo, userInfo } = useAutobankStore();
-  const auth = useAuth0();
-  const { logout } = auth;
-
-  if (userInfo != null) { 
-    if (Date.now() >= new Date(userInfo.expiresat).getTime()) {
-      setUserInfo(null);
-      logoutUser();
-      logout();
-    }
+  const auth = useAuth();
+   if (auth.isAuthenticated) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${auth.user?.access_token}`
   }
-
-  
 
   return (
    

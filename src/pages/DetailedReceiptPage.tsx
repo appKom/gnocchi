@@ -7,7 +7,6 @@ import {
   fetchCompleteReceipt,
 
 } from "../api/adminReceiptAPI";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/universal/Spinner";

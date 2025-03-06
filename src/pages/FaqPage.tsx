@@ -1,9 +1,9 @@
+import { useAuth } from "react-oidc-context";
 import Navbar from "../components/universal/Navbar";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const FaqPage = () => {
-  const auth = useAuth0();
-  const { loginWithRedirect } = auth;
+  const auth = useAuth();
+  const { signinRedirect } = auth;
 
   return (
     <div>
@@ -11,7 +11,7 @@ const FaqPage = () => {
         Vennligst{" "}
         <span
           className="cursor-pointer text-blue-200 underline"
-          onClick={() => loginWithRedirect()}
+          onClick={() => signinRedirect()}
         >
           logg inn
         </span>
