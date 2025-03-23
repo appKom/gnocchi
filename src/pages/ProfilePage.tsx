@@ -1,5 +1,4 @@
 import ProfileCard from "../components/profile/ProfileCard";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchAllUserReceipts } from "../api/userAPI";
@@ -8,7 +7,7 @@ import { Pagination } from "@mui/material";
 import { useEffect } from "react";
 
 const ProfilePage = () => {
-  const auth = useAuth0();
+
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(); // The debounced value
   const [page, setPage] = useState(1);
   const rowsPerPage = 5;

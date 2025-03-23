@@ -3,12 +3,12 @@ import Topbar from "../components/frontpage/TopBar";
 import Bottombar from "../components/frontpage/BottomBar";
 import Button from "../components/universal/Button";
 import happy from "../resources/frontpage/happy.png";
-import { useAuth0 } from "@auth0/auth0-react";
+
 import useAutobankStore from "../store/autobankstore";
+import { useAuth } from "react-oidc-context";
 export default function frontPage() {
  
-  const { loginWithRedirect } = useAuth0();
-  const { userInfo } = useAutobankStore();
+  const { isAuthenticated, signinRedirect} = useAuth();
   
 
   return (
@@ -37,11 +37,11 @@ export default function frontPage() {
           </div>
         </div>
         <div className="flex w-1/2 flex-row items-center justify-center space-x-10">
-          {userInfo == null && (
+          {isAuthenticated && (
             <Button
               title={"Logg inn ->"}
               color={"darkGreen"}
-              onClick={() => loginWithRedirect()}
+              onClick={() => signinRedirect()}
             ></Button>
           )}
 

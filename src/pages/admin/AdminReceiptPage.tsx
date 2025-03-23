@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { fetchAllReceipts, Receipt_Info } from "../../api/adminReceiptAPI";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCommittees, Committee } from "../../api/baseAPI";
