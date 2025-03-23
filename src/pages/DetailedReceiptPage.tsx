@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/universal/Spinner";
 import AdminBadge from "../components/admin/AdminBadge";
+import { PaperClipIcon } from "@heroicons/react/24/solid";
 
 const DetailedReceiptPage = () => {
 
@@ -174,13 +175,38 @@ const DetailedReceiptPage = () => {
               </p>
               {data.attachmentCount != 0 && (
                 <div className="bg-white bg-opacity-10 text-white p-3 rounded w-full">
-                  {data.attachments.map((attachment, index) => (
-                    <img
-                      src={"data:image/png;base64," + attachment}
-                      key={index}
-                      className="h-fill"
-                    />
-                  ))}
+                  {data.attachments.map((attachment, index) => {
+                     const fileType = attachment.split(".")[0].replace(":", "/");
+    
+                     if (fileType === "application/pdf") {
+                       return (
+                         <iframe
+                           src={"data:application/pdf;base64," + attachment.split(".")[1]}
+                           key={index}
+                          className="w-full h-[400px] rounded-lg border-2 border-white/20"
+                         />
+                       );
+                     } else if (fileType.includes("image")) {
+                       return <img
+                       
+                         src={`data:${fileType};base64,${attachment.split(".")[1]}`}
+                         key={index}
+                         className="w-full h-[400px] rounded-lg border-2 border-white/20"
+                       />
+                     } else {
+                     return (
+                       <a
+                         href={`data:${fileType};base64,${attachment.split(".")[1]}`}
+                         key={index}
+                         download
+                         className="flex items-center gap-2"
+                       >
+                         <PaperClipIcon className="h-5 w-5" />
+                         <span>Last ned vedlegg</span>
+                       </a>
+                     );
+                   }
+                   })}
                 </div>
               )}
             </div>
