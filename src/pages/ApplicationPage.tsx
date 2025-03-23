@@ -41,7 +41,7 @@ const ApplicationPage = () => {
       field3: formdata.field3,
       amount: formdata.amount,
       attachments: await Promise.all(
-        [...attachments].map(async (file) => await fileToBase64(file)),
+        [...attachments].map(async (file) => await fileToBase64(file))
       ),
       comments: formdata.comments,
       id: 0,
@@ -58,7 +58,7 @@ const ApplicationPage = () => {
 
   return (
     <div className="min-h-screen pb-[200px]">
-      <div className="max-w-2xl ml-auto mr-auto">
+      <div className="max-w-2xl ml-auto mr-auto px-10">
         <div className="flex justify-center gap-[50px] mt-[60px]">
           <h1 className="text-5xl text-white text-center self-center mb-auto mt-auto font-thin">
             Søknadsskjema

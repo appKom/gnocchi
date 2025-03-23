@@ -108,17 +108,17 @@ const Navbar = () => {
     <div className="relative">
       <div className="bg-[#2e6e53] flex h-16">
         <div className="flex items-center justify-between p-3 w-full fixed z-50 bg-[#2e6e53]">
-          <div className="flex items-center">
+          <a className="flex items-center" href="/">
             <img
               src={`${
                 import.meta.env.BASE_URL
               }resources/logo/online-logo-white.png`}
               className="h-12 w-auto cursor-pointer hidden dark:block"
             ></img>
-            <a className="text-[25px] ml-3 font-semibold text-white " href="/">
+            <p className="text-[25px] ml-3 font-semibold text-white ">
               Autobank
-            </a>
-          </div>
+            </p>
+          </a>
 
           {/* Navbar small-medium width */}
           <button

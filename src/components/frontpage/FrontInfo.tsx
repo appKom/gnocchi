@@ -11,10 +11,10 @@ export default function FrontInfo() {
       <img
         src={money1}
         alt=""
-        className="money-money object-contain  w-[500px] h-auto absolute right-0 overflow-hidden top-[30%] hidden md:block"
+        className="money-money object-contain  w-[500px] h-auto absolute right-0 overflow-hidden top-[30%] hidden lg:block"
       />
 
-      <div className="flipped  absolute top-[20%] left-0 hidden md:block">
+      <div className="flipped  absolute top-[20%] left-0 hidden lg:block">
         <img
           src={money2}
           alt=""
