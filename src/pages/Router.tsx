@@ -54,12 +54,10 @@ const Router = () => {
 
     const adminroutes: ABRoute[] = [
         { key: "admin-main", path: "/admin", element: <AdminMainPage />, permissions: ADMIN },
-        { key: "admin-receipt", path: "/admin/kvittering", element: <AdminReceiptPage />, permissions: ADMIN },
-        { key: "admin-econreq", path: "/admin/okonomisk", element: <AdminEconomicRequestPage />, permissions: ADMIN },
-        { key: "admin-review", path: "/admin/godkjenn", element: <AdminReviewReceiptPage />, permissions: ADMIN },
-    ];
-
-
+        { key: "admin-receipt-page", path: "/admin/kvittering", element: <AdminReceiptPage />, permissions: ADMIN },
+        { key: "admin-economic-request", path: "/admin/soknad", element: <AdminEconomicRequestPage />, permissions: ADMIN },
+        { key: "admin-review-receipt", path: "/admin/kvittering/:receiptid", element: <AdminReviewReceiptPage />, permissions: ADMIN },
+     ];
 
 
 

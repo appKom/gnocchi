@@ -164,11 +164,10 @@ const AdminReviewReceiptPage = () => {
                   {data.latestReviewStatus ? (
                     <div className="flex-col text-left">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs mb-2 font-semibold ${
-                          data.latestReviewStatus === "APPROVED"
+                        className={`px-2 py-1 rounded-full text-xs mb-2 font-semibold ${data.latestReviewStatus === "APPROVED"
                             ? "bg-green-500 text-green-900"
                             : "bg-red-500 text-red-900"
-                        }`}
+                          }`}
                       >
                         {data.latestReviewStatus == "APPROVED"
                           ? "Godkjent"
@@ -196,13 +195,38 @@ const AdminReviewReceiptPage = () => {
               </p>
               {data.attachmentCount != 0 && (
                 <div className="bg-white bg-opacity-10 text-white p-3 rounded w-full">
-                  {data.attachments.map((attachment, index) => (
-                    <img
-                      src={"data:image/png;base64," + attachment}
-                      key={index}
-                      className="h-fill"
-                    />
-                  ))}
+                  {data.attachments.map((attachment, index) => {
+                   const fileType = attachment.split(".")[0].replace(":", "/");
+    
+                    if (fileType === "application/pdf") {
+                      return (
+                        <iframe
+                          src={"data:application/pdf;base64," + attachment.split(".")[1]}
+                          key={index}
+                         className="w-full h-[400px] rounded-lg border-2 border-white/20"
+                        />
+                      );
+                    } else if (fileType.includes("image")) {
+                      return <img
+                      
+                        src={`data:${fileType};base64,${attachment.split(".")[1]}`}
+                        key={index}
+                        className="w-full h-[400px] rounded-lg border-2 border-white/20"
+                      />
+                    } else {
+                    return (
+                      <a
+                        href={`data:${fileType};base64,${attachment.split(".")[1]}`}
+                        key={index}
+                        download
+                        className="flex items-center gap-2"
+                      >
+                        <PaperClipIcon className="h-5 w-5" />
+                        <span>Last ned vedlegg</span>
+                      </a>
+                    );
+                  }
+                  })}
                 </div>
               )}
             </div>
