@@ -14,14 +14,14 @@ export default function AdminDashboard() {
           {/* Main action cards */}
           <AdminCard
             title="Kvitteringer"
-            description="Manage receipts and transactions"
+            description="Godkjenn kvitteringer"
             icon={<Receipt className="h-6 w-6" />}
             href="/admin/kvittering"
           />
 
           <AdminCard
             title="Søknader"
-            description="Review and process applications"
+            description="Godkjenn søknader"
             icon={<FileText className="h-6 w-6" />}
             href="/admin/soknad"
           />
