@@ -12,6 +12,7 @@ import { logoutUser } from "../../utils/userutils";
 import { checkUserResponse } from "../../pages/Authcallback";
 import useAutobankStore from "../../store/autobankstore";
 import { useAuth } from "react-oidc-context";
+import "../../styles/navbar.css";
 
 type NavdropdownProps = {
   user?: checkUserResponse | null;
@@ -56,11 +57,11 @@ const NavDropdown = (props: NavdropdownProps) => {
           </div>
           <hr className="border-b-2 w-full "></hr>
           <div
-              className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
-              key="admin"
-            >
-              <a href={"/admin"}>Admin</a>
-            </div>
+            className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
+            key="admin"
+          >
+            <a href={"/admin"}>Admin</a>
+          </div>
           {routes.map((route) => (
             <div
               className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
@@ -103,6 +104,8 @@ const Navbar = () => {
     setUserInfo(null);
     removeUser();
   };
+
+  const location = window.location.pathname;
 
   return (
     <div className="relative">
@@ -158,16 +161,25 @@ const Navbar = () => {
                     " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"
                   }
                 >
-                  <a
-                    className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
-                    href={"/admin"}
-                    key={"admin"}
-                  >
-                    Admin
-                  </a>
+                  {userInfo?.isadmin && (
+                    <a
+                      className={`relative text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer ${
+                        location === `${import.meta.env.BASE_URL}admin`
+                          ? "active-link"
+                          : ""
+                      }`}
+                      href={"/admin"}
+                      key={"admin"}
+                    >
+                      Admin
+                    </a>
+                  )}
+
                   {routes.map((route) => (
                     <a
-                      className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
+                      className={`relative text-white text-[20px] p-3 md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer ${
+                        location === route.path ? "active-link" : ""
+                      }`}
                       href={route.path}
                       key={route.name}
                     >
