@@ -36,11 +36,11 @@ const ProfilePage = () => {
     }, [debouncedSearchTerm, receiptStatus]);
 
   return (
-    <div className="flex min-h-screen pt-5">
-      <div className="hidden sm:block lg:block">
+    <div className="flex min-h-screen pt-5 mx-5 gap-x-6">
+      <div className="hidden md:block lg:block">
         <ProfileCard />
       </div>
-      <div className="ml-5 mr-5 rounded-xl flex-grow p-8 bg-[#669782] h-full">
+      <div className="mx-auto rounded-xl w-full p-4 sm:p-6 md:p-8 bg-[#669782] h-full">
         <ReceiptTable
           receipts={receiptData?.receipts}
           receiptsLoading={receiptDataLoading}
