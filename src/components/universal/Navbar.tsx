@@ -20,6 +20,7 @@ type NavdropdownProps = {
   logout: () => void;
   login: () => void;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 };
 
 const routes = [
@@ -31,7 +32,11 @@ const routes = [
 const NavDropdown = (props: NavdropdownProps) => {
   console.log(props.isAuthenticated);
   return (
-    <div className="lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none rounded-lg shadow-xl cursor-pointer bg-[#2e6e53]">
+    <div
+      className={`lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none cursor-pointer ${
+        props.isAuthenticated ? "bg-[#2e6e53] rounded-lg shadow-xl" : "bg-white"
+      }`}
+    >
       {props.isAuthenticated ? (
         <div>
           <div className="">
@@ -56,12 +61,14 @@ const NavDropdown = (props: NavdropdownProps) => {
             </button>
           </div>
           <hr className="border-b-2 w-full "></hr>
-          <div
-            className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
-            key="admin"
-          >
-            <a href={"/admin"}>Admin</a>
-          </div>
+          {props.isAdmin && (
+            <div
+              className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
+              key="admin"
+            >
+              <a href={"/admin"}>Admin</a>
+            </div>
+          )}
           {routes.map((route) => (
             <div
               className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
@@ -72,10 +79,10 @@ const NavDropdown = (props: NavdropdownProps) => {
           ))}
         </div>
       ) : (
-        <div className="flex hover:bg-gray-200 items-center w-full justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20">
+        <div className="flex hover:bg-gray-200 items-center w-full justify-center relativ p-4 h-[50px] bg-white justify-self-end relative z-20">
           <button
             onClick={() => props.login()}
-            className="flex items-center w-full justify-center relativ p-4  h-[50px] justify-self-end relative z-20"
+            className="flex items-center w-full justify-center relativ p-4 h-[50px] justify-self-end relative z-20 text-black"
           >
             <img
               src="resources/logo/online-logo-blue.png"
@@ -99,6 +106,10 @@ const Navbar = () => {
   };
 
   const { signinRedirect, removeUser, user, isAuthenticated } = useAuth();
+
+  const isAdmin = (): boolean => {
+    return userInfo != null && userInfo.isadmin;
+  };
 
   const logout = () => {
     setUserInfo(null);
@@ -148,6 +159,7 @@ const Navbar = () => {
               login={signinRedirect}
               name={user?.profile.name}
               isAuthenticated={isAuthenticated}
+              isAdmin={isAdmin()}
             />
           )}
 
