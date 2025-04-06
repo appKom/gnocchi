@@ -289,7 +289,7 @@ const ReceiptPage = () => {
             Last opp et tydelig bilde/scan av kvitteringen. Husk at kvitteringen
             må være gyldig for at den skal godkjennes. Er du usikker på om
             kvitteringen er gyldig?{" "}
-            <a href="/hjelp/kvittering" className="text-green-400 underline">
+            <a href="/faq" className="text-green-400 underline">
               Se her
             </a>
           </p>
