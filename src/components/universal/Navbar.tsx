@@ -32,7 +32,7 @@ const NavDropdown = (props: NavdropdownProps) => {
 
   console.log(props.isAuthenticated);
   return (
-    <div className="lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none rounded-lg shadow-xl cursor-pointer bg-[#2e6e53]">
+    <div className={`lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none cursor-pointer ${props.isAuthenticated ? 'bg-[#2e6e53] rounded-lg shadow-xl' : 'bg-white'}`}>
       {props.isAuthenticated ? (
         <div>
           <div className="">
@@ -75,10 +75,10 @@ const NavDropdown = (props: NavdropdownProps) => {
           ))}
         </div>
       ) : (
-        <div className="flex hover:bg-gray-200 items-center w-full justify-center relativ p-4  h-[50px] bg-white justify-self-end relative z-20">
+        <div className="flex hover:bg-gray-200 items-center w-full justify-center relativ p-4 h-[50px] bg-white justify-self-end relative z-20">
           <button
             onClick={() => props.login()}
-            className="flex items-center w-full justify-center relativ p-4  h-[50px] justify-self-end relative z-20"
+            className="flex items-center w-full justify-center relativ p-4 h-[50px] justify-self-end relative z-20 text-black"
           >
             <img
               src="resources/logo/online-logo-blue.png"
