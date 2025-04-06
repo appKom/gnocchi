@@ -19,6 +19,7 @@ type NavdropdownProps = {
   logout: () => void;
   login: () => void;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 };
 
 const routes = [
@@ -28,6 +29,7 @@ const routes = [
 ];
 
 const NavDropdown = (props: NavdropdownProps) => {
+
   console.log(props.isAuthenticated);
   return (
     <div className="lg:hidden absolute top-12 right-0 z-10 w-48 py-2 mt-2 text-[18px] text-white border border-none rounded-lg shadow-xl cursor-pointer bg-[#2e6e53]">
@@ -55,12 +57,14 @@ const NavDropdown = (props: NavdropdownProps) => {
             </button>
           </div>
           <hr className="border-b-2 w-full "></hr>
-          <div
+          {props.isAdmin && (
+            <div
               className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
               key="admin"
             >
               <a href={"/admin"}>Admin</a>
             </div>
+          )}
           {routes.map((route) => (
             <div
               className="text-white text-[20px] p-3 rounded-[10px] hover:bg-green-900 cursor-pointer"
@@ -98,6 +102,10 @@ const Navbar = () => {
   };
 
   const { signinRedirect, removeUser, user, isAuthenticated } = useAuth();
+
+  const isAdmin = (): boolean => {
+    return userInfo != null && userInfo.isadmin;
+  };
 
   const logout = () => {
     setUserInfo(null);
@@ -145,6 +153,7 @@ const Navbar = () => {
               login={signinRedirect}
               name={user?.profile.name}
               isAuthenticated={isAuthenticated}
+              isAdmin={isAdmin()}  
             />
           )}
 
@@ -158,13 +167,15 @@ const Navbar = () => {
                     " border-[1px] border-green-800 flex rounded-[10px] flex-col absolute top-[50px] left-[-70px] bg-[#2e6e53] md:border-0 md:flex-row md:flex md:column md:static md:bg-inherit"
                   }
                 >
-                  <a
-                    className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
-                    href={"/admin"}
-                    key={"admin"}
-                  >
-                    Admin
-                  </a>
+                  {isAdmin() && (
+                    <a
+                      className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
+                      href={"/admin"}
+                      key={"admin"}
+                    >
+                      Admin
+                    </a>
+                  )}
                   {routes.map((route) => (
                     <a
                       className="text-white text-[20px] p-3  md:ml-4 rounded-[10px] hover:bg-green-800 cursor-pointer"
