@@ -48,14 +48,14 @@ const ReceiptRow = ({ receipt }: ReceiptOverviewProps) => {
           </span>
         </div>
       </td>
-      <td className="bg-green-200 text-left font-semibold ">
+      <td className="bg-green-200 text-left font-semibold hidden md:table-cell">
         {receipt.committeeName}
       </td>
       <td className="bg-green-200 text-left ">{receipt.receiptName}</td>
-      <td className="bg-green-200 text-left hidden md:table-cell  font-semibold ">
+      <td className="bg-green-200 text-left hidden lg:table-cell  font-semibold ">
         {receipt.paymentOrCard === "Payment" ? "Utlegg" : "Kort"}
       </td>
-      <td className="bg-green-200 text-left max-h-3 hidden md:table-cell max-w-[150px] overflow-hidden line-clamp-3">
+      <td className="bg-green-200 text-left max-h-3 hidden lg:table-cell max-w-[150px] overflow-hidden line-clamp-3">
         {receipt.receiptDescription.slice(0, 60)}
         {receipt.receiptDescription.length > 60 ? "..." : ""}
       </td>

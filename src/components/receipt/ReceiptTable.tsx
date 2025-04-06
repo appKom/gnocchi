@@ -61,16 +61,16 @@ const ReceiptTable = ({
             <thead>
               <tr>
                 <th></th>
-                <th className="text-left text-white text-xl font-normal">
+                <th className="text-left text-white text-xl font-normal hidden md:table-cell">
                   Komité
                 </th>
                 <th className="text-left text-white text-xl font-normal">
                   Anledning
                 </th>
-                <th className="text-left text-white text-xl font-normal hidden md:table-cell">
+                <th className="text-left text-white text-xl font-normal hidden lg:table-cell">
                   Type
                 </th>
-                <th className="text-left text-white text-xl font-normal hidden md:table-cell">
+                <th className="text-left text-white text-xl font-normal hidden lg:table-cell">
                   Kommentar
                 </th>
                 <th className="text-middle w-[110px] text-white text-xl font-normal">
