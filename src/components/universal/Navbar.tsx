@@ -127,7 +127,7 @@ const Navbar = () => {
               src={`${
                 import.meta.env.BASE_URL
               }resources/logo/online-logo-white.png`}
-              className="h-12 w-auto cursor-pointer hidden dark:block"
+              className="h-12 w-auto cursor-pointer"
             ></img>
             <p className="text-[25px] ml-3 font-semibold text-white ">
               Autobank
