@@ -12,13 +12,13 @@ import { useAuth } from "react-oidc-context";
 
 
 interface Committee {
-  id: number;
+  id: string;
   name: string;
 }
 
 interface Receipt {
   amount: number;
-  committee_id: number;
+  committee_id: string;
   name: string;
   description: string;
   id: 0;
@@ -26,7 +26,7 @@ interface Receipt {
 
 interface FormData {
   amount: number;
-  committee_id: number;
+  committee_id: string;
   name: string;
   description: string;
   card_number?: string;
@@ -68,7 +68,7 @@ const ReceiptPage = () => {
 
   const [formdata, setFormdata]: [FormData, any] = useState({
     amount: 0,
-    committee_id: 0,
+    committee_id: "",
     name: "",
     description: "",
     id: 0,
@@ -200,7 +200,7 @@ const ReceiptPage = () => {
                 onChange={(e) => {
                   setFormdata({
                     ...formdata,
-                    committee_id: parseInt(e.target.value),
+                    committee_id: e.target.value,
                   });
                 }}
               >

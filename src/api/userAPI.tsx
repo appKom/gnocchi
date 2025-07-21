@@ -1,7 +1,7 @@
 import { sendRequest, GET, POST } from "./helper";
 
 export interface Receipt_Info {
-  receiptId: number;
+  receiptId: string;
   amount: number;
   receiptName: string;
   receiptDescription: string;
@@ -15,7 +15,7 @@ export interface Receipt_Info {
 }
 
 export interface CompleteReceipt {
-  receiptId: number;
+  receiptId: string;
   amount: number;
   receiptName: string;
   receiptDescription: string;
@@ -33,7 +33,7 @@ export interface CompleteReceipt {
 }
 
 export interface ReceiptReview {
-  receiptId: number;
+  receiptId: string;
   status: string;
   comment: string;
 }
@@ -49,7 +49,7 @@ export const fetchAllUserReceipts = async (from: Number, count: Number, status: 
   return sendRequest<undefined, AllReceiptsResponse>(`/receipt/getall?from=${from}&count=${count}${status ? `&status=${status}` : ''}`, GET);
 };
 
-export const fetchCompleteReceipt = async (receiptId: Number): Promise<CompleteReceipt> => {
+export const fetchCompleteUserReceipt = async (receiptId: string): Promise<CompleteReceipt> => {
   return sendRequest<undefined, CompleteReceipt>(`/receipt/get/${receiptId}`, GET);
 };
 

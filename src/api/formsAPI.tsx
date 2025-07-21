@@ -2,7 +2,7 @@ import { sendRequest, POST } from "./helper";
 
 interface Receipt {
   amount: number;
-  committee_id: number;
+  committee_id: string;
   name: string;
   description: string;
   id: 0;

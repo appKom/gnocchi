@@ -3,15 +3,12 @@ import {
   CalendarIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import {
-  fetchCompleteReceipt,
-
-} from "../api/adminReceiptAPI";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/universal/Spinner";
 import AdminBadge from "../components/admin/AdminBadge";
 import { PaperClipIcon } from "@heroicons/react/24/solid";
+import { fetchCompleteUserReceipt } from "../api/userAPI";
 
 const DetailedReceiptPage = () => {
 
@@ -20,8 +17,8 @@ const DetailedReceiptPage = () => {
   const { data, isError, isLoading } = useQuery({
     queryKey: ["completereceipt", receiptid],
     queryFn: () =>
-      fetchCompleteReceipt(
-        receiptid as unknown as Number,
+      fetchCompleteUserReceipt(
+        receiptid as string,
       ),
   });
 
@@ -38,10 +35,7 @@ const DetailedReceiptPage = () => {
   return (
     <div className="min-h-screen bg-[#2e6e53] text-white p-4">
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-center flex flex-col gap-4 items-center">
-          <AdminBadge className="w-[80px]" />
-          Kvittering
-        </h1>
+       
         {isError && (
           <div className="bg-red-500 text-white p-4 rounded-lg shadow-lg mx-auto">
             Det har oppstått en feil. Prøv å logg inn og ut, eller refresh
@@ -140,7 +134,7 @@ const DetailedReceiptPage = () => {
               <div className="flex-col w-full">
                 <p className="text-left tracking-wide">Status</p>
                 <div className="flex items-center bg-white bg-opacity-10 text-white p-3 rounded w-full">
-                  {data.latestReviewStatus ? (
+                  {data.latestReviewStatus && data.latestReviewCreatedAt ? (
                     <div className="flex-col text-left">
                       <span
                         className={`px-2 py-1 rounded-full text-xs mb-2 font-semibold ${
