@@ -263,7 +263,7 @@ const ReceiptPage = () => {
                 onChange={(e) => {
                   setFormdata({
                     ...formdata,
-                    committee_id: parseInt(e.target.value),
+                    committee_id: e.target.value,
                   });
                 }}
               >
