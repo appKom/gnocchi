@@ -211,7 +211,7 @@ const AdminReviewReceiptPage = () => {
                       
                         src={`data:${fileType};base64,${attachment.split(".")[1]}`}
                         key={index}
-                        className="w-full h-[400px] rounded-lg border-2 border-white/20"
+                        className="ml-auto mr-auto w-full max-w-[1200px]  rounded-lg border-2 border-white/20"
                       />
                     } else {
                     return (
