@@ -22,7 +22,7 @@ const AdminReviewReceiptPage = () => {
 
   const { data, isError, isLoading } = useQuery({
     queryKey: ["completereceipt", receiptid],
-    queryFn: () => fetchCompleteReceipt(receiptid as unknown as Number),
+    queryFn: () => fetchCompleteReceipt(receiptid as string),
   });
 
   const formatDate = (dateString: string) => {
@@ -41,7 +41,7 @@ const AdminReviewReceiptPage = () => {
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const receiptreview: ReceiptReview = {
-      receiptId: receiptid as unknown as number,
+      receiptId: receiptid as string,
       status: newReviewStatus,
       comment: reviewComment,
     };
@@ -161,7 +161,7 @@ const AdminReviewReceiptPage = () => {
               <div className="flex-col w-full">
                 <p className="text-left tracking-wide">Status</p>
                 <div className="flex items-center bg-white bg-opacity-10 text-white p-3 rounded w-full">
-                  {data.latestReviewStatus ? (
+                  {data.latestReviewStatus && data.latestReviewCreatedAt != null ? (
                     <div className="flex-col text-left">
                       <span
                         className={`px-2 py-1 rounded-full text-xs mb-2 font-semibold ${data.latestReviewStatus === "APPROVED"
@@ -211,7 +211,7 @@ const AdminReviewReceiptPage = () => {
                       
                         src={`data:${fileType};base64,${attachment.split(".")[1]}`}
                         key={index}
-                        className="w-full h-[400px] rounded-lg border-2 border-white/20"
+                        className="ml-auto mr-auto w-full max-w-[1200px]  rounded-lg border-2 border-white/20"
                       />
                     } else {
                     return (

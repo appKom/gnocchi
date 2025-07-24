@@ -1,7 +1,7 @@
 import { sendRequest, GET } from "./helper";
 
 export interface Committee {
-  id: number;
+  id: string;
   name: string;
 }
 
