@@ -48,12 +48,14 @@ interface ReceiptRequestBody {
 const ReceiptPage = () => {
   const navigate = useNavigate();
 
-  const [cardInputType, setCardInputType] = useState<"number" | "committee">("number");
   const [usedOnlineCard, setUsedOnlineCard] = useState(false);
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [amountInput, setAmountInput] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
 
   const [attachments, setAttachments] = useState<File[]>([]);
+  const allowedTypes = ["application/pdf", "image/png", "image/jpeg", "image/jpg"];
 
   const auth = useAuth();
   const { user } = auth;
@@ -65,7 +67,16 @@ const ReceiptPage = () => {
   });
 
   const onFileChange = async (files: File[]) => {
-    setAttachments([...files]);
+    const validFiles = files.filter((file) => allowedTypes.includes(file.type));
+    const invalidFiles = files.filter((file) => !allowedTypes.includes(file.type));
+
+    if (invalidFiles.length > 0) {
+      alert("Bare PDF eller bildefiler (JPG, PNG, JPEG) er tillatt. Ugyldige filer ble ignorert.");
+    }
+
+    if (validFiles.length > 0) {
+      setAttachments(validFiles);
+    }
   };
 
   const [formdata, setFormdata]: [FormData, any] = useState({
@@ -78,65 +89,86 @@ const ReceiptPage = () => {
     account_number: "",
   });
 
+  const [errors, setErrors] = useState({
+    amount: "",
+    account_number: "",
+    card_number: "",
+    name: "",
+    committee_id: "",
+    attachments: "",
+  });
 
-  const submitform = async () => {
+  const validateForm = () => {
+    const newErrors: typeof errors = {
+      amount: "",
+      account_number: "",
+      card_number: "",
+      name: "",
+      committee_id: "",
+      attachments: "",
+    };
 
-    // Validate card number length to be exactly 16 numbers
+    if (!amountInput) {
+      newErrors.amount = "Beløp må fylles inn";
+    } else {
+      const num = Number(amountInput);
+        if (num <= 0) {
+          newErrors.amount = "Beløp må være større enn 0";
+        } else if (num > 100000) {
+          newErrors.amount = "Beløp kan ikke overstige 100 000";
+        }
+    }
+
     if (!usedOnlineCard) {
-      const accountNumber = formdata.account_number || "";
-      const isValidAccountNumber = /^\d{11}$/.test(accountNumber);
-      if (!isValidAccountNumber) {
-        alert("Kontonummer må være 11 sifre");
-        return;
+      if (!/^\d{11}$/.test(formdata.account_number || "")) {
+        newErrors.account_number = "Kontonummer må være 11 sifre";
       }
     }
 
     if (usedOnlineCard) {
       const cardNumber = formdata.card_number || "";
-      if (cardInputType === "number") {
-        if (!(/^\d{16}$/.test(cardNumber))) {
-          alert("Kortnummer må være 16 sifre");
-          return;
-        }
-      }
-      if (cardInputType === "committee") {
-        if (cardNumber.trim() === "") {
-          alert("Vennligst skriv inn navn på komité");
-          return;
-        }
+      if (!/^\d{16}$/.test(cardNumber)) {
+        newErrors.card_number = "Kortnummer må være 16 sifre";
       }
     }
 
-    // Validate beløp 
-    if (!amountInput) {
-      alert("Beløp må fylles inn");
-      return;
-    }
-
-    if (isNaN(formdata.amount) || amountInput === null || amountInput === undefined) {
-      alert("Beløp må være et tall");
-      return;
-    }
-
-    if (formdata.amount < 0) {
-      alert("Beløp kan ikke være negativt");
-      return;
-    }
-
-    if (formdata.name.length <= 0) {
-      alert("Vennligst skriv annledning");
-      return;
+    if (formdata.name.trim() === "") {
+      newErrors.name = "Vennligst skriv anledning";
     }
 
     if (!formdata.committee_id) {
-      alert("Velg en ansvarlig enhet");
-      return;
+      newErrors.committee_id = "Velg en ansvarlig enhet";
     }
 
     if (attachments.length === 0) {
-      alert("Last opp minst én kviterring/ett vedlegg");
-      return;
+      newErrors.attachments = "Last opp minst én kvittering/vedlegg";
     }
+
+    setErrors(newErrors);
+
+    return Object.values(newErrors).every((e) => e === "");
+  };
+
+  const formatAccountNumber = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    const parts: string[] = [];
+
+    if (digits.length > 0) parts.push(digits.substring(0, 4));
+    if (digits.length > 4) parts.push(digits.substring(4, 6));
+    if (digits.length > 6) parts.push(digits.substring(6, 11));
+
+    return parts.join(" ");
+  };
+
+  const formatCardNumber = (value: string) => {
+    return value
+      .replace(/\D/g, "")       
+      .replace(/(.{4})/g, "$1 ") 
+      .trim();
+  };
+
+  const submitform = async () => {
+    if (!validateForm()) return;
 
     const numericAmount = parseFloat(amountInput);
     const updatedFormData = { ...formdata, amount: numericAmount };
@@ -222,12 +254,20 @@ const ReceiptPage = () => {
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Kontonummer</p>
               <input
+                type="text"
                 placeholder={"2345 XX XXXX"}
                 className="text-black p-3 rounded w-full"
+                value={formatAccountNumber(accountNumber)}
+                maxLength={13}
                 onChange={(e) => {
-                  setFormdata({ ...formdata, account_number: e.target.value });
+                  const raw = e.target.value.replace(/\D/g, "");
+                  setAccountNumber(raw);
+                  setFormdata({ ...formdata, account_number: raw });
                 }}
               ></input>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.account_number || " "}
+              </p>
             </div>
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Beløp</p>
@@ -235,9 +275,12 @@ const ReceiptPage = () => {
                 type="number"
                 placeholder={"530"}
                 className="text-black p-3 rounded w-full"
-                value={amountInput}
+                max={100000}
                 onChange={(e) => setAmountInput(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.amount || " "}
+              </p>
             </div>
           </div>
           <div className="flex justify-center mt-[10px] gap-3 flex-col md:gap-10 md:flex-row items-center">
@@ -250,6 +293,9 @@ const ReceiptPage = () => {
                   setFormdata({ ...formdata, name: e.target.value });
                 }}
               ></input>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.name || " "}
+              </p>
             </div>
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Ansvarlig enhet</p>
@@ -273,56 +319,44 @@ const ReceiptPage = () => {
                     })
                   : null}
               </select>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.committee_id || " "}
+              </p>
             </div>
           </div>
         </div>
         <div className={`${!usedOnlineCard ? "hidden" : ""} text-white`}>
           <div className="flex justify-center gap-3 flex-col md:gap-10 md:flex-row items-center">
             <div className="flex-col w-[20rem]">
-              <p className="text-left tracking-wide mb-2 underline">Kortinformasjon</p>
-              <div className="flex gap-4 mb-3">
-                <label className="flex items-center gap-1 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="cardType"
-                    value="number"
-                    checked={cardInputType === "number"}
-                    onChange={() => setCardInputType("number")}
-                  />
-                  Kortnummer
-                </label>
-
-                <label className="flex items-center gap-1 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="cardType"
-                    value="committee"
-                    checked={cardInputType === "committee"}
-                    onChange={() => setCardInputType("committee")}
-                  />
-                  Komité
-                </label>
-              </div>
+              <p className="text-left tracking-wide">Kortnummer</p>
               <input
-                type={cardInputType === "number" ? "text" : "text"}
-                placeholder={
-                  cardInputType === "number"
-                    ? "2345 XXXX XXXX XXXX"
-                    : "Skriv inn hvilken komité kortet tilhører"
-                }
+                type="text"
+                placeholder={"2345 XXXX XXXX XXXX"}
                 className="text-black p-3 rounded w-full"
+                value={formatCardNumber(cardNumber)}
+                maxLength={19}
                 onChange={(e) => {
-                  setFormdata({ ...formdata, card_number: e.target.value });
+                  const raw = e.target.value.replace(/\D/g, "");
+                  setCardNumber(raw);
+                  setFormdata({ ...formdata, card_number: raw });
                 }}
               />
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.card_number || " "}
+              </p>
             </div>
-            <div className="flex-col w-[20rem] md:mt-11">
+            <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Beløp</p>
               <input
+                type="number"
                 placeholder={"530"}
                 className="text-black p-3 rounded w-full"
+                max={100000}
                 onChange={(e) => setAmountInput(e.target.value)}
               ></input>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.amount || " "}
+              </p>
             </div>
           </div>
           <div className="flex justify-center mt-[10px] gap-3 flex-col md:gap-10 md:flex-row items-center">
@@ -335,6 +369,9 @@ const ReceiptPage = () => {
                   setFormdata({ ...formdata, name: e.target.value });
                 }}
               ></input>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.name || " "}
+              </p>
             </div>
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Ansvarlig enhet</p>
@@ -359,6 +396,9 @@ const ReceiptPage = () => {
                     })
                   : null}
               </select>
+              <p className="text-red-500 text-sm min-h-[1.25rem]">
+                {errors.committee_id || " "}
+              </p>
             </div>
           </div>
         </div>
@@ -377,7 +417,13 @@ const ReceiptPage = () => {
         </div>
         <div className="flex-col mx-5">
           <p className="text-white w-full text-left text-l mb-[5px]">Vedlegg</p>
-          <FileUpload onFileChange={onFileChange} />
+          <FileUpload 
+            files={attachments}
+            onFileChange={onFileChange} 
+            />
+          <p className="text-red-500 text-sm min-h-[1.25rem]">
+            {errors.attachments || " "}
+          </p>
         </div>
         <div className="flex-col mt-[20px] mx-5">
           <p className="text-white w-full text-left text-l mb-[5px]">
