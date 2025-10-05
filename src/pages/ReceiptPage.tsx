@@ -48,8 +48,10 @@ interface ReceiptRequestBody {
 const ReceiptPage = () => {
   const navigate = useNavigate();
 
+  const [cardInputType, setCardInputType] = useState<"number" | "committee">("number");
   const [usedOnlineCard, setUsedOnlineCard] = useState(false);
   const [disableSubmit, setDisableSubmit] = useState(false);
+  const [amountInput, setAmountInput] = useState("");
 
   const [attachments, setAttachments] = useState<File[]>([]);
 
@@ -91,15 +93,27 @@ const ReceiptPage = () => {
 
     if (usedOnlineCard) {
       const cardNumber = formdata.card_number || "";
-      const isValidCardInfo = cardNumber.length > 0;
-      if (!isValidCardInfo) {
-        alert("Vennligst skriv inn kortinformasjon");
-        return;
+      if (cardInputType === "number") {
+        if (!(/^\d{16}$/.test(cardNumber))) {
+          alert("Kortnummer må være 16 sifre");
+          return;
+        }
+      }
+      if (cardInputType === "committee") {
+        if (cardNumber.trim() === "") {
+          alert("Vennligst skriv inn navn på komité");
+          return;
+        }
       }
     }
 
-    // Validate beløp
-    if (isNaN(formdata.amount) || formdata.amount === null || formdata.amount === undefined) {
+    // Validate beløp 
+    if (!amountInput) {
+      alert("Beløp må fylles inn");
+      return;
+    }
+
+    if (isNaN(formdata.amount) || amountInput === null || amountInput === undefined) {
       alert("Beløp må være et tall");
       return;
     }
@@ -124,6 +138,9 @@ const ReceiptPage = () => {
       return;
     }
 
+    const numericAmount = parseFloat(amountInput);
+    const updatedFormData = { ...formdata, amount: numericAmount };
+
     setDisableSubmit(true);
     const paymentInfo: PaymentInformation = {
       usedOnlineCard: usedOnlineCard,
@@ -138,7 +155,7 @@ const ReceiptPage = () => {
       id: 0,
     };
     const body: ReceiptRequestBody = {
-      receipt: formdata,
+      receipt: updatedFormData,
       attachments: await Promise.all(
         [...attachments].map(async (file) => await fileToBase64(file)),
       ),
@@ -215,14 +232,11 @@ const ReceiptPage = () => {
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Beløp</p>
               <input
+                type="number"
                 placeholder={"530"}
                 className="text-black p-3 rounded w-full"
-                onChange={(e) => {
-                  setFormdata({
-                    ...formdata,
-                    amount: parseInt(e.target.value),
-                  });
-                }}
+                value={amountInput}
+                onChange={(e) => setAmountInput(e.target.value)}
               ></input>
             </div>
           </div>
@@ -265,26 +279,49 @@ const ReceiptPage = () => {
         <div className={`${!usedOnlineCard ? "hidden" : ""} text-white`}>
           <div className="flex justify-center gap-3 flex-col md:gap-10 md:flex-row items-center">
             <div className="flex-col w-[20rem]">
-              <p className="text-left tracking-wide">Kortinformasjon</p>
+              <p className="text-left tracking-wide mb-2 underline">Kortinformasjon</p>
+              <div className="flex gap-4 mb-3">
+                <label className="flex items-center gap-1 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="cardType"
+                    value="number"
+                    checked={cardInputType === "number"}
+                    onChange={() => setCardInputType("number")}
+                  />
+                  Kortnummer
+                </label>
+
+                <label className="flex items-center gap-1 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="cardType"
+                    value="committee"
+                    checked={cardInputType === "committee"}
+                    onChange={() => setCardInputType("committee")}
+                  />
+                  Komité
+                </label>
+              </div>
               <input
-                placeholder={"Kortnummer/Hvilken komite korter tilhører"}
+                type={cardInputType === "number" ? "text" : "text"}
+                placeholder={
+                  cardInputType === "number"
+                    ? "2345 XXXX XXXX XXXX"
+                    : "Skriv inn hvilken komité kortet tilhører"
+                }
                 className="text-black p-3 rounded w-full"
                 onChange={(e) => {
                   setFormdata({ ...formdata, card_number: e.target.value });
                 }}
-              ></input>
+              />
             </div>
-            <div className="flex-col w-[20rem]">
+            <div className="flex-col w-[20rem] md:mt-11">
               <p className="text-left tracking-wide">Beløp</p>
               <input
                 placeholder={"530"}
                 className="text-black p-3 rounded w-full"
-                onChange={(e) => {
-                  setFormdata({
-                    ...formdata,
-                    amount: parseInt(e.target.value),
-                  });
-                }}
+                onChange={(e) => setAmountInput(e.target.value)}
               ></input>
             </div>
           </div>
