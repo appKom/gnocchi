@@ -78,6 +78,52 @@ const ReceiptPage = () => {
 
 
   const submitform = async () => {
+
+    // Validate card number length to be exactly 16 numbers
+    if (!usedOnlineCard) {
+      const accountNumber = formdata.account_number || "";
+      const isValidAccountNumber = /^\d{11}$/.test(accountNumber);
+      if (!isValidAccountNumber) {
+        alert("Kontonummer må være 11 sifre");
+        return;
+      }
+    }
+
+    if (usedOnlineCard) {
+      const cardNumber = formdata.card_number || "";
+      const isValidCardInfo = cardNumber.length > 0;
+      if (!isValidCardInfo) {
+        alert("Vennligst skriv inn kortinformasjon");
+        return;
+      }
+    }
+
+    // Validate beløp
+    if (isNaN(formdata.amount) || formdata.amount === null || formdata.amount === undefined) {
+      alert("Beløp må være et tall");
+      return;
+    }
+
+    if (formdata.amount < 0) {
+      alert("Beløp kan ikke være negativt");
+      return;
+    }
+
+    if (formdata.name.length <= 0) {
+      alert("Vennligst skriv annledning");
+      return;
+    }
+
+    if (!formdata.committee_id) {
+      alert("Velg en ansvarlig enhet");
+      return;
+    }
+
+    if (attachments.length === 0) {
+      alert("Last opp minst én kviterring/ett vedlegg");
+      return;
+    }
+
     setDisableSubmit(true);
     const paymentInfo: PaymentInformation = {
       usedOnlineCard: usedOnlineCard,
@@ -100,14 +146,12 @@ const ReceiptPage = () => {
     };
 
     try {
-    await submitReceipt(body);
-    alert("Kvittering sendt inn!");
-    // TODO: Fix with popup success message in home something
-    navigate("/?receiptsubmittedsuccess=1");
+      await submitReceipt(body);
+      alert("Kvittering sendt inn!");
+      // TODO: Fix with popup success message in home something
+      navigate("/?receiptsubmittedsuccess=1");
     } catch (e) {
-
       alert("Noe gikk galt, prøv igjen senere");
-  
     }
 
     setDisableSubmit(false);
@@ -267,7 +311,7 @@ const ReceiptPage = () => {
                   });
                 }}
               >
-                <option value="None">Ingen</option>
+                <option value="">Ingen</option>
                 {data && data.length
                   ? data.map((committee: any) => {
                       return (
