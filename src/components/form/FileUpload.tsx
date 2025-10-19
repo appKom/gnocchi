@@ -1,22 +1,22 @@
 import React, { useState, ChangeEvent, DragEvent } from "react";
 
 interface FileUploadProps {
+  files: File[];
   onFileChange: (files: File[]) => void;
+  multiple?: boolean;
 }
 
-const FileUpload = (props: FileUploadProps) => {
-  const [files, setFiles] = useState<File[]>([]);
-
+const FileUpload = ({ files, onFileChange, multiple = true }: FileUploadProps) => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(event.target.files || []);
-    props.onFileChange([...files, ...newFiles]);
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    onFileChange([...files, ...newFiles]);
+    event.target.value = "";
   };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const newFiles = Array.from(event.dataTransfer.files);
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    onFileChange([...files, ...newFiles]);
   };
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -24,8 +24,7 @@ const FileUpload = (props: FileUploadProps) => {
   };
 
   const removeFile = (index: number) => {
-    props.onFileChange(files.filter((_, i) => i !== index));
-    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    onFileChange(files.filter((_, i) => i !== index));
   };
 
   return (
