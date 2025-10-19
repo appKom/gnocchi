@@ -134,7 +134,7 @@ const ApplicationPage = () => {
         </div>
         <div className="flex-col">
           <p className="text-white w-full text-left text-l mb-[5px]">Vedlegg</p>
-          <FileUpload onFileChange={onFileChange} />
+          <FileUpload files={attachments} onFileChange={onFileChange} />
         </div>
 
         <div className="flex-col mt-[20px]">

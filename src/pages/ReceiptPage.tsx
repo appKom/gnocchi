@@ -74,9 +74,7 @@ const ReceiptPage = () => {
       alert("Bare PDF eller bildefiler (JPG, PNG, JPEG) er tillatt. Ugyldige filer ble ignorert.");
     }
 
-    if (validFiles.length > 0) {
-      setAttachments(validFiles);
-    }
+    setAttachments(validFiles);
   };
 
   const [formdata, setFormdata]: [FormData, any] = useState({
