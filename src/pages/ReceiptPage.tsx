@@ -270,12 +270,17 @@ const ReceiptPage = () => {
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Beløp</p>
               <input
-                type="number"
+                type="text"
                 placeholder={"530"}
                 className="text-black p-3 rounded w-full"
-                max={100000}
-                onChange={(e) => setAmountInput(e.target.value)}
-              ></input>
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/\D/g, "");
+                  const value = raw.slice(0, 6);  // Limit to 6 characters
+                  console.log(value);
+                  setAmountInput(value);
+                }}
+                value={amountInput}
+              />
               <p className="text-red-500 text-sm min-h-[1.25rem]">
                 {errors.amount || " "}
               </p>
@@ -346,12 +351,17 @@ const ReceiptPage = () => {
             <div className="flex-col w-[20rem]">
               <p className="text-left tracking-wide">Beløp</p>
               <input
-                type="number"
+                type="text"
                 placeholder={"530"}
                 className="text-black p-3 rounded w-full"
-                max={100000}
-                onChange={(e) => setAmountInput(e.target.value)}
-              ></input>
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/\D/g, "");
+                  const value = raw.slice(0, 6);  // Limit to 6 characters
+                  console.log(value);
+                  setAmountInput(value);
+                }}
+                value={amountInput}
+              />
               <p className="text-red-500 text-sm min-h-[1.25rem]">
                 {errors.amount || " "}
               </p>
