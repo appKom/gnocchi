@@ -106,17 +106,6 @@ const ReceiptPage = () => {
       attachments: "",
     };
 
-    if (!amountInput) {
-      newErrors.amount = "Beløp må fylles inn";
-    } else {
-      const num = Number(amountInput);
-        if (num <= 0) {
-          newErrors.amount = "Beløp må være større enn 0";
-        } else if (num > 100000) {
-          newErrors.amount = "Beløp kan ikke overstige 100 000";
-        }
-    }
-
     if (!usedOnlineCard) {
       if (!/^\d{11}$/.test(formdata.account_number || "")) {
         newErrors.account_number = "Kontonummer må være 11 sifre";
